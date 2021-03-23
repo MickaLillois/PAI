@@ -1,6 +1,6 @@
 <?php
 
-    $connection = new mysqli("mysql-quizinmobile.alwaysdata.net", "quizinmobile_bdd", "Vivemarius59", "quizinmobile_bdd");
+    $connection = new PDO('mysql:host=mysql-quizinmobile.alwaysdata.net;dbname=quizinmobile_bdd', "229981", "Vivemarius59");
 
     if (!$connection) {
         echo "connection failed!";
