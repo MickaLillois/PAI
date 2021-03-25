@@ -41,10 +41,10 @@ public class TestServlet extends HttpServlet {
         JsonParser jp = new JsonParser(); //from gson
         JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent())); //Convert the input stream to a json element
         JsonObject rootobj = root.getAsJsonObject(); //May be an array, may be an object.
-        String zipcode = rootobj.get("NOMQUIZ").getAsString(); //just grab the zipcode
+        //String zipcode = rootobj.get("NOMQUIZ").getAsString(); //just grab the zipcode
 
         ServletOutputStream out = resp.getOutputStream();
-        out.write(zipcode.getBytes());
+        out.write(rootobj.toString().getBytes());
         out.flush();
         out.close();
     }
