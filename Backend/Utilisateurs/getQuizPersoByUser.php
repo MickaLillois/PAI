@@ -9,7 +9,8 @@ $mail = $_GET["mail"];
   $result = array();
 
   while ($fetchdata = $queryResult->fetch()) {
-      $result[] = $fetchdata;
+      $result["NOMQUIZ"] = $fetchdata["NOMQUIZ"];
+      $result["NBQUESTIONSQUIZ"] = $fetchdata["NBQUESTIONSQUIZ"];
   }
 
   echo json_encode($result);
