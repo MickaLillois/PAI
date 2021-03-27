@@ -2,7 +2,9 @@
 
 include("../Connexion/connexion.php");
 
-  $queryResult = $connection->query("SELECT * FROM STATSUTILISATEUR ORDER BY MAILUTILISATEUR");
+$user = $_GET["utilisateur"];
+  $queryResult = $connection->prepare("SELECT * FROM STATSUTILISATEUR WHERE MAILUTILISATEUR = ?");
+  $queryResult->execute(array($user));
 
   $result = array();
 
