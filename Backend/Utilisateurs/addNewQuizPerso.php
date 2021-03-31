@@ -8,6 +8,6 @@ $nomQuiz = $_GET["nomQuiz"];
   $queryResult->execute(array($mail, $nomQuiz));
 
 
-  echo "quiz ajouté wola";
+  echo "quiz ajouté";
 
 ?>

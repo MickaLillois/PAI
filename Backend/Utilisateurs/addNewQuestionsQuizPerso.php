@@ -30,6 +30,6 @@ $nomQuiz = $_GET["nomQuiz"];
   $queryResult->execute();
 
 
-  echo "question + quiz ajouté wola";
+  echo "question + quiz ajoutés";
 
 ?>

@@ -7,6 +7,6 @@ $mail = $_GET["mail"];
   $queryResult->execute(array($mail));
 
 
-  echo "utilisateur supprimé wola";
+  echo "utilisateur supprimé";
 
 ?>

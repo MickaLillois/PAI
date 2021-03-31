@@ -32,6 +32,6 @@ $idQuiz = $q3->fetch();
   $queryResult->execute();
 
 
-  echo "question supprimée du quiz wola";
+  echo "question supprimée du quiz";
 
 ?>

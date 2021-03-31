@@ -8,6 +8,6 @@ $nomQuiz = $_GET["nomQuiz"];
   $queryResult->execute(array($nomQuiz, $mail));
 
 
-  echo "quiz supprimé wola";
+  echo "quiz supprimé";
 
 ?>
