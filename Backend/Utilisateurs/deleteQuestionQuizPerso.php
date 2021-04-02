@@ -13,7 +13,6 @@ if($qPerso == "true")
     $q = $connection->prepare("SELECT IDQUESTION FROM QUESTION WHERE INTITULE = ? AND IDCATEGORIE = 5");
     $q->execute(array($intitule));
     $idQuestion = $q->fetch();
-    var_dump($qPerso);
 }
 else
 {
