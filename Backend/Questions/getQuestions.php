@@ -2,7 +2,9 @@
 
 include("../Connexion/connexion.php");
 
-  $queryResult = $connection->query("SELECT * FROM QUESTION");
+$nbQuestions = $_GET["nbQuestions"];
+  $queryResult = $connection->prepare("SELECT * FROM QUESTION ORDER BY RAND() LIMIT ?");
+  $queryResult->execute(array($nbQuestions));
 
   $result = array();
 
