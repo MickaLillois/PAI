@@ -7,17 +7,19 @@ class ProfilPage extends StatelessWidget {
     Size screenSize = MediaQuery.of(context).size;
     double sizeAvatar = screenSize.width * 0.3;
     double widthLogo = screenSize.width * 0.8;
-    double heightLogo = screenSize.height * 0.3;
+    double heightLogo = screenSize.height * 0.2;
     double standard = screenSize.width * 0.05;
     double standard2 = screenSize.width * 0.035;
     return Scaffold(
       body :
       Container(
         child : Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Column(
               children: [
                 Container(
+                  alignment: Alignment.topCenter,
                     child: Image.asset(
                       'assets/images/logo_png.png',
                       width : widthLogo,
@@ -28,9 +30,11 @@ class ProfilPage extends StatelessWidget {
               ],
             ),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
                   alignment: Alignment.topCenter,
+                  margin: EdgeInsets.fromLTRB(0, standard, 0, 0),
                   child: Text('Profil utilisateur de <PSEUDO>',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -86,6 +90,69 @@ class ProfilPage extends StatelessWidget {
                   ),
                 )
               ],
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: standard),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Date de naissance :',
+                    style: TextStyle(
+                      fontSize: standard2,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: standard/2),
+                    child: Text(
+                        '<DATENAISSANCE>'
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: standard),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Pseudo :',
+                    style: TextStyle(
+                      fontSize: standard2,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: standard/2),
+                    child: Text(
+                        '<PSEUDO>'
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: standard),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Adresse mail :',
+                    style: TextStyle(
+                      fontSize: standard2,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: standard/2),
+                    child: Text(
+                        '<MAIL>'
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
