@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_quizinmobile/profilPage.dart';
+import 'package:flutter_quizinmobile/connection.dart';
 import 'package:flutter/src/material/icons.dart';
 
 void main() {
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
         routes: {
           //'/': (context) => MyHomePage(title: "Connexion"),
           '/profilPage': (context) => ProfilPage(),
+          '/connection': (context) => Connection(),
         },
         initialRoute: '/'
     );
@@ -54,100 +56,97 @@ class _MyHomePageState extends State<MyHomePage> {
     double widthButton = screenSize.width*0.85;
     double paddingButtonJeu = screenSize.height*0.03;
     double paddingButtonQuest = screenSize.height*0.02;
-    double marginIcon = screenSize.height*0.01;
     double iconSize = screenSize.width*0.15;
     double fontSizeT1 = screenSize.height*0.045;
     double fontSizeT2 = screenSize.height*0.02;
     double fontSizeT3 = screenSize.height*0.03;
-    double imageWidth = screenSize.width*0.8;
-    double imageHeight = screenSize.width*0.2;
+    double widthLogo = screenSize.width*0.8;
+    double heightLogo = screenSize.height*0.2;
+    double marginLogo = screenSize.height*0.05;
     return Scaffold(
-        appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: Text(widget.title),
-        ),
         body: SingleChildScrollView(
           child: Center(
-          child: Column(
-              children: <Widget>[
-                Container(
-                    child: Image.asset('assets/images/logo_with_text.PNG',width: imageWidth, height: imageHeight),
-                ),
-                Container(
-                  margin: EdgeInsets.all(marginIcon),
-                  child: IconButton(
-                    icon: const Icon(Icons.account_circle),
-                    color: Colors.black,
-                    iconSize: iconSize,
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/profilPage');
-                    },
+            child: Column(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0,marginLogo,0,0),
+                    child: Image.asset('assets/images/logo_png.png',width: widthLogo, height: heightLogo),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.all(marginButton),
-                  width: widthButton,
-                  child: ElevatedButton(
-                    child: Column(children: <Widget>[
-                      Container(child: Text('Mode Standard', style: TextStyle(fontSize: fontSizeT1),),),
-                      Container(child: Text('Rejoindre une partie rapide', style: TextStyle(fontSize: fontSizeT2),),),
-                    ]),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blue, // background
-                      onPrimary: Colors.white, // foreground
-                      padding: EdgeInsets.all(paddingButtonJeu),
+                  Container(
+                    child: IconButton(
+                      icon: const Icon(Icons.account_circle),
+                      color: Colors.black,
+                      iconSize: iconSize,
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/profilPage');
+                      },
                     ),
-                    onPressed: () {},
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.all(marginButton),
-                  width: widthButton,
-                  child: ElevatedButton(
-                    child: Column(children: <Widget>[
-                      Container(child: Text('Mode Battle Royal', style: TextStyle(fontSize: fontSizeT1),),),
-                      Container(child: Text('Rejoindre une partie rapide', style: TextStyle(fontSize: fontSizeT2),),),
-                    ]),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blue, // background
-                      onPrimary: Colors.white, // foreground
-                      padding: EdgeInsets.all(paddingButtonJeu),
+                  Container(
+                    margin: EdgeInsets.all(marginButton),
+                    width: widthButton,
+                    child: ElevatedButton(
+                      child: Column(children: <Widget>[
+                        Container(child: Text('Mode Standard', style: TextStyle(fontSize: fontSizeT1),),),
+                        Container(child: Text('Rejoindre une partie rapide', style: TextStyle(fontSize: fontSizeT2),),),
+                      ]),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue, // background
+                        onPrimary: Colors.white, // foreground
+                        padding: EdgeInsets.all(paddingButtonJeu),
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/connection');
+                      },
                     ),
-                    onPressed: () {},
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.all(marginButton),
-                  width: widthButton,
-                  child: ElevatedButton(
-                    child: Column(children: <Widget>[
-                      Container(child: Text('Partie privée', style: TextStyle(fontSize: fontSizeT1),),),
-                      Container(child: Text('Rejoindre le menu de partie privée', style: TextStyle(fontSize: fontSizeT2),),),
-                    ]),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blue, // background
-                      onPrimary: Colors.white, // foreground
-                      padding: EdgeInsets.all(paddingButtonJeu),
+                  Container(
+                    margin: EdgeInsets.all(marginButton),
+                    width: widthButton,
+                    child: ElevatedButton(
+                      child: Column(children: <Widget>[
+                        Container(child: Text('Mode Battle Royal', style: TextStyle(fontSize: fontSizeT1),),),
+                        Container(child: Text('Rejoindre une partie rapide', style: TextStyle(fontSize: fontSizeT2),),),
+                      ]),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue, // background
+                        onPrimary: Colors.white, // foreground
+                        padding: EdgeInsets.all(paddingButtonJeu),
+                      ),
+                      onPressed: () {},
                     ),
-                    onPressed: () {},
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.all(marginButton),
-                  width: widthButton,
-                  child: ElevatedButton(
-                    child: Text('Proposer une question', style: TextStyle(fontSize: fontSizeT3),),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.blue, // background
-                      onPrimary: Colors.white, // foreground
-                      padding: EdgeInsets.all(paddingButtonQuest),
+                  Container(
+                    margin: EdgeInsets.all(marginButton),
+                    width: widthButton,
+                    child: ElevatedButton(
+                      child: Column(children: <Widget>[
+                        Container(child: Text('Partie privée', style: TextStyle(fontSize: fontSizeT1),),),
+                        Container(child: Text('Rejoindre le menu de partie privée', style: TextStyle(fontSize: fontSizeT2),),),
+                      ]),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue, // background
+                        onPrimary: Colors.white, // foreground
+                        padding: EdgeInsets.all(paddingButtonJeu),
+                      ),
+                      onPressed: () {},
                     ),
-                    onPressed: () {},
                   ),
-                ),
-              ]
-          ),
+                  Container(
+                    margin: EdgeInsets.all(marginButton),
+                    width: widthButton,
+                    child: ElevatedButton(
+                      child: Text('Proposer une question', style: TextStyle(fontSize: fontSizeT3),),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue, // background
+                        onPrimary: Colors.white, // foreground
+                        padding: EdgeInsets.all(paddingButtonQuest),
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
+                ]
+            ),
           ),
         ));
   }
