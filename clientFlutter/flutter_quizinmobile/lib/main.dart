@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_quizinmobile/profilPage.dart';
 import 'package:flutter/src/material/icons.dart';
 
@@ -44,17 +45,26 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return Scaffold(
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
           title: Text(widget.title),
         ),
-        body: Center(
+        body: SingleChildScrollView(
+          child: Center(
           child: Column(
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.all(25),
+                    child: Image.asset('assets/images/logo_with_text.PNG'),
+                ),
+                Container(
+                  margin: EdgeInsets.all(10),
                   child: IconButton(
                     icon: const Icon(Icons.account_circle),
                     color: Colors.black,
@@ -65,48 +75,68 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.all(25),
+                  margin: EdgeInsets.all(10),
+                  width: screenSize.width*0.85,
                   child: ElevatedButton(
                     child: Column(children: <Widget>[
-                      Container(child: Text('Mode Standard', style: TextStyle(fontSize: 20.0),),),
+                      Container(child: Text('Mode Standard', style: TextStyle(fontSize: 30.0),),),
                       Container(child: Text('Rejoindre une partie rapide', style: TextStyle(fontSize: 12.0),),),
                     ]),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.red, // background
+                      primary: Colors.blue, // background
                       onPrimary: Colors.white, // foreground
+                      padding: EdgeInsets.all(20.0),
                     ),
                     onPressed: () {},
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.all(25),
+                  margin: EdgeInsets.all(10),
+                  width: screenSize.width*0.85,
                   child: ElevatedButton(
                     child: Column(children: <Widget>[
-                      Container(child: Text('Mode Battle Royal', style: TextStyle(fontSize: 20.0),),),
+                      Container(child: Text('Mode Battle Royal', style: TextStyle(fontSize: 30.0),),),
                       Container(child: Text('Rejoindre une partie rapide', style: TextStyle(fontSize: 12.0),),),
                     ]),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.red, // background
+                      primary: Colors.blue, // background
                       onPrimary: Colors.white, // foreground
+                      padding: EdgeInsets.all(20.0),
                     ),
                     onPressed: () {},
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.all(25),
+                  margin: EdgeInsets.all(10),
+                  width: screenSize.width*0.85,
                   child: ElevatedButton(
                     child: Column(children: <Widget>[
-                      Container(child: Text('Partie privée', style: TextStyle(fontSize: 20.0),),),
+                      Container(child: Text('Partie privée', style: TextStyle(fontSize: 30.0),),),
                       Container(child: Text('Rejoindre le menu de partie privée', style: TextStyle(fontSize: 12.0),),),
                     ]),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.red, // background
+                      primary: Colors.blue, // background
                       onPrimary: Colors.white, // foreground
+                      padding: EdgeInsets.all(20.0),
+                    ),
+                    onPressed: () {},
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(10),
+                  width: screenSize.width*0.85,
+                  child: ElevatedButton(
+                    child: Text('Proposer une question', style: TextStyle(fontSize: 20.0),),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.blue, // background
+                      onPrimary: Colors.white, // foreground
+                      padding: EdgeInsets.all(10.0),
                     ),
                     onPressed: () {},
                   ),
                 ),
               ]
+          ),
           ),
         ));
   }
