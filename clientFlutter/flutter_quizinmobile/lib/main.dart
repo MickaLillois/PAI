@@ -50,6 +50,17 @@ class _MyHomePageState extends State<MyHomePage> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+    double marginButton = screenSize.height*0.02;
+    double widthButton = screenSize.width*0.85;
+    double paddingButtonJeu = screenSize.height*0.03;
+    double paddingButtonQuest = screenSize.height*0.02;
+    double marginIcon = screenSize.height*0.01;
+    double iconSize = screenSize.width*0.15;
+    double fontSizeT1 = screenSize.height*0.045;
+    double fontSizeT2 = screenSize.height*0.02;
+    double fontSizeT3 = screenSize.height*0.03;
+    double imageWidth = screenSize.width*0.8;
+    double imageHeight = screenSize.width*0.2;
     return Scaffold(
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
@@ -61,76 +72,76 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
               children: <Widget>[
                 Container(
-                    child: Image.asset('assets/images/logo_with_text.PNG'),
+                    child: Image.asset('assets/images/logo_with_text.PNG',width: imageWidth, height: imageHeight),
                 ),
                 Container(
-                  margin: EdgeInsets.all(10),
+                  margin: EdgeInsets.all(marginIcon),
                   child: IconButton(
                     icon: const Icon(Icons.account_circle),
                     color: Colors.black,
-                    iconSize: 50,
+                    iconSize: iconSize,
                     onPressed: () {
                       Navigator.pushNamed(context, '/profilPage');
                     },
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.all(10),
-                  width: screenSize.width*0.85,
+                  margin: EdgeInsets.all(marginButton),
+                  width: widthButton,
                   child: ElevatedButton(
                     child: Column(children: <Widget>[
-                      Container(child: Text('Mode Standard', style: TextStyle(fontSize: 30.0),),),
-                      Container(child: Text('Rejoindre une partie rapide', style: TextStyle(fontSize: 12.0),),),
+                      Container(child: Text('Mode Standard', style: TextStyle(fontSize: fontSizeT1),),),
+                      Container(child: Text('Rejoindre une partie rapide', style: TextStyle(fontSize: fontSizeT2),),),
                     ]),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.blue, // background
                       onPrimary: Colors.white, // foreground
-                      padding: EdgeInsets.all(20.0),
+                      padding: EdgeInsets.all(paddingButtonJeu),
                     ),
                     onPressed: () {},
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.all(10),
-                  width: screenSize.width*0.85,
+                  margin: EdgeInsets.all(marginButton),
+                  width: widthButton,
                   child: ElevatedButton(
                     child: Column(children: <Widget>[
-                      Container(child: Text('Mode Battle Royal', style: TextStyle(fontSize: 30.0),),),
-                      Container(child: Text('Rejoindre une partie rapide', style: TextStyle(fontSize: 12.0),),),
+                      Container(child: Text('Mode Battle Royal', style: TextStyle(fontSize: fontSizeT1),),),
+                      Container(child: Text('Rejoindre une partie rapide', style: TextStyle(fontSize: fontSizeT2),),),
                     ]),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.blue, // background
                       onPrimary: Colors.white, // foreground
-                      padding: EdgeInsets.all(20.0),
+                      padding: EdgeInsets.all(paddingButtonJeu),
                     ),
                     onPressed: () {},
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.all(10),
-                  width: screenSize.width*0.85,
+                  margin: EdgeInsets.all(marginButton),
+                  width: widthButton,
                   child: ElevatedButton(
                     child: Column(children: <Widget>[
-                      Container(child: Text('Partie privée', style: TextStyle(fontSize: 30.0),),),
-                      Container(child: Text('Rejoindre le menu de partie privée', style: TextStyle(fontSize: 12.0),),),
+                      Container(child: Text('Partie privée', style: TextStyle(fontSize: fontSizeT1),),),
+                      Container(child: Text('Rejoindre le menu de partie privée', style: TextStyle(fontSize: fontSizeT2),),),
                     ]),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.blue, // background
                       onPrimary: Colors.white, // foreground
-                      padding: EdgeInsets.all(20.0),
+                      padding: EdgeInsets.all(paddingButtonJeu),
                     ),
                     onPressed: () {},
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.all(10),
-                  width: screenSize.width*0.85,
+                  margin: EdgeInsets.all(marginButton),
+                  width: widthButton,
                   child: ElevatedButton(
-                    child: Text('Proposer une question', style: TextStyle(fontSize: 20.0),),
+                    child: Text('Proposer une question', style: TextStyle(fontSize: fontSizeT3),),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.blue, // background
                       onPrimary: Colors.white, // foreground
-                      padding: EdgeInsets.all(10.0),
+                      padding: EdgeInsets.all(paddingButtonQuest),
                     ),
                     onPressed: () {},
                   ),
