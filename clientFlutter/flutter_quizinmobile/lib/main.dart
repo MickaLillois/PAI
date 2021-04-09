@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_quizinmobile/secondPage.dart';
+import 'package:flutter_quizinmobile/profilPage.dart';
 import 'package:flutter/src/material/icons.dart';
 
 void main() {
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         home: MyHomePage(title: 'Rudy trop beau'),
         routes: {
           //'/': (context) => MyHomePage(title: "Connexion"),
-          '/secondPage': (context) => MySecondPage(),
+          '/profilPage': (context) => ProfilPage(),
         },
         initialRoute: '/'
     );
@@ -59,7 +59,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     icon: const Icon(Icons.account_circle),
                     color: Colors.black,
                     iconSize: 50,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/profilPage');
+                    },
                   ),
                 ),
                 Container(
