@@ -33,14 +33,15 @@ class ProfilPage extends StatelessWidget {
                   alignment: Alignment.topCenter,
                   child: Text('Profil utilisateur de <PSEUDO>',
                       style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: standard,
+                        fontWeight: FontWeight.bold,
+                        fontSize: standard,
                       )
                   ),
                 ),
               ],
             ),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: standard, vertical: standard),
@@ -50,24 +51,39 @@ class ProfilPage extends StatelessWidget {
                     width: sizeAvatar,
                   ),
                 ),
-                Column(
-                  children: [
-                    Container(
-                      child: Text(
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: standard*1.5),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
                         'Prénom :',
                         style: TextStyle(
                           fontSize: standard2,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: standard/2),
-                      child: Text(
-                          '<PRENOM>'
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: standard/2),
+                        child: Text(
+                            '<PRENOM>'
+                        ),
                       ),
-                    )
-                  ],
+                      Text(
+                        'Nom :',
+                        style: TextStyle(
+                          fontSize: standard2,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Container(
+                        margin : EdgeInsets.fromLTRB(0, standard/2, 0, 0),
+                        child: Text(
+                          '<NOM>',
+                        ),
+                      )
+                    ],
+                  ),
                 )
               ],
             ),
