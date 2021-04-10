@@ -25,7 +25,7 @@ else
       $prenom = $_GET["prenom"];
       $mdp = $_GET["mdp"];
       $dateNaissance = $_GET["dateNaissance"];
-      $queryResult = $connection->prepare("INSERT INTO UTILISATEUR VALUES (?, ?, ?, PASSWORD(?), ?, ?)");
+      $queryResult = $connection->prepare("INSERT INTO UTILISATEUR VALUES (?, ?, ?, PASSWORD(?), ?, ?, null)");
       $queryResult->execute(array($mail, $prenom, $nom, $mdp, $pseudo, $dateNaissance));
       $q2 = $connection->prepare("INSERT INTO STATSUTILISATEUR VALUES (?, 0, 0, 0, 0, 0, 0, 0, 0, 0)");
       $q2->execute(array($mail));
