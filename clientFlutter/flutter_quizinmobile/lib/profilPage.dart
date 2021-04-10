@@ -159,13 +159,45 @@ class ProfilPage extends StatelessWidget {
                       width: widthButton,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.blue,
-                          onPrimary: Colors.white
+                            primary: Colors.blue,
+                            onPrimary: Colors.white
                         ),
-                          onPressed: () {},
-                          child: Text(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/editProfil');
+                        },
+                        child: Text(
                             'Modifier le profil'
-                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: widthButton,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.blue,
+                            onPrimary: Colors.white
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/editMdp');
+                        },
+                        child: Text(
+                            'Modifier le mot de passe'
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: widthButton,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.blue,
+                            onPrimary: Colors.white
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/statsUser');
+                        },
+                        child: Text(
+                            'Accéder aux statistiques'
+                        ),
                       ),
                     ),
                   ],

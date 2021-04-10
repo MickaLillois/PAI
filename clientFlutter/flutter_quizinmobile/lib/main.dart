@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_quizinmobile/editProfil.dart';
 import 'package:flutter_quizinmobile/profilPage.dart';
 import 'package:flutter_quizinmobile/connection.dart';
+import 'package:flutter_quizinmobile/editMdp.dart';
 import 'package:flutter/src/material/icons.dart';
+import 'package:flutter_quizinmobile/statsUser.dart';
 
 void main() {
   runApp(MyApp());
@@ -20,6 +23,9 @@ class MyApp extends StatelessWidget {
           //'/': (context) => MyHomePage(title: "Connexion"),
           '/profilPage': (context) => ProfilPage(),
           '/connection': (context) => Connection(),
+          '/editMdp': (context) => EditMdp(),
+          '/editProfil': (context) => EditProfil(),
+          '/statsUser': (context) => StatsUser(),
         },
         initialRoute: '/'
     );

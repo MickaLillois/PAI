@@ -2,7 +2,7 @@
 
 include("../Connexion/connexion.php");
 
-$mail = $_GET["mail"];
+$mail = $_POST["mail"];
   $queryResult = $connection->prepare("SELECT PRENOMUTILISATEUR, NOMUTILISATEUR, PSEUDOUTILISATEUR, DATENAISSANCEUTILISATEUR, NUMEROAVATAR FROM UTILISATEUR WHERE MAILUTILISATEUR = ?");
   $queryResult->execute(array($mail));
 
