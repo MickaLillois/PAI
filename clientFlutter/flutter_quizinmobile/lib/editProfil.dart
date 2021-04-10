@@ -2,6 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class EditProfil extends StatelessWidget {
+  final String pseudo;
+  final String prenom;
+  final String nom;
+
+  EditProfil({Key key, @required this.pseudo, @required this.prenom, @required this.nom}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,6 +27,9 @@ class EditProfil extends StatelessWidget {
                         height: 100,
 
                       )
+                  ),
+                  Text(
+                    pseudo + '/' + prenom + '/' + nom,
                   )
                 ],
               ),

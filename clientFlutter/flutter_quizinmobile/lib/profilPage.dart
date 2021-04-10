@@ -2,10 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_quizinmobile/editProfil.dart';
 import 'package:http/http.dart';
 
+String mail = 'ruru4.matt@gmail.com';
+String pseudo, nom, prenom;
+
 Future<User> _makePostRequest() async {
-  String mail = 'ruru4.matt@gmail.com';
   Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Utilisateurs/getInfosByUser.php');
   Map<String, String> headers = {
     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -26,14 +29,16 @@ class User {
   final String prenom;
   final String nom;
   final String pseudo;
+  final String dateNaissance;
 
-  User({this.prenom, this.nom, this.pseudo});
+  User({this.prenom, this.nom, this.pseudo, this.dateNaissance});
 
   factory User.fromJson(List<dynamic> json) {
     return User(
       prenom: json[0]["PRENOM"],
-      nom: 'oui',
-      pseudo: 'test',
+      nom: json[0]["NOM"],
+      pseudo: json[0]["PSEUDO"],
+      dateNaissance: json[0]["DATENAISSANCE"],
     );
   }
 }
@@ -64,7 +69,7 @@ class ProfilPage extends StatelessWidget {
                       margin: EdgeInsets.fromLTRB(0, marginImageTop, 0, 0),
                       alignment: Alignment.topCenter,
                       child: Image.asset(
-                        'assets/images/logo_png.png',
+                        'assets/images/logo_officiel.png',
                         width : widthLogo,
                         height: heightLogo,
 
@@ -77,12 +82,35 @@ class ProfilPage extends StatelessWidget {
                 children: <Widget>[
                   Container(
                     alignment: Alignment.topCenter,
-                    margin: EdgeInsets.fromLTRB(0, marginText, 0, 0),
-                    child: Text('Profil utilisateur de <PSEUDO>',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: standard,
+                    margin: EdgeInsets.fromLTRB(marginText, marginText, 0, 0),
+                    child: Row(
+                      children: [
+                        Text('Profil utilisateur de ',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: standard,
+                            )
+                        ),
+                        FutureBuilder(
+                          future: _futureUser,
+                          builder: (context, snapshot){
+                            if(snapshot.hasData)
+                            {
+                              pseudo = snapshot.data.pseudo;
+                              return Text(
+                                  snapshot.data.pseudo,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: standard,
+                                  )
+                              );
+                            }else if (snapshot.hasError) {
+                              return Text("${snapshot.error}");
+                            }
+                            return CircularProgressIndicator();
+                          },
                         )
+                      ],
                     ),
                   ),
                 ],
@@ -117,6 +145,7 @@ class ProfilPage extends StatelessWidget {
                               builder: (context, snapshot){
                                 if(snapshot.hasData)
                                 {
+                                  prenom = snapshot.data.prenom;
                                   return Text(snapshot.data.prenom);
                                 }else if (snapshot.hasError) {
                                   return Text("${snapshot.error}");
@@ -134,9 +163,19 @@ class ProfilPage extends StatelessWidget {
                         ),
                         Container(
                           margin : EdgeInsets.fromLTRB(0, marginText/2, 0, 0),
-                          child: Text(
-                            '<NOM>',
-                          ),
+                          child: FutureBuilder(
+                            future: _futureUser,
+                            builder: (context, snapshot){
+                              if(snapshot.hasData)
+                              {
+                                nom = snapshot.data.nom;
+                                return Text(snapshot.data.nom);
+                              }else if (snapshot.hasError) {
+                                return Text("${snapshot.error}");
+                              }
+                              return CircularProgressIndicator();
+                            },
+                          )
                         )
                       ],
                     ),
@@ -157,9 +196,18 @@ class ProfilPage extends StatelessWidget {
                     ),
                     Container(
                       margin: EdgeInsets.symmetric(vertical: marginText/2),
-                      child: Text(
-                          '<DATENAISSANCE>'
-                      ),
+                      child: FutureBuilder(
+                        future: _futureUser,
+                        builder: (context, snapshot){
+                          if(snapshot.hasData)
+                          {
+                            return Text(snapshot.data.dateNaissance);
+                          }else if (snapshot.hasError) {
+                            return Text("${snapshot.error}");
+                          }
+                          return CircularProgressIndicator();
+                        },
+                      )
                     ),
                   ],
                 ),
@@ -178,9 +226,18 @@ class ProfilPage extends StatelessWidget {
                     ),
                     Container(
                       margin: EdgeInsets.symmetric(vertical: marginText/2),
-                      child: Text(
-                          '<PSEUDO>'
-                      ),
+                      child: FutureBuilder(
+                        future: _futureUser,
+                        builder: (context, snapshot){
+                          if(snapshot.hasData)
+                          {
+                            return Text(snapshot.data.pseudo);
+                          }else if (snapshot.hasError) {
+                            return Text("${snapshot.error}");
+                          }
+                          return CircularProgressIndicator();
+                        },
+                      )
                     ),
                   ],
                 ),
@@ -200,7 +257,7 @@ class ProfilPage extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.symmetric(vertical: marginText/2),
                       child: Text(
-                          '<MAIL>'
+                          '$mail'
                       ),
                     ),
                     Container(
@@ -213,10 +270,10 @@ class ProfilPage extends StatelessWidget {
                             onPrimary: Colors.white
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, '/editProfil');
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfil(pseudo: pseudo, prenom: prenom, nom: nom,)));
                         },
                         child: Text(
-                            'Modifier le profil',
+                          'Modifier le profil',
                           style: TextStyle(fontSize: standard2),
                         ),
                       ),
@@ -234,7 +291,7 @@ class ProfilPage extends StatelessWidget {
                           Navigator.pushNamed(context, '/editMdp');
                         },
                         child: Text(
-                            'Modifier le mot de passe',
+                          'Modifier le mot de passe',
                           style: TextStyle(fontSize: standard2),
                         ),
                       ),
@@ -251,7 +308,7 @@ class ProfilPage extends StatelessWidget {
                           Navigator.pushNamed(context, '/statsUser');
                         },
                         child: Text(
-                            'Accéder aux statistiques',
+                          'Accéder aux statistiques',
                           style: TextStyle(fontSize: standard2),
                         ),
                       ),
