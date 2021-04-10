@@ -50,7 +50,7 @@ class ProfilPage extends StatelessWidget {
     Size screenSize = MediaQuery.of(context).size;
     double sizeAvatar = screenSize.width * 0.3;
     double widthLogo = screenSize.width * 0.8;
-    double heightLogo = screenSize.height * 0.2;
+    double heightLogo = screenSize.height * 0.12;
     double standard = screenSize.width * 0.07;
     double standard2 = screenSize.width * 0.045;
     double widthButton = screenSize.width*0.85;
