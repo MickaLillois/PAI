@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class Connection extends StatelessWidget {
+class Inscription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -31,7 +31,7 @@ class Connection extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Se connecter',
+                  'S\'Inscrire',
                   style: TextStyle(fontSize: fontSizeT1, color: Colors.indigo),),
                 Form(
                   child: Column(
@@ -79,8 +79,8 @@ class Connection extends StatelessWidget {
                       ),
                       Container(
                         child: new InkWell(
-                            child: new Text('Pas encore de compte ? Cliquez ici pour vous inscrire.', style: TextStyle(fontSize: fontSizeInput)),
-                            onTap: () => Navigator.pushNamed(context, '/inscription')
+                            child: new Text('Open Browser'),
+                            onTap: () => Navigator.pushNamed(context, '/connection')
                         ),
                       ),
                     ],
