@@ -15,7 +15,8 @@ class Connection extends StatelessWidget {
     double marginLogo = screenSize.height*0.05;
     double fontSizeT1 = screenSize.height*0.045;
     double fontSizeText = screenSize.height*0.03;
-    double fontSizeInput = screenSize.height*0.015;
+    double fontSizeInput = screenSize.height*0.025;
+    double fontSizeLink = screenSize.height*0.015;
     double widthInput = screenSize.width*0.9;
     double marginLeftInput = screenSize.width*0.05;
     return Scaffold(
@@ -79,7 +80,7 @@ class Connection extends StatelessWidget {
                       ),
                       Container(
                         child: new InkWell(
-                            child: new Text('Pas encore de compte ? Cliquez ici pour vous inscrire.', style: TextStyle(fontSize: fontSizeInput)),
+                            child: new Text('Pas encore de compte ? Cliquez ici pour vous inscrire.', style: TextStyle(fontSize: fontSizeLink)),
                             onTap: () => Navigator.pushNamed(context, '/inscription')
                         ),
                       ),

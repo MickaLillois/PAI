@@ -11,19 +11,21 @@ class Inscription extends StatelessWidget {
     ]);
     Size screenSize = MediaQuery.of(context).size;
     double widthLogo = screenSize.width*0.8;
-    double heightLogo = screenSize.height*0.2;
+    double heightLogo = screenSize.height*0.1;
     double marginLogo = screenSize.height*0.05;
+    double marginTopTxt = screenSize.height*0.02;
     double fontSizeT1 = screenSize.height*0.045;
-    double fontSizeText = screenSize.height*0.03;
-    double fontSizeInput = screenSize.height*0.015;
+    double fontSizeText = screenSize.height*0.02;
+    double fontSizeInput = screenSize.height*0.025;
     double widthInput = screenSize.width*0.9;
+    double widthInput2 = screenSize.width*0.4;
     double marginLeftInput = screenSize.width*0.05;
     return Scaffold(
       body: Center(
           child: Column(
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.fromLTRB(0,marginLogo,0,marginLogo),
+                  margin: EdgeInsets.fromLTRB(0,marginLogo,0,marginLogo/2),
                   child: Image.asset(
                     'assets/images/logo_png.png',
                     width : widthLogo,
@@ -31,15 +33,15 @@ class Inscription extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'S\'Inscrire',
+                  'S\'inscrire',
                   style: TextStyle(fontSize: fontSizeT1, color: Colors.indigo),),
                 Form(
                   child: Column(
                     children: [
                       Container(
                         alignment: Alignment.topLeft,
-                        margin: EdgeInsets.fromLTRB(marginLeftInput,marginLogo,0,marginLogo/2),
-                        child: Text('Identifiant :',style: TextStyle(fontSize: fontSizeText)),
+                        margin: EdgeInsets.fromLTRB(marginLeftInput,marginTopTxt,0,0),
+                        child: Text('Email :',style: TextStyle(fontSize: fontSizeText)),
                       ),
                       Container(
                         width: widthInput,
@@ -54,7 +56,7 @@ class Inscription extends StatelessWidget {
                       ),
                       Container(
                           alignment: Alignment.topLeft,
-                          margin: EdgeInsets.fromLTRB(marginLeftInput,marginLogo*2,0,marginLogo/2),
+                          margin: EdgeInsets.fromLTRB(marginLeftInput,marginTopTxt,0,0),
                           child: Text('Mot de passe :',style: TextStyle(fontSize: fontSizeText))
                       ),
                       Container(
@@ -70,6 +72,76 @@ class Inscription extends StatelessWidget {
                             hintText: 'Entrez votre mot de passe',
                           ),
                         ),
+                      ),
+                      Container(
+                          alignment: Alignment.topLeft,
+                          margin: EdgeInsets.fromLTRB(marginLeftInput,marginTopTxt,0,0),
+                          child: Text('Confirmation du passe :',style: TextStyle(fontSize: fontSizeText))
+                      ),
+                      Container(
+                        width: widthInput,
+                        child: TextFormField(
+                          obscureText: true,
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          style: TextStyle(
+                            fontSize: fontSizeInput,
+                          ),
+                          decoration: const InputDecoration(
+                            hintText: 'Confirmez votre mot de passe',
+                          ),
+                        ),
+                      ),
+                      Row(children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                                margin: EdgeInsets.fromLTRB(marginLeftInput,marginTopTxt,0,0),
+                                child: Text('Prénom :',style: TextStyle(fontSize: fontSizeText))
+                            ),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(marginLeftInput,0,0,0),
+                              width: widthInput2,
+                              child: TextFormField(
+                                obscureText: true,
+                                enableSuggestions: false,
+                                autocorrect: false,
+                                style: TextStyle(
+                                  fontSize: fontSizeInput,
+                                ),
+                                decoration: const InputDecoration(
+                                  hintText: 'Prénom',
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                                margin: EdgeInsets.fromLTRB(marginLeftInput*2,marginTopTxt,0,0),
+                                child: Text('Nom :',style: TextStyle(fontSize: fontSizeText))
+                            ),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(marginLeftInput*2,0,0,0),
+                              width: widthInput2,
+                              child: TextFormField(
+                                obscureText: true,
+                                enableSuggestions: false,
+                                autocorrect: false,
+                                style: TextStyle(
+                                  fontSize: fontSizeInput,
+                                ),
+                                decoration: const InputDecoration(
+                                  hintText: 'Nom',
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ]
                       ),
                       Container(
                           margin: EdgeInsets.fromLTRB(0,marginLogo,0,marginLogo),
