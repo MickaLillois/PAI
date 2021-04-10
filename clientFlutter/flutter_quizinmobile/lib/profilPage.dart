@@ -51,6 +51,7 @@ class ProfilPage extends StatelessWidget {
     double widthButton = screenSize.width*0.85;
     double marginText = screenSize.width * 0.06;
     double marginImageTop = screenSize.height * 0.05;
+    double heightButton = screenSize.height * 0.055;
     return Scaffold(
       body : SingleChildScrollView(
         child : Container(
@@ -204,6 +205,8 @@ class ProfilPage extends StatelessWidget {
                     ),
                     Container(
                       width: widthButton,
+                      height: heightButton,
+                      margin: EdgeInsets.fromLTRB(0, marginText/2, 0, marginText/2),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             primary: Colors.blue,
@@ -220,6 +223,8 @@ class ProfilPage extends StatelessWidget {
                     ),
                     Container(
                       width: widthButton,
+                      height: heightButton,
+                      margin: EdgeInsets.fromLTRB(0, 0, 0, marginText/2),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             primary: Colors.blue,
@@ -236,6 +241,7 @@ class ProfilPage extends StatelessWidget {
                     ),
                     Container(
                       width: widthButton,
+                      height: heightButton,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             primary: Colors.blue,
