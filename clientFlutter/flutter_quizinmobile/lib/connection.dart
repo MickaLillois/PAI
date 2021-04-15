@@ -21,79 +21,81 @@ class Connection extends StatelessWidget {
     double marginLeftInput = screenSize.width*0.05;
     double marginSeConnecter = screenSize.height*0.02;
     return Scaffold(
-      body: Center(
-          child: Column(
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.fromLTRB(0,marginLogo,0,marginLogo),
-                  child: Image.asset(
-                    'assets/images/logo_officiel.png',
-                    width : widthLogo,
-                    height: heightLogo,
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(0,marginSeConnecter,0,0),
-                  child: Text(
-                    'Se connecter',
-                    style: TextStyle(fontSize: fontSizeT1, color: Colors.indigo),),
-                ),
-                Form(
-                  child: Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.topLeft,
-                        margin: EdgeInsets.fromLTRB(marginLeftInput,marginLogo,0,marginLogo/2),
-                        child: Text('Identifiant :',style: TextStyle(fontSize: fontSizeText)),
+        body: SingleChildScrollView(
+          child: Center(
+              child: Column(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.fromLTRB(0,marginLogo,0,marginLogo),
+                      child: Image.asset(
+                        'assets/images/logo_officiel.png',
+                        width : widthLogo,
+                        height: heightLogo,
                       ),
-                      Container(
-                        width: widthInput,
-                        child: TextFormField(
-                          style: TextStyle(
-                            fontSize: fontSizeInput,
+                    ),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(0,marginSeConnecter,0,0),
+                      child: Text(
+                        'Se connecter',
+                        style: TextStyle(fontSize: fontSizeT1, color: Colors.indigo),),
+                    ),
+                    Form(
+                      child: Column(
+                        children: [
+                          Container(
+                            alignment: Alignment.topLeft,
+                            margin: EdgeInsets.fromLTRB(marginLeftInput,marginLogo,0,marginLogo/2),
+                            child: Text('Identifiant :',style: TextStyle(fontSize: fontSizeText)),
                           ),
-                          decoration: const InputDecoration(
-                            hintText: 'Entrez votre email',
+                          Container(
+                            width: widthInput,
+                            child: TextFormField(
+                              style: TextStyle(
+                                fontSize: fontSizeInput,
+                              ),
+                              decoration: const InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(vertical: 25.0, horizontal: 0),
+                                hintText: 'Entrez votre email',
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      Container(
-                          alignment: Alignment.topLeft,
-                          margin: EdgeInsets.fromLTRB(marginLeftInput,marginLogo*2,0,marginLogo/2),
-                          child: Text('Mot de passe :',style: TextStyle(fontSize: fontSizeText))
-                      ),
-                      Container(
-                        width: widthInput,
-                        child: TextFormField(
-                          obscureText: true,
-                          enableSuggestions: false,
-                          autocorrect: false,
-                          style: TextStyle(
-                            fontSize: fontSizeInput,
+                          Container(
+                              alignment: Alignment.topLeft,
+                              margin: EdgeInsets.fromLTRB(marginLeftInput,marginLogo*2,0,marginLogo/2),
+                              child: Text('Mot de passe :',style: TextStyle(fontSize: fontSizeText))
                           ),
-                          decoration: const InputDecoration(
-                            hintText: 'Entrez votre mot de passe',
+                          Container(
+                            width: widthInput,
+                            child: TextFormField(
+                              obscureText: true,
+                              enableSuggestions: false,
+                              autocorrect: false,
+                              style: TextStyle(
+                                fontSize: fontSizeInput,
+                              ),
+                              decoration: const InputDecoration(
+                                hintText: 'Entrez votre mot de passe',
+                              ),
+                            ),
                           ),
-                        ),
+                          Container(
+                              margin: EdgeInsets.fromLTRB(0,marginLogo*1.45,0,marginLogo),
+                              child: ElevatedButton(
+                                  onPressed: () {},
+                                  child: Text('Valider', style: TextStyle(fontSize: fontSizeText),))
+                          ),
+                          Container(
+                            child: new InkWell(
+                                child: new Text('Pas encore de compte ? Cliquez ici pour vous inscrire.', style: TextStyle(fontSize: fontSizeLink)),
+                                onTap: () => Navigator.pushNamed(context, '/inscription')
+                            ),
+                          ),
+                        ],
                       ),
-                      Container(
-                          margin: EdgeInsets.fromLTRB(0,marginLogo*1.45,0,marginLogo),
-                          child: ElevatedButton(
-                              onPressed: () {},
-                              child: Text('Valider', style: TextStyle(fontSize: fontSizeText),))
-                      ),
-                      Container(
-                        child: new InkWell(
-                            child: new Text('Pas encore de compte ? Cliquez ici pour vous inscrire.', style: TextStyle(fontSize: fontSizeLink)),
-                            onTap: () => Navigator.pushNamed(context, '/inscription')
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ]
-          )
-      ),
-    );
+                    ),
+                  ]
+              )
+          ),
+        ));
   }
 }
