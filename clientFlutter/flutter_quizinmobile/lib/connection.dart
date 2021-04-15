@@ -15,11 +15,13 @@ class Connection extends StatelessWidget {
     double marginLogo = screenSize.height*0.05;
     double fontSizeT1 = screenSize.height*0.045;
     double fontSizeText = screenSize.height*0.03;
-    double fontSizeInput = screenSize.height*0.025;
+    double fontSizeInput = screenSize.height*0.035;
     double fontSizeLink = screenSize.height*0.015;
     double widthInput = screenSize.width*0.9;
     double marginLeftInput = screenSize.width*0.05;
-    double marginSeConnecter = screenSize.height*0.02;
+    double marginSeCo = screenSize.height*0.02;
+    double paddingInput = screenSize.height*0.02;
+    double paddingButton = screenSize.height*0.02;
     return Scaffold(
         body: SingleChildScrollView(
           child: Center(
@@ -34,7 +36,7 @@ class Connection extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.fromLTRB(0,marginSeConnecter,0,0),
+                      margin: EdgeInsets.fromLTRB(0,marginSeCo,0,0),
                       child: Text(
                         'Se connecter',
                         style: TextStyle(fontSize: fontSizeT1, color: Colors.indigo),),
@@ -53,8 +55,8 @@ class Connection extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: fontSizeInput,
                               ),
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(vertical: 25.0, horizontal: 0),
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.fromLTRB(0,paddingInput,0,paddingInput),
                                 hintText: 'Entrez votre email',
                               ),
                             ),
@@ -73,16 +75,21 @@ class Connection extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: fontSizeInput,
                               ),
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 hintText: 'Entrez votre mot de passe',
+                                contentPadding: EdgeInsets.fromLTRB(0,paddingInput,0,paddingInput),
                               ),
                             ),
                           ),
                           Container(
                               margin: EdgeInsets.fromLTRB(0,marginLogo*1.45,0,marginLogo),
                               child: ElevatedButton(
-                                  onPressed: () {},
-                                  child: Text('Valider', style: TextStyle(fontSize: fontSizeText),))
+                                onPressed: () {},
+                                child: Text('Valider', style: TextStyle(fontSize: fontSizeText),),
+                                style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.symmetric(vertical : paddingButton/2, horizontal: paddingButton*1.5),
+                                ),
+                              )
                           ),
                           Container(
                             child: new InkWell(
