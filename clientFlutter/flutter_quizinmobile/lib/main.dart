@@ -65,13 +65,14 @@ class _MyHomePageState extends State<MyHomePage> {
     double widthButton = screenSize.width*0.85;
     double paddingButtonJeu = screenSize.height*0.03;
     double paddingButtonQuest = screenSize.height*0.02;
-    double iconSize = screenSize.width*0.15;
+    double iconSize = screenSize.width*0.2;
     double fontSizeT1 = screenSize.height*0.045;
     double fontSizeT2 = screenSize.height*0.02;
     double fontSizeT3 = screenSize.height*0.03;
     double widthLogo = screenSize.width*0.8;
-    double heightLogo = screenSize.height*0.2;
+    double heightLogo = screenSize.height*0.12;
     double marginLogo = screenSize.height*0.05;
+    double marginIcon = screenSize.height*0.02;
     return Scaffold(
         body: SingleChildScrollView(
           child: Center(
@@ -79,9 +80,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: <Widget>[
                   Container(
                     margin: EdgeInsets.fromLTRB(0,marginLogo,0,0),
-                    child: Image.asset('assets/images/logo_png.png',width: widthLogo, height: heightLogo),
+                    child: Image.asset('assets/images/logo_officiel.png',width: widthLogo, height: heightLogo),
                   ),
                   Container(
+                    margin: EdgeInsets.fromLTRB(0,marginIcon,0,0),
                     child: IconButton(
                       icon: const Icon(Icons.account_circle),
                       color: Colors.black,

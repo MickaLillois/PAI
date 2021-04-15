@@ -11,7 +11,7 @@ class Connection extends StatelessWidget {
     ]);
     Size screenSize = MediaQuery.of(context).size;
     double widthLogo = screenSize.width*0.8;
-    double heightLogo = screenSize.height*0.2;
+    double heightLogo = screenSize.height*0.12;
     double marginLogo = screenSize.height*0.05;
     double fontSizeT1 = screenSize.height*0.045;
     double fontSizeText = screenSize.height*0.03;
@@ -19,6 +19,7 @@ class Connection extends StatelessWidget {
     double fontSizeLink = screenSize.height*0.015;
     double widthInput = screenSize.width*0.9;
     double marginLeftInput = screenSize.width*0.05;
+    double marginSeConnecter = screenSize.height*0.02;
     return Scaffold(
       body: Center(
           child: Column(
@@ -26,14 +27,17 @@ class Connection extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.fromLTRB(0,marginLogo,0,marginLogo),
                   child: Image.asset(
-                    'assets/images/logo_png.png',
+                    'assets/images/logo_officiel.png',
                     width : widthLogo,
                     height: heightLogo,
                   ),
                 ),
-                Text(
-                  'Se connecter',
-                  style: TextStyle(fontSize: fontSizeT1, color: Colors.indigo),),
+                Container(
+                  margin: EdgeInsets.fromLTRB(0,marginSeConnecter,0,0),
+                  child: Text(
+                    'Se connecter',
+                    style: TextStyle(fontSize: fontSizeT1, color: Colors.indigo),),
+                ),
                 Form(
                   child: Column(
                     children: [
@@ -73,7 +77,7 @@ class Connection extends StatelessWidget {
                         ),
                       ),
                       Container(
-                          margin: EdgeInsets.fromLTRB(0,marginLogo,0,marginLogo),
+                          margin: EdgeInsets.fromLTRB(0,marginLogo*1.45,0,marginLogo),
                           child: ElevatedButton(
                               onPressed: () {},
                               child: Text('Valider', style: TextStyle(fontSize: fontSizeText),))

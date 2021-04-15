@@ -11,7 +11,7 @@ class Inscription extends StatelessWidget {
     ]);
     Size screenSize = MediaQuery.of(context).size;
     double widthLogo = screenSize.width*0.8;
-    double heightLogo = screenSize.height*0.1;
+    double heightLogo = screenSize.height*0.12;
     double marginLogo = screenSize.height*0.05;
     double marginTopTxt = screenSize.height*0.02;
     double fontSizeT1 = screenSize.height*0.045;
@@ -27,14 +27,14 @@ class Inscription extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.fromLTRB(0,marginLogo,0,marginLogo/2),
                   child: Image.asset(
-                    'assets/images/logo_png.png',
+                    'assets/images/logo_officiel.png',
                     width : widthLogo,
                     height: heightLogo,
                   ),
                 ),
-                Text(
+                /*Text(
                   'S\'inscrire',
-                  style: TextStyle(fontSize: fontSizeT1, color: Colors.indigo),),
+                  style: TextStyle(fontSize: fontSizeT1, color: Colors.indigo),),*/
                 Form(
                   child: Column(
                     children: [
@@ -144,20 +144,52 @@ class Inscription extends StatelessWidget {
                       ]
                       ),
                       Container(
-                          margin: EdgeInsets.fromLTRB(0,marginLogo,0,marginLogo),
+                          alignment: Alignment.topLeft,
+                          margin: EdgeInsets.fromLTRB(marginLeftInput,marginTopTxt,0,0),
+                          child: Text('Pseudo :',style: TextStyle(fontSize: fontSizeText))
+                      ),
+                      Container(
+                        width: widthInput,
+                        child: TextFormField(
+                          obscureText: true,
+                          enableSuggestions: false,
+                          autocorrect: false,
+                          style: TextStyle(
+                            fontSize: fontSizeInput,
+                          ),
+                          decoration: const InputDecoration(
+                            hintText: 'Entrez votre pseudo',
+                          ),
+                        ),
+                      ),
+                      Container(
+                          alignment: Alignment.topLeft,
+                          margin: EdgeInsets.fromLTRB(marginLeftInput,marginTopTxt,0,0),
+                          child: Text('Date de naissance :',style: TextStyle(fontSize: fontSizeText))
+                      ),
+                      Container(
+                        width: widthInput,
+                        child: InputDatePickerFormField(
+                          firstDate: DateTime.utc(1900,1,1),
+                          lastDate: DateTime.now(),
+                        ),
+                      ),
+                      Container(
+                        //margin: EdgeInsets.fromLTRB(0,marginLogo,0,marginLogo),
                           child: ElevatedButton(
                               onPressed: () {},
                               child: Text('Valider', style: TextStyle(fontSize: fontSizeText),))
                       ),
                       Container(
                         child: new InkWell(
-                            child: new Text('Open Browser'),
+                            child: new Text('Déjà un compte? Connectez vous.'),
                             onTap: () => Navigator.pushNamed(context, '/connection')
                         ),
                       ),
                     ],
                   ),
                 ),
+
               ]
           )
       ),
