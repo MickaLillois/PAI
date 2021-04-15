@@ -10,6 +10,12 @@ class EditProfil extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    Size screenSize = MediaQuery.of(context).size;
+    double widthLogo = screenSize.width * 0.8;
+    double heightLogo = screenSize.height * 0.12;
+    double marginImageTop = screenSize.height * 0.05;
+
     return Scaffold(
       body : SingleChildScrollView(
         child : Container(
@@ -19,12 +25,12 @@ class EditProfil extends StatelessWidget {
               Column(
                 children: [
                   Container(
-                      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                      margin: EdgeInsets.fromLTRB(0, marginImageTop, 0, 0),
                       alignment: Alignment.topCenter,
                       child: Image.asset(
-                        'assets/images/logo_png.png',
-                        width : 500,
-                        height: 100,
+                        'assets/images/logo_officiel.png',
+                        width : widthLogo,
+                        height: heightLogo,
 
                       )
                   ),

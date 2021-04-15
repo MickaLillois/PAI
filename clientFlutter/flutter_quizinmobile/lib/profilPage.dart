@@ -6,7 +6,7 @@ import 'package:flutter_quizinmobile/editProfil.dart';
 import 'package:http/http.dart';
 
 String mail = 'ruru4.matt@gmail.com';
-String pseudo, nom, prenom;
+String pseudo, nom, prenom, dateNaissance;
 
 Future<User> _makePostRequest() async {
   Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Utilisateurs/getInfosByUser.php');
@@ -51,12 +51,13 @@ class ProfilPage extends StatelessWidget {
     double sizeAvatar = screenSize.width * 0.3;
     double widthLogo = screenSize.width * 0.8;
     double heightLogo = screenSize.height * 0.12;
-    double standard = screenSize.width * 0.07;
+    double standard = screenSize.width * 0.06;
     double standard2 = screenSize.width * 0.045;
+    double standard3 = screenSize.width * 0.038;
     double widthButton = screenSize.width*0.85;
     double marginText = screenSize.width * 0.06;
     double marginImageTop = screenSize.height * 0.05;
-    double heightButton = screenSize.height * 0.055;
+    double heightButton = screenSize.height * 0.045;
     return Scaffold(
       body : SingleChildScrollView(
         child : Container(
@@ -119,7 +120,7 @@ class ProfilPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: marginText, vertical: marginText),
+                    margin: EdgeInsets.fromLTRB(marginText, marginText, marginText, 0),
                     child: Image.asset(
                       'assets/images/avatar_test_2.png',
                       height: sizeAvatar,
@@ -127,7 +128,7 @@ class ProfilPage extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: marginText*1.2),
+                    margin: EdgeInsets.symmetric(vertical: marginText),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -146,7 +147,12 @@ class ProfilPage extends StatelessWidget {
                                 if(snapshot.hasData)
                                 {
                                   prenom = snapshot.data.prenom;
-                                  return Text(snapshot.data.prenom);
+                                  return Text(
+                                      snapshot.data.prenom,
+                                      style: TextStyle(
+                                        fontSize: standard3,
+                                      )
+                                  );
                                 }else if (snapshot.hasError) {
                                   return Text("${snapshot.error}");
                                 }
@@ -162,20 +168,25 @@ class ProfilPage extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          margin : EdgeInsets.fromLTRB(0, marginText/2, 0, 0),
-                          child: FutureBuilder(
-                            future: _futureUser,
-                            builder: (context, snapshot){
-                              if(snapshot.hasData)
-                              {
-                                nom = snapshot.data.nom;
-                                return Text(snapshot.data.nom);
-                              }else if (snapshot.hasError) {
-                                return Text("${snapshot.error}");
-                              }
-                              return CircularProgressIndicator();
-                            },
-                          )
+                            margin : EdgeInsets.fromLTRB(0, marginText/2, 0, 0),
+                            child: FutureBuilder(
+                              future: _futureUser,
+                              builder: (context, snapshot){
+                                if(snapshot.hasData)
+                                {
+                                  nom = snapshot.data.nom;
+                                  return Text(
+                                      snapshot.data.nom,
+                                      style: TextStyle(
+                                        fontSize: standard3,
+                                      )
+                                  );
+                                }else if (snapshot.hasError) {
+                                  return Text("${snapshot.error}");
+                                }
+                                return CircularProgressIndicator();
+                              },
+                            )
                         )
                       ],
                     ),
@@ -195,19 +206,26 @@ class ProfilPage extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.symmetric(vertical: marginText/2),
-                      child: FutureBuilder(
-                        future: _futureUser,
-                        builder: (context, snapshot){
-                          if(snapshot.hasData)
-                          {
-                            return Text(snapshot.data.dateNaissance);
-                          }else if (snapshot.hasError) {
-                            return Text("${snapshot.error}");
-                          }
-                          return CircularProgressIndicator();
-                        },
-                      )
+                        margin: EdgeInsets.symmetric(vertical: marginText/2),
+                        child: FutureBuilder(
+                          future: _futureUser,
+                          builder: (context, snapshot){
+                            if(snapshot.hasData)
+                            {
+                              dateNaissance = snapshot.data.dateNaissance;
+                              return Text(
+                                  snapshot.data.dateNaissance,
+                                  style: TextStyle(
+                                    fontSize: standard3,
+                                  )
+                              );
+                              return Text(snapshot.data.dateNaissance);
+                            }else if (snapshot.hasError) {
+                              return Text("${snapshot.error}");
+                            }
+                            return CircularProgressIndicator();
+                          },
+                        )
                     ),
                   ],
                 ),
@@ -225,19 +243,24 @@ class ProfilPage extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.symmetric(vertical: marginText/2),
-                      child: FutureBuilder(
-                        future: _futureUser,
-                        builder: (context, snapshot){
-                          if(snapshot.hasData)
-                          {
-                            return Text(snapshot.data.pseudo);
-                          }else if (snapshot.hasError) {
-                            return Text("${snapshot.error}");
-                          }
-                          return CircularProgressIndicator();
-                        },
-                      )
+                        margin: EdgeInsets.symmetric(vertical: marginText/2),
+                        child: FutureBuilder(
+                          future: _futureUser,
+                          builder: (context, snapshot){
+                            if(snapshot.hasData)
+                            {
+                              return Text(
+                                  snapshot.data.pseudo,
+                                  style: TextStyle(
+                                    fontSize: standard3,
+                                  )
+                              );
+                            }else if (snapshot.hasError) {
+                              return Text("${snapshot.error}");
+                            }
+                            return CircularProgressIndicator();
+                          },
+                        )
                     ),
                   ],
                 ),
@@ -257,13 +280,16 @@ class ProfilPage extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.symmetric(vertical: marginText/2),
                       child: Text(
-                          '$mail'
+                        '$mail',
+                        style: TextStyle(
+                          fontSize: standard3,
+                        ),
                       ),
                     ),
                     Container(
                       width: widthButton,
                       height: heightButton,
-                      margin: EdgeInsets.fromLTRB(0, marginText/2, 0, marginText/2),
+                      margin: EdgeInsets.fromLTRB(0, 0, 0, marginText/2),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             primary: Colors.blue,
@@ -274,7 +300,7 @@ class ProfilPage extends StatelessWidget {
                         },
                         child: Text(
                           'Modifier le profil',
-                          style: TextStyle(fontSize: standard2),
+                          style: TextStyle(fontSize: standard3),
                         ),
                       ),
                     ),
@@ -292,7 +318,7 @@ class ProfilPage extends StatelessWidget {
                         },
                         child: Text(
                           'Modifier le mot de passe',
-                          style: TextStyle(fontSize: standard2),
+                          style: TextStyle(fontSize: standard3),
                         ),
                       ),
                     ),
@@ -309,9 +335,41 @@ class ProfilPage extends StatelessWidget {
                         },
                         child: Text(
                           'Accéder aux statistiques',
-                          style: TextStyle(fontSize: standard2),
+                          style: TextStyle(fontSize: standard3),
                         ),
                       ),
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          width : widthButton/2,
+                          margin : EdgeInsets.fromLTRB(0, marginText/2.5, 0, 0),
+                          child: InkWell(
+                            child: Text(
+                              'Se déconnecter',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            onTap: () => false,
+                          ),
+                        ),
+                        Container(
+                          margin : EdgeInsets.fromLTRB(0, marginText/2.5, 0, 0),
+                          width : widthButton/2,
+                          alignment: Alignment.topRight,
+                          child: InkWell(
+                            child: Text(
+                              'Supprimer son compte',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            onTap: () => false,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
