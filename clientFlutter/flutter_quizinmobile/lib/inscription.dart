@@ -181,9 +181,8 @@ class Inscription extends StatelessWidget {
                               width: widthInput,
                               child: Row(children: <Widget>[
                                 Container(
-                                  child: Text()
+                                  //child: Text_(),
                                 )
-
                               ],
                               )
                           ),
