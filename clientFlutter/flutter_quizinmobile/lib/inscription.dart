@@ -2,13 +2,39 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class Inscription extends StatelessWidget {
+class Inscription extends StatefulWidget {
+  Inscription({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  InscriptionState createState() => InscriptionState();
+}
+
+
+class InscriptionState extends State<Inscription> {
+  DateTime selectedDate = DateTime.now();
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+      });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+
     Size screenSize = MediaQuery.of(context).size;
     double widthLogo = screenSize.width*0.8;
     double heightLogo = screenSize.height*0.12;
@@ -111,9 +137,6 @@ class Inscription extends StatelessWidget {
                                   margin: EdgeInsets.fromLTRB(marginLeftInput,0,0,0),
                                   width: widthInput2,
                                   child: TextFormField(
-                                    obscureText: true,
-                                    enableSuggestions: false,
-                                    autocorrect: false,
                                     style: TextStyle(
                                       fontSize: fontSizeInput,
                                     ),
@@ -136,9 +159,6 @@ class Inscription extends StatelessWidget {
                                   margin: EdgeInsets.fromLTRB(marginLeftInput*2,0,0,0),
                                   width: widthInput2,
                                   child: TextFormField(
-                                    obscureText: true,
-                                    enableSuggestions: false,
-                                    autocorrect: false,
                                     style: TextStyle(
                                       fontSize: fontSizeInput,
                                     ),
@@ -160,9 +180,6 @@ class Inscription extends StatelessWidget {
                           Container(
                             width: widthInput,
                             child: TextFormField(
-                              obscureText: true,
-                              enableSuggestions: false,
-                              autocorrect: false,
                               style: TextStyle(
                                 fontSize: fontSizeInput,
                               ),
@@ -180,8 +197,10 @@ class Inscription extends StatelessWidget {
                           Container(
                               width: widthInput,
                               child: Row(children: <Widget>[
-                                Container(
-                                  //child: Text_(),
+                                Text(selectedDate == null ? 'Nothing has been picked yet' : selectedDate.toString().substring(0,11)),
+                                ElevatedButton(
+                                  child: Text('Choisir une date'),
+                                  onPressed: () => _selectDate(context),
                                 )
                               ],
                               )
@@ -212,3 +231,5 @@ class Inscription extends StatelessWidget {
         ));
   }
 }
+
+  
