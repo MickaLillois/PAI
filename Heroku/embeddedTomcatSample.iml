@@ -23,6 +23,10 @@
     <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-util:8.5.23" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-jasper-el:8.5.23" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tomcat:tomcat-jsp-api:8.5.23" level="project" />
+    <orderEntry type="library" name="Maven: io.socket:socket.io-client:2.0.0" level="project" />
+    <orderEntry type="library" name="Maven: io.socket:engine.io-client:2.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.squareup.okhttp3:okhttp:3.12.12" level="project" />
+    <orderEntry type="library" name="Maven: org.json:json:20090211" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.6" level="project" />
     <orderEntry type="library" name="Maven: com.squareup.okhttp:okhttp:2.5.0" level="project" />
     <orderEntry type="library" name="Maven: com.squareup.okio:okio:1.6.0" level="project" />
