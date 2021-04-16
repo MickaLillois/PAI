@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_quizinmobile/editProfil.dart';
+import 'package:flutter_quizinmobile/jouer.dart';
 import 'package:flutter_quizinmobile/profilPage.dart';
 import 'package:flutter_quizinmobile/connection.dart';
 import 'package:flutter_quizinmobile/inscription.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
           '/editMdp': (context) => EditMdp(),
           '/editProfil': (context) => EditProfil(),
           '/statsUser': (context) => StatsUser(),
+          '/jouer': (context) => Jouer(),
         },
         initialRoute: '/'
     );
@@ -124,7 +126,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         onPrimary: Colors.white, // foreground
                         padding: EdgeInsets.all(paddingButtonJeu),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/jouer');
+                      },
                     ),
                   ),
                   Container(
