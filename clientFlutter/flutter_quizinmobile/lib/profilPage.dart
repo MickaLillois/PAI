@@ -296,7 +296,7 @@ class ProfilPage extends StatelessWidget {
                             onPrimary: Colors.white
                         ),
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfil(pseudo: pseudo, prenom: prenom, nom: nom,)));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfil(pseudo: pseudo, prenom: prenom, nom: nom, mail: mail)));
                         },
                         child: Text(
                           'Modifier le profil',
