@@ -1,15 +1,31 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import 'package:http/http.dart';
 
-class EditProfil extends StatelessWidget {
+class EditProfil extends StatefulWidget {
+  final String pseudo, prenom, nom, mail;
+  EditProfil({Key key, @required this.pseudo, @required this.prenom, @required this.nom, @required this.mail}) : super(key: key);
+
+  // This widget is the home page of your application. It is stateful, meaning
+  // that it has a State object (defined below) that contains fields that affect
+  // how it looks.
+
+  // This class is the configuration for the state. It holds the values (in this
+  // case the title) provided by the parent (in this case the App widget) and
+  // used by the build method of the State. Fields in a Widget subclass are
+  // always marked "final".
+
+  @override
+  EditProfilPage createState() => EditProfilPage(pseudo: pseudo, prenom: prenom, mail: mail, nom:nom);
+}
+
+class EditProfilPage extends State<EditProfil> {
   final String pseudo, prenom, nom, mail;
   final myControllerPseudo = TextEditingController();
   final myControllerPrenom = TextEditingController();
   final myControllerNom = TextEditingController();
 
-  EditProfil({Key key, @required this.pseudo, @required this.prenom, @required this.nom, @required this.mail}) : super(key: key);
+  EditProfilPage({@required this.pseudo, @required this.prenom, @required this.nom, @required this.mail});
 
   Future<String> _makePostRequest(String newPseudo, String newPrenom, String newNom) async {
     Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Utilisateurs/updateInfosUser.php');
@@ -27,7 +43,6 @@ class EditProfil extends StatelessWidget {
         }
     );
     if (response.statusCode == 200) {
-      print(response.body);
       return response.body;
     } else {
       throw Exception('Failed to update user.' + response.statusCode.toString());
@@ -181,16 +196,14 @@ class EditProfil extends StatelessWidget {
                       alignment: Alignment.topCenter,
                       child: ElevatedButton(
                           onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  // Retrieve the text the that user has entered by using the
-                                  // TextEditingController.
-                                  content: Text(_makePostRequest(myControllerPseudo.text, myControllerPrenom.text, myControllerNom.text).toString()),
-                                );
-                              },
-                            );
+                            String ret = _makePostRequest(myControllerPseudo.text, myControllerPrenom.text, myControllerNom.text).toString();
+                            print(ret);
+                            if(ret == "0") {
+                                showAlertDialog2(context);
+                              }
+                            else{
+                              showAlertDialog(context);
+                            }
                           },
                           child: Text('Modifier', style: TextStyle(fontSize: fontSizeText),)
                       )
@@ -204,4 +217,67 @@ class EditProfil extends StatelessWidget {
     );
   }
 
+}
+
+showAlertDialog(BuildContext context) {
+
+  // set up the button
+  Widget okButton = FlatButton(
+    child: Text("OK"),
+    onPressed: () {
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    elevation: 0,
+    title: Text("Message"),
+    content: Text("Vos informations ont été mises à jour !"),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    barrierColor: Colors.white.withOpacity(0),
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+showAlertDialog2(BuildContext context) {
+  // set up the button
+  Widget okButton = FlatButton(
+    child: Text("OK"),
+    onPressed: () {
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    elevation: 0,
+    title: Text("Attention"),
+    content: Text("Erreur, vos informations n'ont pas pu être mises à jour, veuillez rééssayer plus tard !"),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    barrierColor: Colors.white.withOpacity(0),
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

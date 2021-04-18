@@ -42,7 +42,17 @@ class User {
     );
   }
 }
-class ProfilPage extends StatelessWidget {
+
+class ProfilPage extends StatefulWidget {
+  ProfilPage({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  ProfilPageState createState() => ProfilPageState();
+}
+
+class ProfilPageState extends State<ProfilPage> {
   Future<User> _futureUser = _makePostRequest();
   @override
   Widget build(BuildContext context) {
