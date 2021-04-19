@@ -218,7 +218,7 @@ class InscriptionState extends State<Inscription> {
                           Container(
                             child: new InkWell(
                                 child: new Text('Déjà un compte? Connectez vous.', style: TextStyle(fontSize: fontSizeInkwell),),
-                                onTap: () => Navigator.pushNamed(context, '/connection')
+                                onTap: () => Navigator.pop(context)
                             ),
                           ),
                         ],
