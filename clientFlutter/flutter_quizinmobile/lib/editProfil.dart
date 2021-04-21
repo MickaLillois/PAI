@@ -40,6 +40,25 @@ class EditProfilPage extends State<EditProfil> {
     }
   }
 
+  Future<String> _verifPseudo(String pseudo) async {
+    Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Utilisateurs/verifPseudo.php');
+    Map<String, String> headers = {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    };
+    Response response = await post(
+        url,
+        headers: headers,
+        body: {
+          'pseudo': pseudo
+        }
+    );
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to update user.' + response.statusCode.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -59,7 +78,7 @@ class EditProfilPage extends State<EditProfil> {
     double widthLogo = screenSize.width * 0.8;
     double heightLogo = screenSize.height * 0.12;
     double marginImageTop = screenSize.height * 0.05;
-    double fontSizeT1 = screenSize.height*0.055;
+    double fontSizeT1 = screenSize.height*0.052;
     double fontSizeText = screenSize.height*0.027;
     double fontSizeInput = screenSize.height*0.03;
     double widthInput = screenSize.width*0.9;
@@ -118,6 +137,22 @@ class EditProfilPage extends State<EditProfil> {
                               hintText: "Pseudo",
                             ),
                             controller: myControllerPseudo,
+                            onChanged: (text) {
+                              new FutureBuilder(
+                                future: _verifPseudo(myControllerPseudo.text),
+                                builder: (context, snapshot){
+                                  if(snapshot.hasData){
+                                    if(snapshot.data.toString() == "true"){
+                                      print(snapshot.data);
+                                    }
+                                    else{
+                                      print(snapshot.data);
+                                    }
+                                  }
+                                  return CircularProgressIndicator();
+                                },
+                              );
+                            },
                           ),
                         ),
                         Container(
