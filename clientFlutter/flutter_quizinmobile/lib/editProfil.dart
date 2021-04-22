@@ -11,7 +11,7 @@ class EditProfil extends StatefulWidget {
 }
 
 class EditProfilPage extends State<EditProfil> {
-  final String pseudo, prenom, nom, mail;
+  String pseudo, prenom, nom, mail;
   final myControllerPseudo = TextEditingController();
   final myControllerPrenom = TextEditingController();
   final myControllerNom = TextEditingController();
@@ -49,7 +49,8 @@ class EditProfilPage extends State<EditProfil> {
         url,
         headers: headers,
         body: {
-          'pseudo': pseudo
+          'pseudo': pseudo,
+          'mail': mail
         }
     );
     if (response.statusCode == 200) {
@@ -134,25 +135,9 @@ class EditProfilPage extends State<EditProfil> {
                               fontSize: fontSizeInput,
                             ),
                             decoration: new InputDecoration(
-                              hintText: "Pseudo",
+                                hintText: "Pseudo",
                             ),
                             controller: myControllerPseudo,
-                            onChanged: (text) {
-                              new FutureBuilder(
-                                future: _verifPseudo(myControllerPseudo.text),
-                                builder: (context, snapshot){
-                                  if(snapshot.hasData){
-                                    if(snapshot.data.toString() == "true"){
-                                      print(snapshot.data);
-                                    }
-                                    else{
-                                      print(snapshot.data);
-                                    }
-                                  }
-                                  return CircularProgressIndicator();
-                                },
-                              );
-                            },
                           ),
                         ),
                         Container(
@@ -222,6 +207,7 @@ class EditProfilPage extends State<EditProfil> {
                       alignment: Alignment.topCenter,
                       child: ElevatedButton(
                         onPressed: () {
+
                           showAlertDialog(context);
                         },
                         child: Text(
@@ -247,12 +233,20 @@ class EditProfilPage extends State<EditProfil> {
     // set up the button
     Widget okButton = FlatButton(
       child: Text("Oui"),
-      onPressed: () {
-        _makePostRequest(myControllerPseudo.text, myControllerPrenom.text, myControllerNom.text);
-        Navigator.of(context).pop();
-        Navigator.of(context).pop();
-        Navigator.of(context).pop();
-        Navigator.pushNamed(context, '/profilPage');
+      onPressed: () async {
+        final String res = await _makePostRequest(myControllerPseudo.text, myControllerPrenom.text, myControllerNom.text);
+        if(res == "-1"){
+          Navigator.of(context).pop();
+          showErrorPseudo(context);
+        }
+        else{
+          await Future.delayed(const Duration(milliseconds: 500), (){});
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+          Navigator.pushNamed(context, '/profilPage');
+        }
+
       },
     );
 
@@ -271,6 +265,37 @@ class EditProfilPage extends State<EditProfil> {
       actions: [
         okButton,
         noButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      barrierColor: Colors.white.withOpacity(0),
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showErrorPseudo(BuildContext context) {
+
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("Ok"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      elevation: 0,
+      title: Text("Attention"),
+      content: Text("/!\\ Pseudo déjà existant /!\\"),
+      actions: [
+        okButton,
       ],
     );
 

@@ -299,7 +299,7 @@ class ProfilPageState extends State<ProfilPage> {
                     Container(
                       width: widthButton,
                       height: heightButton,
-                      margin: EdgeInsets.fromLTRB(0, marginText/6, 0, marginText/3),
+                      margin: EdgeInsets.fromLTRB(0, 0, 0, marginText/3),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             primary: Colors.blue,

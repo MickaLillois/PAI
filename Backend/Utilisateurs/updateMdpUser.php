@@ -7,7 +7,7 @@ $newMdp = $_POST["newMdp"];
 $ancienMdp = $_POST["ancienMdp"];
 $q2 = $connection->query("SELECT * FROM UTILISATEUR WHERE MAILUTILISATEUR = ? AND MDPUTILISATEUR = password(?) ");
 $q2->execute(array($mail, $ancienMdp));
-if($q->rowcount == 1)
+if($q->rowcount() == 1)
 {
   if($ancienMdp == $newMdp)
   {
