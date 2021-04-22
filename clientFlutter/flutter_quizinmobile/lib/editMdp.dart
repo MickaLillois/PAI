@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+
+String mail = 'ruru4.matt@gmail.com';
 
 class EditMdp extends StatefulWidget {
   EditMdp({Key key}) : super(key: key);
@@ -9,6 +12,29 @@ class EditMdp extends StatefulWidget {
 }
 
 class EditMdpState extends State<EditMdp> {
+
+  Future<String> updateMdp(String newMdp, String ancienMdp) async {
+    Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Utilisateurs/updateMdpUser.php');
+    Map<String, String> headers = {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    };
+    Response response = await post(
+        url,
+        headers: headers,
+        body: {
+          'newMdp': newMdp,
+          'ancienMdp': ancienMdp,
+          'mail': mail
+        }
+    );
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to update user.' + response.statusCode.toString());
+    }
+  }
+
+
   final myControllerLast= TextEditingController();
   final myControllerNew = TextEditingController();
   final myControllerConfirm = TextEditingController();
@@ -184,12 +210,6 @@ class EditMdpState extends State<EditMdp> {
                                   onSaved: (val) => _newPass = val,
                                   obscureText: _obscureText3,
                                   controller: myControllerConfirm,
-                                  onChanged: (text) {
-                                    if(text != myControllerNew.text)
-                                      {
-                                        print("First text field: $text");
-                                      }
-                                  },
                                 ),
                               ),
                             ],
@@ -198,9 +218,27 @@ class EditMdpState extends State<EditMdp> {
                         Container(
                             alignment: Alignment.topCenter,
                             child: ElevatedButton(
-                                onPressed: () {
-                                  if(myControllerNew.text != myControllerConfirm.text) {
-
+                                onPressed: () async {
+                                  if(myControllerNew.text == "" || myControllerConfirm.text == "" || myControllerLast.text == ""){
+                                    showError(context, "/!\\ Merci de remplir tous les champs pour modifier le mot de passe /!\\");
+                                  }
+                                  else{
+                                    if(myControllerNew.text != myControllerConfirm.text) {
+                                      showError(context, "/!\\ Confirmation de mot de passe différente du nouveau mot de passe /!\\");
+                                    }
+                                    else{
+                                      final String res = await updateMdp(myControllerNew.text, myControllerLast.text);
+                                      print(res);
+                                      if(res == "-2"){
+                                        showError(context, "/!\\ Nouveau mot de passe identique à l'ancien /!\\");
+                                      }
+                                      else if(res == "-1"){
+                                        showError(context, "/!\\ Ancien mot de passe pas correct /!\\");
+                                      }
+                                      else{
+                                        Navigator.of(context).pop();
+                                      }
+                                    }
                                   }
                                 },
                                 child: Text('Modifier', style: TextStyle(fontSize: fontSizeText),)
@@ -215,6 +253,37 @@ class EditMdpState extends State<EditMdp> {
           ),
         ),
       ),
+    );
+  }
+
+  showError(BuildContext context, String err) {
+
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("Ok"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      elevation: 0,
+      title: Text("Attention"),
+      content: Text(err),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      barrierColor: Colors.white.withOpacity(0),
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 

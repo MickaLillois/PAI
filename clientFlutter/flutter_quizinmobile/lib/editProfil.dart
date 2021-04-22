@@ -40,26 +40,6 @@ class EditProfilPage extends State<EditProfil> {
     }
   }
 
-  Future<String> _verifPseudo(String pseudo) async {
-    Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Utilisateurs/verifPseudo.php');
-    Map<String, String> headers = {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-    };
-    Response response = await post(
-        url,
-        headers: headers,
-        body: {
-          'pseudo': pseudo,
-          'mail': mail
-        }
-    );
-    if (response.statusCode == 200) {
-      return response.body;
-    } else {
-      throw Exception('Failed to update user.' + response.statusCode.toString());
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
 
