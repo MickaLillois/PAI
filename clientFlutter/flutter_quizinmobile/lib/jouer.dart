@@ -8,7 +8,7 @@ class Jouer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: ElevatedButton(
+        /*child: ElevatedButton(
           child: Text('Ping', style: TextStyle(fontSize: 25.0),),
           onPressed: () {
             IO.Socket socket = IO.io('https://quizinmobile.herokuapp.com/partie1');
@@ -19,7 +19,7 @@ class Jouer extends StatelessWidget {
             socket.on('message', (data) => print(data));
             socket.onDisconnect((_) => print('disconnect'));
           },
-        ),
+        ),*/
 
       ),
     );

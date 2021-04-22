@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart';
 
 class Inscription extends StatefulWidget {
   Inscription({Key key, this.title}) : super(key: key);
@@ -14,17 +15,47 @@ class Inscription extends StatefulWidget {
 
 class InscriptionState extends State<Inscription> {
   DateTime selectedDate = DateTime.now();
+  final myControllerMail = TextEditingController();
+  final myControllerMdp = TextEditingController();
+  final myControllerCmdp = TextEditingController();
+  final myControllerPrenom = TextEditingController();
+  final myControllerNom = TextEditingController();
+  final myControllerPseudo = TextEditingController();
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
-        firstDate: DateTime(2015, 8),
+        firstDate: DateTime(1930, 8),
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
       });
+  }
+
+  Future<String> _makePostRequest(String mail, String mdp, String prenom, String nom, String pseudo, String dateNaissance) async {
+    Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Utilisateurs/addNewUtilisateur.php');
+    Map<String, String> headers = {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    };
+    Response response = await post(
+        url,
+        headers: headers,
+        body: {
+          'mail': mail,
+          'prenom': prenom,
+          'nom': nom,
+          'pseudo': pseudo,
+          'mdp': mdp,
+          'dateNaissance': dateNaissance
+        }
+    );
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to insert user.' + response.statusCode.toString());
+    }
   }
 
 
@@ -83,6 +114,7 @@ class InscriptionState extends State<Inscription> {
                                 hintText: 'Entrez votre email',
                                 contentPadding: EdgeInsets.fromLTRB(0, paddingInput, 0, paddingInput),
                               ),
+                              controller: myControllerMail,
                             ),
                           ),
                           Container(
@@ -103,6 +135,7 @@ class InscriptionState extends State<Inscription> {
                                 hintText: 'Entrez votre mot de passe',
                                 contentPadding: EdgeInsets.fromLTRB(0, paddingInput, 0, paddingInput),
                               ),
+                              controller: myControllerMdp,
                             ),
                           ),
                           Container(
@@ -123,6 +156,7 @@ class InscriptionState extends State<Inscription> {
                                 hintText: 'Confirmez votre mot de passe',
                                 contentPadding: EdgeInsets.fromLTRB(0, paddingInput, 0, paddingInput),
                               ),
+                              controller: myControllerCmdp,
                             ),
                           ),
                           Row(children: <Widget>[
@@ -144,6 +178,7 @@ class InscriptionState extends State<Inscription> {
                                       hintText: 'Prénom',
                                       contentPadding: EdgeInsets.fromLTRB(0, paddingInput, 0, paddingInput),
                                     ),
+                                    controller: myControllerPrenom,
                                   ),
                                 ),
                               ],
@@ -166,6 +201,7 @@ class InscriptionState extends State<Inscription> {
                                       hintText: 'Nom',
                                       contentPadding: EdgeInsets.fromLTRB(0, paddingInput, 0, paddingInput),
                                     ),
+                                    controller: myControllerNom,
                                   ),
                                 ),
                               ],
@@ -187,6 +223,7 @@ class InscriptionState extends State<Inscription> {
                                 hintText: 'Entrez votre pseudo',
                                 contentPadding: EdgeInsets.fromLTRB(0, paddingInput, 0, paddingInput),
                               ),
+                              controller: myControllerPseudo,
                             ),
                           ),
                           Container(
@@ -197,9 +234,9 @@ class InscriptionState extends State<Inscription> {
                           Container(
                               width: widthInput,
                               child: Row(children: <Widget>[
-                                Text(selectedDate == null ? 'Nothing has been picked yet' : selectedDate.toString().substring(0,11)),
+                                Text(selectedDate == null ? 'Aucune date choisie' : selectedDate.toString().substring(0,11),style: TextStyle(fontSize: fontSizeText)),
                                 ElevatedButton(
-                                  child: Text('Choisir une date'),
+                                  child: Text('Choisir une date',style: TextStyle(fontSize: fontSizeText)),
                                   onPressed: () => _selectDate(context),
                                 )
                               ],
@@ -208,7 +245,30 @@ class InscriptionState extends State<Inscription> {
                           Container(
                               margin: EdgeInsets.fromLTRB(0,marginLogo/4,0,marginLogo/4),
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () async {
+                                  String dateNaissance = selectedDate.toString().substring(0,11);
+                                  if(myControllerMdp.text=='' || myControllerCmdp.text=='' || myControllerMail.text=='' || myControllerPrenom.text=='' || myControllerNom.text=='' || myControllerPseudo.text==''){
+                                    showAlertDialog(context, 'Veuillez compléter tous les champs.');
+                                  }else{
+                                    if(RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(myControllerMail.text)){
+                                      if(myControllerMdp.text==myControllerCmdp.text){
+                                        final String res = await _makePostRequest(myControllerMail.text, myControllerMdp.text, myControllerPrenom.text, myControllerNom.text, myControllerPseudo.text, dateNaissance);
+                                        if(res=='utilisateur cree'){
+                                          Navigator.of(context).pop();
+                                          Navigator.of(context).pop();
+                                        }else{
+                                          showAlertDialog(context, res);
+                                        }
+                                      }else{
+                                        showAlertDialog(context, 'La confirmation de mot de passe n\'est pas identique au mot de passe.');
+                                      }
+                                    }else{
+                                      showAlertDialog(context, 'Format de l\'adresse mail invalide.');
+                                    }
+
+                                  }
+
+                                },
                                 child: Text('Valider', style: TextStyle(fontSize: fontSizeText),),
                                 style: ElevatedButton.styleFrom(
                                   padding: EdgeInsets.symmetric(vertical : paddingButton/2, horizontal: paddingButton*1.5),
@@ -231,5 +291,35 @@ class InscriptionState extends State<Inscription> {
         ));
   }
 }
+
+showAlertDialog(BuildContext context, String msg) {
+  Widget okButton = FlatButton(
+    child: Text("OK"),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    elevation: 0,
+    title: Text("Message"),
+    content: Text(msg),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    barrierColor: Colors.white.withOpacity(0),
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
 
   
