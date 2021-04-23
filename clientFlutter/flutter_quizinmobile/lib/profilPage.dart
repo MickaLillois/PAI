@@ -350,6 +350,24 @@ class ProfilPageState extends State<ProfilPage> {
                         ),
                       ),
                     ),
+                    Container(
+                      width: widthButton,
+                      height: heightButton,
+                      margin: EdgeInsets.fromLTRB(0, marginText/5, 0, 0),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.blue,
+                            onPrimary: Colors.white
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/quizPerso');
+                        },
+                        child: Text(
+                          'Accéder aux qui personnalisés',
+                          style: TextStyle(fontSize: standard3),
+                        ),
+                      ),
+                    ),
                     Row(
                       children: [
                         Container(

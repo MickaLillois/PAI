@@ -7,6 +7,7 @@ import 'package:flutter_quizinmobile/connection.dart';
 import 'package:flutter_quizinmobile/inscription.dart';
 import 'package:flutter_quizinmobile/editMdp.dart';
 import 'package:flutter/src/material/icons.dart';
+import 'package:flutter_quizinmobile/quizPerso.dart';
 import 'package:flutter_quizinmobile/statsUser.dart';
 
 
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
           '/editProfil': (context) => EditProfil(),
           '/statsUser': (context) => StatsUser(),
           '/jouer': (context) => Jouer(),
+          '/quizPerso': (context) => QuizPerso(),
         },
         initialRoute: '/'
     );

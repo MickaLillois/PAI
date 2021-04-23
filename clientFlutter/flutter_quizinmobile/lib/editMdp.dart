@@ -228,7 +228,6 @@ class EditMdpState extends State<EditMdp> {
                                     }
                                     else{
                                       final String res = await updateMdp(myControllerNew.text, myControllerLast.text);
-                                      print(res);
                                       if(res == "-2"){
                                         showError(context, "/!\\ Nouveau mot de passe identique à l'ancien /!\\");
                                       }
