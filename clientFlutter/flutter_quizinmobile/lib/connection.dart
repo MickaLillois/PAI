@@ -1,8 +1,43 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart';
 
-class Connection extends StatelessWidget {
+
+class Connection extends StatefulWidget {
+  Connection({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  ConnectionState createState() => ConnectionState();
+}
+
+class ConnectionState extends State<Connection> {
+
+  final myControllerMail = TextEditingController();
+  final myControllerMdp = TextEditingController();
+
+  Future<String> _makePostRequest(String mail, String mdp) async {
+    Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Utilisateurs/verifConnexion.php');
+    Map<String, String> headers = {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    };
+    Response response = await post(
+        url,
+        headers: headers,
+        body: {
+          'mail': mail,
+          'mdp': mdp
+        }
+    );
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('This user is not present in the database.' + response.statusCode.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -59,6 +94,7 @@ class Connection extends StatelessWidget {
                                 contentPadding: EdgeInsets.fromLTRB(0,paddingInput,0,paddingInput),
                                 hintText: 'Entrez votre email',
                               ),
+                              controller: myControllerMail,
                             ),
                           ),
                           Container(
@@ -79,12 +115,25 @@ class Connection extends StatelessWidget {
                                 hintText: 'Entrez votre mot de passe',
                                 contentPadding: EdgeInsets.fromLTRB(0,paddingInput,0,paddingInput),
                               ),
+                              controller: myControllerMdp,
                             ),
                           ),
                           Container(
                               margin: EdgeInsets.fromLTRB(0,marginLogo*1.45,0,marginLogo),
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () async {
+                                  if(myControllerMail.text=='' || myControllerMdp.text==''){
+                                    showAlertDialog(context, 'Veuillez compléter tous les champs.');
+                                  }else{
+                                    final String res = await _makePostRequest(myControllerMail.text, myControllerMdp.text);
+                                    if(res=='Bon mot de passe'){
+                                      //init la session TODO
+                                      Navigator.of(context).pop();
+                                    }else{
+                                      showAlertDialog(context, res);
+                                    }
+                                  }
+                                },
                                 child: Text('Valider', style: TextStyle(fontSize: fontSizeText),),
                                 style: ElevatedButton.styleFrom(
                                   padding: EdgeInsets.symmetric(vertical : paddingButton/2, horizontal: paddingButton*1.5),
@@ -105,4 +154,33 @@ class Connection extends StatelessWidget {
           ),
         ));
   }
+}
+
+showAlertDialog(BuildContext context, String msg) {
+  Widget okButton = FlatButton(
+    child: Text("OK"),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    elevation: 0,
+    title: Text("Message"),
+    content: Text(msg),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    barrierColor: Colors.white.withOpacity(0),
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

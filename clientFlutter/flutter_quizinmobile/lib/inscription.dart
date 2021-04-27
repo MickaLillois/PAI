@@ -254,6 +254,7 @@ class InscriptionState extends State<Inscription> {
                                       if(myControllerMdp.text==myControllerCmdp.text){
                                         final String res = await _makePostRequest(myControllerMail.text, myControllerMdp.text, myControllerPrenom.text, myControllerNom.text, myControllerPseudo.text, dateNaissance);
                                         if(res=='utilisateur cree'){
+                                          //init la session TODO
                                           Navigator.of(context).pop();
                                           Navigator.of(context).pop();
                                         }else{
