@@ -5,8 +5,7 @@ import 'package:http/http.dart';
 
 
 class Connection extends StatefulWidget {
-  final Function login;
-  Connection({Key key, this.title, this.login}) : super(key: key);
+  Connection({Key key, this.title}) : super(key: key);
 
   final String title;
 
@@ -129,7 +128,7 @@ class ConnectionState extends State<Connection> {
                                     final String res = await _makePostRequest(myControllerMail.text, myControllerMdp.text);
                                     if(res=='Bon mot de passe'){
                                       //init la session TODO
-                                      widget.login.call();
+
                                       Navigator.of(context).pop();
                                     }else{
                                       showAlertDialog(context, res);
