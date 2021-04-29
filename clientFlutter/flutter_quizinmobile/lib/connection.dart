@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_quizinmobile/model/userModel/userModel.dart';
 import 'package:http/http.dart';
 
 
@@ -127,8 +128,8 @@ class ConnectionState extends State<Connection> {
                                   }else{
                                     final String res = await _makePostRequest(myControllerMail.text, myControllerMdp.text);
                                     if(res=='Bon mot de passe'){
-                                      //init la session TODO
-
+                                      Map<String, dynamic> user = {'MAILUTILISATEUR': myControllerMail.text};
+                                      UserModel.saveUser(UserModel.fromJson(user));
                                       Navigator.of(context).pop();
                                     }else{
                                       showAlertDialog(context, res);

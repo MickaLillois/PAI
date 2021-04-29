@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_quizinmobile/detailsQuiz.dart';
 import 'package:flutter_quizinmobile/editProfil.dart';
 import 'package:flutter_quizinmobile/jouer.dart';
+import 'package:flutter_quizinmobile/model/userModel/userModel.dart';
 import 'package:flutter_quizinmobile/newQuiz.dart';
 import 'package:flutter_quizinmobile/profilPage.dart';
 import 'package:flutter_quizinmobile/connection.dart';
@@ -93,7 +94,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       color: Colors.black,
                       iconSize: iconSize,
                       onPressed: () {
-                        Navigator.pushNamed(context, '/profilPage');
+                        if(UserModel.sessionUser == null){
+                          Navigator.pushNamed(context, '/connection');
+                        }else{
+                          Navigator.pushNamed(context, '/profilPage');
+                        }
                       },
                     ),
                   ),
@@ -111,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         padding: EdgeInsets.all(paddingButtonJeu),
                       ),
                       onPressed: () {
-                        Navigator.pushNamed(context, '/connection');
+
                       },
                     ),
                   ),
@@ -146,7 +151,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         onPrimary: Colors.white, // foreground
                         padding: EdgeInsets.all(paddingButtonJeu),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        UserModel.getUser();
+                      },
                     ),
                   ),
                   Container(

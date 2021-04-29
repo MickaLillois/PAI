@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 
+import 'model/userModel/userModel.dart';
+
 class Inscription extends StatefulWidget {
   Inscription({Key key, this.title}) : super(key: key);
 
@@ -254,7 +256,8 @@ class InscriptionState extends State<Inscription> {
                                       if(myControllerMdp.text==myControllerCmdp.text){
                                         final String res = await _makePostRequest(myControllerMail.text, myControllerMdp.text, myControllerPrenom.text, myControllerNom.text, myControllerPseudo.text, dateNaissance);
                                         if(res=='utilisateur cree'){
-                                          //init la session TODO
+                                          Map<String, dynamic> user = {'MAILUTILISATEUR': myControllerMail.text};
+                                          UserModel.saveUser(UserModel.fromJson(user));
                                           Navigator.of(context).pop();
                                           Navigator.of(context).pop();
                                         }else{
