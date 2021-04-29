@@ -24,9 +24,25 @@ class UserModel {
   static void getUser() async{
     SharedPreferences pref = await SharedPreferences.getInstance();
     var data = pref.getString("user");
-    var decode = jsonDecode(data);
-    var user = await UserModel.fromJson(decode);
-    sessionUser = user;
+    if(data!=null){
+      var decode = jsonDecode(data);
+      var user = await UserModel.fromJson(decode);
+      sessionUser = user;
+    }else{
+      sessionUser=null;
+    }
     print(sessionUser.email);
+  }
+
+  static String getMail() {
+    return sessionUser.email;
+  }
+
+  static void logOut() async{
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    //pref.setString("user", null);
+    pref.remove("user");
+    sessionUser=null;
+    pref.commit();
   }
 }

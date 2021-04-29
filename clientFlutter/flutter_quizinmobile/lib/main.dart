@@ -61,6 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
   @override
   Widget build(BuildContext context) {
+    UserModel.getUser();
     Size screenSize = MediaQuery.of(context).size;
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -94,6 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       color: Colors.black,
                       iconSize: iconSize,
                       onPressed: () {
+                        UserModel.getUser();
                         if(UserModel.sessionUser == null){
                           Navigator.pushNamed(context, '/connection');
                         }else{

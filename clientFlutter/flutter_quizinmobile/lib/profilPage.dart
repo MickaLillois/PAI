@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quizinmobile/editProfil.dart';
+import 'package:flutter_quizinmobile/model/userModel/userModel.dart';
 import 'package:http/http.dart';
 
-String mail = 'ruru4.matt@gmail.com';
+String mail = UserModel.getMail();
 String pseudo, nom, prenom, dateNaissance;
 
 Future<User> _makePostRequest() async {
@@ -374,13 +375,16 @@ class ProfilPageState extends State<ProfilPage> {
                           width : widthButton/2,
                           margin : EdgeInsets.fromLTRB(0, marginText/2.5, 0, 0),
                           child: InkWell(
-                            child: Text(
-                              'Se déconnecter',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                              child: Text(
+                                'Se déconnecter',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            onTap: () => false,
+                              onTap: () {
+                                UserModel.logOut();
+                                Navigator.pop(context);
+                              }
                           ),
                         ),
                         Container(
