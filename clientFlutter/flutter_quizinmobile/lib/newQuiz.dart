@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_quizinmobile/model/userModel/userModel.dart';
+import 'package:http/http.dart';
+
+String mail ;
 
 class NewQuiz extends StatefulWidget{
   NewQuiz({Key key, this.title}) : super(key: key);
@@ -11,6 +15,29 @@ class NewQuiz extends StatefulWidget{
 }
 
 class NewQuizState extends State<NewQuiz> {
+
+  Future<String> createQuiz(String nomQuiz) async {
+    mail = UserModel.getMail();
+    Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Utilisateurs/addNewQuizPerso.php');
+    Map<String, String> headers = {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    };
+    Response response = await post(
+        url,
+        headers: headers,
+        body: {
+          'nomQuiz': nomQuiz,
+          'mail': mail
+        }
+    );
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to create new quiz.' + response.statusCode.toString());
+    }
+  }
+
+  final myControllerNom= TextEditingController();
   @override
   Widget build(BuildContext context) {
 
@@ -21,6 +48,7 @@ class NewQuizState extends State<NewQuiz> {
     double standard = screenSize.width * 0.06;
     double standard2 = screenSize.width * 0.045;
     double standard3 = screenSize.width * 0.038;
+    double fontSizeText = screenSize.height*0.027;
     double widthButton = screenSize.width*0.85;
     double marginText = screenSize.width * 0.06;
     double marginImageTop = screenSize.height * 0.05;
@@ -52,7 +80,7 @@ class NewQuizState extends State<NewQuiz> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: EdgeInsets.fromLTRB(marginText, marginText, 0, marginText),
+                    margin: EdgeInsets.fromLTRB(marginText, marginText*2, 0, marginText),
                     child: Text(
                       'Nouveau quiz personnalisé',
                       style: TextStyle(
@@ -62,7 +90,7 @@ class NewQuizState extends State<NewQuiz> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(marginText, marginText, 0, 0),
+                    margin: EdgeInsets.fromLTRB(marginText, marginText*3, 0, 0),
                     child: Text(
                       'Nom du quiz : ',
                       style: TextStyle(
@@ -75,6 +103,7 @@ class NewQuizState extends State<NewQuiz> {
                     margin: EdgeInsets.fromLTRB(marginText, marginText, 0, 0),
                     width: widthInput/2,
                     child: TextFormField(
+                      controller: myControllerNom,
                       style: TextStyle(
                         fontSize: fontSizeInput,
                       ),
@@ -86,11 +115,27 @@ class NewQuizState extends State<NewQuiz> {
                 ],
               ),
               Container(
+                margin: EdgeInsets.fromLTRB(marginText, marginText*2, 0, 0),
                 alignment: Alignment.center,
                 child: ElevatedButton(
                   child: Text(
-                    'Valider'
+                    'Valider',
+                    style: TextStyle
+                      (
+                        fontSize: fontSizeText
+                    ),
                   ),
+                  onPressed: () {
+                    if(myControllerNom.text.isEmpty) {
+                        showError(context, "/!\\ Veuillez donner un nom à votre quiz /!\\");
+                      }
+                    else{
+                      createQuiz(myControllerNom.text);
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                      Navigator.pushNamed(context, '/quizPerso');
+                    }
+                  },
                 ),
               )
             ],
@@ -100,4 +145,34 @@ class NewQuizState extends State<NewQuiz> {
     );
   }
 
+  showError(BuildContext context, String err) {
+
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("Ok"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      elevation: 0,
+      title: Text("Attention"),
+      content: Text(err),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      barrierColor: Colors.white.withOpacity(0),
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 }

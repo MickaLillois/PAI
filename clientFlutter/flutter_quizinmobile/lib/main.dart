@@ -4,6 +4,7 @@ import 'package:flutter_quizinmobile/detailsQuiz.dart';
 import 'package:flutter_quizinmobile/editProfil.dart';
 import 'package:flutter_quizinmobile/jouer.dart';
 import 'package:flutter_quizinmobile/model/userModel/userModel.dart';
+import 'package:flutter_quizinmobile/newQuestion.dart';
 import 'package:flutter_quizinmobile/newQuiz.dart';
 import 'package:flutter_quizinmobile/profilPage.dart';
 import 'package:flutter_quizinmobile/connection.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
           '/quizPerso': (context) => QuizPerso(),
           '/newQuiz': (context) => NewQuiz(),
           '/detailsQuiz': (context) => DetailsQuiz(),
+          '/newQuestion': (context) => NewQuestion(),
         },
         initialRoute: '/'
     );

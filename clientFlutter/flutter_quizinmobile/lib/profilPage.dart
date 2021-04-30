@@ -6,10 +6,11 @@ import 'package:flutter_quizinmobile/editProfil.dart';
 import 'package:flutter_quizinmobile/model/userModel/userModel.dart';
 import 'package:http/http.dart';
 
-String mail = UserModel.getMail();
-String pseudo, nom, prenom, dateNaissance;
+
+String pseudo, nom, prenom, dateNaissance, mail;
 
 Future<User> _makePostRequest() async {
+  mail = UserModel.getMail();
   Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Utilisateurs/getInfosByUser.php');
   Map<String, String> headers = {
     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'

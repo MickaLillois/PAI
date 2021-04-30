@@ -3,11 +3,14 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_quizinmobile/detailsQuiz.dart';
+import 'package:flutter_quizinmobile/model/userModel/userModel.dart';
 import 'package:http/http.dart';
 
-String mail = 'ruru4.matt@gmail.com';
+String mail;
 
 Future<Quiz> _makePostRequest() async {
+  mail = UserModel.getMail();
   Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Utilisateurs/getQuizPersoByUser.php');
   Map<String, String> headers = {
     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -67,7 +70,7 @@ class QuizPersoState extends State<QuizPerso> {
     {
       return GestureDetector(
         onTap:(){
-          Navigator.pushNamed(context, '/detailsQuiz');
+          Navigator.push(context, MaterialPageRoute(builder: (context) => DetailsQuiz(nomQuiz : nomQuiz)));
         },
         child : Container(
           alignment: Alignment.center,
@@ -81,7 +84,7 @@ class QuizPersoState extends State<QuizPerso> {
                 ),
               ),
               Text(
-                nbQuestions == "1" ? nbQuestions + " question" : nbQuestions + " questions",
+                nbQuestions == "1" ? nbQuestions + " question" : nbQuestions == "0" ? "Aucune" + " question" : nbQuestions + " questions",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: standard2
