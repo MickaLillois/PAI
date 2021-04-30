@@ -131,6 +131,7 @@ class ConnectionState extends State<Connection> {
                                       Map<String, dynamic> user = {'MAILUTILISATEUR': myControllerMail.text};
                                       UserModel.saveUser(UserModel.fromJson(user));
                                       Navigator.of(context).pop();
+                                      UserModel.getUser();
                                     }else{
                                       showAlertDialog(context, res);
                                     }
