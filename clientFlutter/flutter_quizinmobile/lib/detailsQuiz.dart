@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,25 +33,6 @@ class DetailsQuiz extends StatefulWidget{
 class DetailsQuizState extends State<DetailsQuiz> {
   String nomQuiz;
 
-  static List<String> imageThumbUrls = [
-    "https://lh4.googleusercontent.com/-7-EHhtQthII/URqvEYTk4vI/AAAAAAAAAbs/QSJZoB3YjVg/s240-c/Tenaya%252520Lake%2525202.jpg",
-    "https://lh6.googleusercontent.com/-8MrjV_a-Pok/URqvFC5repI/AAAAAAAAAbs/9inKTg9fbCE/s240-c/Tenaya%252520Lake.jpg",
-    "https://lh5.googleusercontent.com/-B1HW-z4zwao/URqvFWYRwUI/AAAAAAAAAbs/8Peli53Bs8I/s240-c/The%252520Cave%252520BW.jpg",
-    "https://lh3.googleusercontent.com/-PO4E-xZKAnQ/URqvGRqjYkI/AAAAAAAAAbs/42nyADFsXag/s240-c/The%252520Fisherman.jpg",
-    "https://lh4.googleusercontent.com/-iLyZlzfdy7s/URqvG0YScdI/AAAAAAAAAbs/1J9eDKmkXtk/s240-c/The%252520Night%252520is%252520Coming.jpg",
-    "https://lh6.googleusercontent.com/-G-k7YkkUco0/URqvHhah6fI/AAAAAAAAAbs/_taQQG7t0vo/s240-c/The%252520Road.jpg",
-    "https://lh6.googleusercontent.com/-h-ALJt7kSus/URqvIThqYfI/AAAAAAAAAbs/ejiv35olWS8/s240-c/Tokyo%252520Heights.jpg",
-    "https://lh5.googleusercontent.com/-Hy9k-TbS7xg/URqvIjQMOxI/AAAAAAAAAbs/RSpmmOATSkg/s240-c/Tokyo%252520Highway.jpg",
-    "https://lh6.googleusercontent.com/-83oOvMb4OZs/URqvJL0T7lI/AAAAAAAAAbs/c5TECZ6RONM/s240-c/Tokyo%252520Smog.jpg",
-    "https://lh3.googleusercontent.com/-FB-jfgREEfI/URqvJI3EXAI/AAAAAAAAAbs/XfyweiRF4v8/s240-c/Tufa%252520at%252520Night.jpg",
-    "https://lh4.googleusercontent.com/-vngKD5Z1U8w/URqvJUCEgPI/AAAAAAAAAbs/ulxCMVcU6EU/s240-c/Valley%252520Sunset.jpg",
-    "https://lh6.googleusercontent.com/-DOz5I2E2oMQ/URqvKMND1kI/AAAAAAAAAbs/Iqf0IsInleo/s240-c/Windmill%252520Sunrise.jpg",
-    "https://lh5.googleusercontent.com/-biyiyWcJ9MU/URqvKculiAI/AAAAAAAAAbs/jyPsCplJOpE/s240-c/Windmill.jpg",
-    "https://lh4.googleusercontent.com/-PDT167_xRdA/URqvK36mLcI/AAAAAAAAAbs/oi2ik9QseMI/s240-c/Windmills.jpg",
-    "https://lh5.googleusercontent.com/-kI_QdYx7VlU/URqvLXCB6gI/AAAAAAAAAbs/N31vlZ6u89o/s240-c/Yet%252520Another%252520Rockaway%252520Sunset.jpg",
-    "https://lh4.googleusercontent.com/-e9NHZ5k5MSs/URqvMIBZjtI/AAAAAAAAAbs/1fV810rDNfQ/s240-c/Yosemite%252520Tree.jpg",
-  ];
-
   DetailsQuizState({@required this.nomQuiz});
 
   Future<Quiz> _makePostRequest() async {
@@ -68,15 +50,54 @@ class DetailsQuizState extends State<DetailsQuiz> {
         }
     );
     if (response.statusCode == 200) {
-      print(jsonDecode(response.body));
       return Quiz.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to create user.' + response.statusCode.toString());
     }
   }
 
-  String imageForIndex(int index) {
-    return imageThumbUrls[index % imageThumbUrls.length];
+  Future<String> _deleteQuiz(String nomQuiz) async {
+    mail = UserModel.getMail();
+    Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Utilisateurs/deleteQuizPerso.php');
+    Map<String, String> headers = {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    };
+    Response response = await post(
+        url,
+        headers: headers,
+        body: {
+          'mail': mail,
+          'nomQuiz': nomQuiz
+        }
+    );
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to delete quiz.' + response.statusCode.toString());
+    }
+  }
+
+  Future<String> _deleteQuestion(String nomQuiz, String intitule, String qPerso) async {
+    mail = UserModel.getMail();
+    Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Utilisateurs/deleteQuestionQuizPerso.php');
+    Map<String, String> headers = {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    };
+    Response response = await post(
+        url,
+        headers: headers,
+        body: {
+          'mail': mail,
+          'nomQuiz': nomQuiz,
+          'intitule': intitule,
+          'qPerso': qPerso
+        }
+    );
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to delete quiz.' + response.statusCode.toString());
+    }
   }
 
   @override
@@ -93,7 +114,212 @@ class DetailsQuizState extends State<DetailsQuiz> {
     double marginText = screenSize.width * 0.06;
     double marginImageTop = screenSize.height * 0.05;
     double heightButton = screenSize.height * 0.045;
-    _makePostRequest();
+
+    Widget _createStarsDifficulty(String difficulte){
+      Widget wid = Text('oui');
+      switch(difficulte){
+        case "Facile":
+          wid = Container(
+            child: Icon(
+                Icons.star
+            ),
+          );
+          break;
+        case "Moyen":
+          wid = Row(
+            children: [
+              Container(
+                child: Icon(
+                    Icons.star
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(marginText/3, 0, 0, 0),
+                child: Icon(
+                    Icons.star
+                ),
+              ),
+            ],
+          );
+          break;
+        case "Difficile":
+          wid = Row(
+            children: [
+              Container(
+                child: Icon(
+                    Icons.star
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(marginText/3, 0, 0, 0),
+                child: Icon(
+                    Icons.star
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(marginText/3, 0, 0, 0),
+                child: Icon(
+                    Icons.star
+                ),
+              ),
+            ],
+          );
+          break;
+        case "Expert":
+          wid = Row(
+            children: [
+              Container(
+                child: Icon(
+                    Icons.star
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(marginText/3, 0, 0, 0),
+                child: Icon(
+                    Icons.star
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(marginText/3, 0, 0, 0),
+                child: Icon(
+                    Icons.star
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(marginText/3, 0, 0, 0),
+                child: Icon(
+                    Icons.star
+                ),
+              ),
+            ],
+          );
+          break;
+        default:
+          wid = Row(
+            children: [
+              Container(
+                child: Icon(
+                    Icons.star_border
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(marginText/3, 0, 0, 0),
+                child: Text(
+                  'Perso',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: standard2
+                  ),
+                ),
+              ),
+            ],
+          );
+          break;
+      }
+      return wid;
+    }
+
+    Widget _createContainerQuestion(String intitule, String difficulte, String categorie, String reponses, String nbReponses, String tempsReponse){
+      return Container(
+        padding: EdgeInsets.all(16),
+        width: screenSize.width,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.black,
+            width: 3,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            RichText(
+                text : TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                        text : 'Question : ',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: standard2
+                        ),
+                      ),
+                      TextSpan(
+                        text : '$intitule',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: standard3
+                        ),
+                      ),
+                    ]
+                )
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(0, marginText, 0, 0),
+              child: RichText(
+                  text : TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text : 'Réponse(s) : ',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: standard2
+                          ),
+                        ),
+                        TextSpan(
+                          text : '$reponses',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: standard3
+                          ),
+                        ),
+                      ]
+                  )
+              ),
+            ),
+            Container(
+                margin: EdgeInsets.fromLTRB(0, marginText, 0, 0),
+                child : Row(
+                    children: [
+                      Icon(
+                          Icons.favorite
+                      ),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(marginText/3, 0, 0, 0),
+                        child: Text(
+                            nbReponses,
+                            style : TextStyle(
+                                fontWeight : FontWeight.bold
+                            )
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(marginText*2, 0, 0, 0),
+                        child: Icon(
+                            Icons.access_time_outlined
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(marginText/3, 0, 0, 0),
+                        child: Text(
+                            tempsReponse != null ? tempsReponse : "15",
+                            style : TextStyle(
+                                fontWeight : FontWeight.bold
+                            )
+                        ),
+                      ),
+                      Container(
+                          margin: EdgeInsets.fromLTRB(marginText*2, 0, 0, 0),
+                          child: _createStarsDifficulty(difficulte)
+                      ),
+                    ]
+                )
+            ),
+          ],
+        ),
+      );
+    }
+
     return Scaffold(
       body : SingleChildScrollView(
         child : Container(
@@ -114,34 +340,146 @@ class DetailsQuizState extends State<DetailsQuiz> {
                   ),
                   Container(
                     margin: EdgeInsets.fromLTRB(0, marginText, 0, marginText/2),
-                    child: Text(
-                      'Détail du quiz : $nomQuiz',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: standard
-                      ),
-                    ),
-                  ),
-                  ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return StickyHeader(
-                          header: Container(
-                            height: 50.0,
-                            color: Colors.blueGrey[700],
-                            padding: EdgeInsets.symmetric(horizontal: 16.0),
-                            alignment: Alignment.centerLeft,
-                            child: Text('Header #$index',
-                              style: const TextStyle(color: Colors.white),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'Détail du quiz : $nomQuiz',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: standard
                             ),
                           ),
-                          content: Container(
-                            child: Image.network(imageForIndex(index), fit: BoxFit.cover,
-                                width: double.infinity, height: 150),
+                        ),
+                        Container(
+                          child: IconButton(
+                            onPressed: () {
+                              showDialogDelete(context, this.nomQuiz);
+                            },
+                            icon : Icon(
+                                Icons.delete
+                            ),
                           ),
-                        );
-                      }),
+                        )
+                      ],
+
+                    ),
+                  ),
+                  FutureBuilder(
+                      future: _makePostRequest(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          if (snapshot.data.quiz["Question0"]["RIEN"] == "rien" && snapshot.data.quiz.length == 1) {
+
+                          }
+                          else {
+                            return ListView.builder(
+                                primary: false,
+                                itemCount: snapshot.data.quiz.length - 1,
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return StickyHeader(
+                                      header: Container(
+                                        decoration: BoxDecoration(
+                                            border: index != 0 ? Border(
+                                              left: BorderSide( //                   <--- left side
+                                                color: Colors.black,
+                                                width: 3.0,
+                                              ),
+                                              right: BorderSide( //                   <--- left side
+                                                color: Colors.black,
+                                                width: 3.0,
+                                              ),
+                                            ) : Border(
+                                              left: BorderSide( //                   <--- left side
+                                                color: Colors.black,
+                                                width: 3.0,
+                                              ),
+                                              top: BorderSide( //                    <--- top side
+                                                color: Colors.black,
+                                                width: 3.0,
+                                              ),
+                                              right: BorderSide( //                   <--- left side
+                                                color: Colors.black,
+                                                width: 3.0,
+                                              ),
+                                            )
+                                        ),
+                                        height: 50.0,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 16.0),
+                                        alignment: Alignment.centerLeft,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .spaceBetween,
+                                          children: [
+                                            Text(
+                                                'Question n°' +
+                                                    (index + 1).toString(),
+                                                style: TextStyle(
+                                                    fontSize: standard2
+                                                )
+                                            ),
+                                            Row(
+                                              children: [
+                                                Container(
+                                                    child: snapshot.data
+                                                        .quiz["Question" +
+                                                        (index + 1)
+                                                            .toString()]["LIBELLEDIFFICULTE"] ==
+                                                        "Perso" ? IconButton(
+                                                      onPressed: () {
+                                                      },
+                                                      icon : Icon(
+                                                          Icons.edit
+                                                      ),
+                                                    ) : Text("")
+                                                ),
+                                                Container(
+                                                    child: IconButton(
+                                                      onPressed: () {
+                                                        showDeleteQuestion(context, nomQuiz, snapshot.data.quiz["Question" + (index + 1).toString()]["INTITULE"], snapshot.data.quiz["Question" + (index + 1).toString()]["LIBELLEDIFFICULTE"] == "Perso" ? "true" : "false");
+                                                      },
+                                                      icon: Icon(
+                                                          Icons.delete
+                                                      ),
+                                                    )
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      content: _createContainerQuestion(
+                                          snapshot.data.quiz["Question" +
+                                              (index + 1)
+                                                  .toString()]["INTITULE"],
+                                          snapshot.data.quiz["Question" +
+                                              (index + 1)
+                                                  .toString()]["LIBELLEDIFFICULTE"],
+                                          snapshot.data.quiz["Question" +
+                                              (index + 1)
+                                                  .toString()]["LIBELLECATEGORIE"],
+                                          snapshot.data.quiz["Question" +
+                                              (index + 1)
+                                                  .toString()]["REPONSES"],
+                                          snapshot.data.quiz["Question" +
+                                              (index + 1)
+                                                  .toString()]["NBREPONSESMAX"],
+                                          snapshot.data.quiz["Question" +
+                                              (index + 1)
+                                                  .toString()]["TEMPSREPONSE"])
+                                  );
+                                });
+                          }
+                        }else if (snapshot.hasError) {
+                          return Text("${snapshot.error}");
+                        }
+                        return Text("");
+                      }
+                  ),
                 ],
               ),
             ],
@@ -160,4 +498,90 @@ class DetailsQuizState extends State<DetailsQuiz> {
     );
   }
 
+  showDialogDelete(BuildContext context, String nomQuiz) {
+
+    // set up the button
+    Widget yesButton = FlatButton(
+      child: Text("Oui"),
+      onPressed: () {
+        _deleteQuiz(nomQuiz);
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        Navigator.pushNamed(context, '/quizPerso');
+      },
+    );
+    Widget noButton = FlatButton(
+      child: Text("Non"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      elevation: 0,
+      title: Text("Information"),
+      content: Text("Voulez-vous vraiment supprimer ce quiz personnalisé ?"),
+      actions: [
+        yesButton,
+        noButton
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      barrierColor: Colors.white.withOpacity(0),
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showDeleteQuestion(BuildContext context, String nomQuiz, String intitule, String qPerso) {
+
+    // set up the button
+    Widget yesButton = FlatButton(
+      child: Text("Oui"),
+      onPressed: () {
+        _deleteQuestion(nomQuiz, intitule, qPerso);
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        Navigator.pushNamed(context, '/profilPage');
+        Navigator.pushNamed(context, '/quizPerso');
+        Navigator.push(context, MaterialPageRoute(builder: (context) => DetailsQuiz(nomQuiz : nomQuiz)));
+      },
+    );
+    Widget noButton = FlatButton(
+      child: Text("Non"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      elevation: 0,
+      title: Text("Information"),
+      content: Text("Voulez-vous vraiment supprimer cette question ?"),
+      actions: [
+        yesButton,
+        noButton
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      barrierColor: Colors.white.withOpacity(0),
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 }

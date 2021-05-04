@@ -95,7 +95,7 @@ class QuizPersoState extends State<QuizPerso> {
           padding: EdgeInsets.all(paddingWidget),
           margin: EdgeInsets.fromLTRB(0, marginText*2, 0, 0),
           width: widthButton,
-          height: heightButton,
+          height: nomQuiz.length > 20 ? heightButton * 1.3 : heightButton,
           decoration: BoxDecoration(
             border: Border.all(
               color: Colors.black,

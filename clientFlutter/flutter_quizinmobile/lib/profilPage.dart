@@ -94,6 +94,7 @@ class ProfilPageState extends State<ProfilPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
+                    width: screenSize.width,
                     alignment: Alignment.topCenter,
                     margin: EdgeInsets.fromLTRB(marginText, marginText, 0, 0),
                     child: Row(

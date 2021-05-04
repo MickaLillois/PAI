@@ -31,7 +31,6 @@ class UserModel {
     }else{
       sessionUser=null;
     }
-    print(sessionUser.email);
   }
 
   static String getMail() {
