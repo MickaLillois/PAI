@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quizinmobile/model/userModel/userModel.dart';
+import 'package:flutter_quizinmobile/newQuestion.dart';
 import 'package:flutter_quizinmobile/profilPage.dart';
 import 'package:http/http.dart';
 import 'package:sticky_headers/sticky_headers.dart';
@@ -488,7 +489,7 @@ class DetailsQuizState extends State<DetailsQuiz> {
       ),
       floatingActionButton : FloatingActionButton(
         onPressed: () => {
-          Navigator.pushNamed(context, '/newQuestion'),
+          Navigator.push(context, MaterialPageRoute(builder: (context) => NewQuestion(nomQuiz : this.nomQuiz))),
         },
         tooltip: 'Nouvelle question',
         child: Icon(

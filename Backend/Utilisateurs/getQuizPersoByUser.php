@@ -2,7 +2,7 @@
 
 include("../Connexion/connexion.php");
 
-$mail = $_GET["mail"];
+$mail = $_POST["mail"];
   $queryResult = $connection->prepare("SELECT NOMQUIZ, count(*) as NBQUESTIONSQUIZ FROM QUIZ_PERSONNALISE Q JOIN CONTENIR C ON C.IDQUIZPERSO = Q.IDQUIZPERSO WHERE MAILUTILISATEUR = ? GROUP BY NOMQUIZ");
   $queryResult->execute(array($mail));
 

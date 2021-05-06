@@ -2,8 +2,8 @@
 
 include("../Connexion/connexion.php");
 
-$mail = $_GET["mail"];
-$nomQuiz = $_GET["nomQuiz"];
+$mail = $_POST["mail"];
+$nomQuiz = $_POST["nomQuiz"];
   $queryResult = $connection->prepare("DELETE FROM QUIZ_PERSONNALISE WHERE NOMQUIZ = ? AND MAILUTILISATEUR = ?");
   $queryResult->execute(array($nomQuiz, $mail));
 

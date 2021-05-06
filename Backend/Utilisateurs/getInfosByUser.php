@@ -23,7 +23,7 @@ if(!empty($_POST))
       $arrayt["PSEUDO"] = $fetchdata["PSEUDOUTILISATEUR"];
       $arrayt["DATENAISSANCE"] = $fetchdata["DATENAISSANCEUTILISATEUR"];
       $arrayt["AVATAR"] = $fetchdata["NUMEROAVATAR"];
-      $result[$titre] = $arrayt;
+      $result[] = $arrayt;
       $i++;
     }
 

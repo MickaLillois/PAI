@@ -2,10 +2,10 @@
 
 include("../Connexion/connexion.php");
 
-$intitule = $_GET["intitule"];
-$nomQuiz = $_GET["nomQuiz"];
-$mail = $_GET["mail"];
-$qPerso = $_GET["qPerso"];
+$intitule = $_POST["intitule"];
+$nomQuiz = $_POST["nomQuiz"];
+$mail = $_POST["mail"];
+$qPerso = $_POST["qPerso"];
 $idQuestion;
 
 if($qPerso == "true")
@@ -31,6 +31,6 @@ $idQuiz = $q3->fetch();
   $queryResult->execute();
 
 
-  echo "question supprimÃ©e du quiz";
+  echo "Question supprimé";
 
 ?>
