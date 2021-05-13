@@ -2,10 +2,10 @@
 
 include("../Connexion/connexion.php");
 
-$intitule = $_GET["intitule"];
-$qPerso = $_GET["qPerso"];
-$mail = $_GET["mail"];
-$nomQuiz = $_GET["nomQuiz"];
+$intitule = $_POST["intitule"];
+$qPerso = $_POST["qPerso"];
+$mail = $_POST["mail"];
+$nomQuiz = $_POST["nomQuiz"];
 $idQuestion;
 
 if($qPerso == "true")

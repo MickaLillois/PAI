@@ -2,9 +2,10 @@
 
 include("../Connexion/connexion.php");
 
-$mail = $_POST["mail"];
-  $queryResult = $connection->prepare("SELECT INTITULE, REPONSES, NBREPONSESMAX, TEMPSREPONSE FROM QUESTION Q JOIN QUESTION_PERSO U ON Q.IDQUESTION = U.IDQUESTION WHERE U.MAILUTILISATEUR = ?");
-  $queryResult->execute(array($mail));
+$nomQuiz = $_POST["nomQuiz"];
+  $queryResult = $connection->prepare("SELECT INTITULE, REPONSES, NBREPONSESMAX FROM QUESTION P WHERE P.IDQUESTION NOT IN (SELECT IDQUESTION FROM CONTENIR C JOIN QUIZ_PERSONNALISE Q ON Q.IDQUIZPERSO = C.IDQUIZPERSO WHERE Q.NOMQUIZ = ?) AND IDCATEGORIE <> 5
+  ");
+  $queryResult->execute(array($nomQuiz));
 
   $result = array();
   $arrayf = array();

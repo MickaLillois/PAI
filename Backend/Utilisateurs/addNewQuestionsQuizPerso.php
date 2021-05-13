@@ -1,13 +1,13 @@
 <?php
 
 include("../Connexion/connexion.php");
-
-$intitule = $_GET["intitule"];
-$reponses = $_GET["reponses"];
-$nbReponsesMax = $_GET["nbReponsesMax"];
-$tempsReponse = $_GET["tempsReponse"];
-$mail = $_GET["mail"];
-$nomQuiz = $_GET["nomQuiz"];
+	
+$intitule = $_POST["intitule"];
+$reponses = $_POST["reponses"];
+$nbReponsesMax = $_POST["nbReponsesMax"];
+$tempsReponse = $_POST["tempsReponse"];
+$mail = $_POST["mail"];
+$nomQuiz = $_POST["nomQuiz"];
   $q = $connection->prepare("INSERT INTO QUESTION VALUES (0, 5, 5, :intitu, :rep, :nbRep)");
   $q->bindParam(':intitu', $intitule, PDO::PARAM_STR);
   $q->bindParam(':rep', $reponses, PDO::PARAM_STR);
@@ -30,6 +30,6 @@ $nomQuiz = $_GET["nomQuiz"];
   $queryResult->execute();
 
 
-  echo "question + quiz ajoutés";
+  echo "question et quiz ajoutés";
 
 ?>

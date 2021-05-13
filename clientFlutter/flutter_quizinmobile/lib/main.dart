@@ -14,6 +14,7 @@ import 'package:flutter_quizinmobile/editMdp.dart';
 import 'package:flutter/src/material/icons.dart';
 import 'package:flutter_quizinmobile/quizPerso.dart';
 import 'package:flutter_quizinmobile/statsUser.dart';
+import 'package:flutter_quizinmobile/updateQuestionPerso.dart';
 
 
 void main() {
@@ -41,7 +42,8 @@ class MyApp extends StatelessWidget {
           '/newQuiz': (context) => NewQuiz(),
           '/detailsQuiz': (context) => DetailsQuiz(),
           '/newQuestion': (context) => NewQuestion(),
-          '/partieStandard': (context) => PartieStandard()
+          '/partieStandard': (context) => PartieStandard(),
+          '/updateQuestionPerso': (context) => UpdateQuestionPerso()
         },
         initialRoute: '/'
     );

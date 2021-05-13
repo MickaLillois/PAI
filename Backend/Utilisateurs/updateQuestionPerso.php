@@ -2,12 +2,12 @@
 
 include("../Connexion/connexion.php");
 
-$mail = $_GET["mail"];
-$intitule = $_GET["intitule"];
-$reponses = $_GET["reponses"];
-$nbReponsesMax = $_GET["nbReponsesMax"];
-$tempsReponse = $_GET["tempsReponse"];
-$ancienIntitu = $_GET["ancienIntitule"];
+$mail = $_POST["mail"];
+$intitule = $_POST["intitule"];
+$reponses = $_POST["reponses"];
+$nbReponsesMax = $_POST["nbReponsesMax"];
+$tempsReponse = $_POST["tempsReponse"];
+$ancienIntitu = $_POST["ancienIntitule"];
   $query = $connection->prepare("SELECT IDQUESTION FROM QUESTION WHERE INTITULE = ? AND IDCATEGORIE = 5");
   $query->execute(array($ancienIntitu));
   $idQuestion = $query->fetch();

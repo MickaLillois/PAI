@@ -1,12 +1,11 @@
 import 'dart:collection';
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quizinmobile/model/userModel/userModel.dart';
 import 'package:flutter_quizinmobile/newQuestion.dart';
-import 'package:flutter_quizinmobile/profilPage.dart';
+import 'package:flutter_quizinmobile/updateQuestionPerso.dart';
 import 'package:http/http.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
@@ -38,7 +37,7 @@ class DetailsQuizState extends State<DetailsQuiz> {
 
   Future<Quiz> _makePostRequest() async {
     mail = UserModel.getMail();
-    Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Utilisateurs/getQuestionsByQuizPerso.php');
+    Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Questions/getQuestionsByQuizPerso.php');
     Map<String, String> headers = {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     };
@@ -105,16 +104,13 @@ class DetailsQuizState extends State<DetailsQuiz> {
   Widget build(BuildContext context) {
 
     Size screenSize = MediaQuery.of(context).size;
-    double sizeAvatar = screenSize.width * 0.3;
     double widthLogo = screenSize.width * 0.8;
     double heightLogo = screenSize.height * 0.12;
     double standard = screenSize.width * 0.06;
     double standard2 = screenSize.width * 0.045;
     double standard3 = screenSize.width * 0.038;
-    double widthButton = screenSize.width*0.85;
     double marginText = screenSize.width * 0.06;
     double marginImageTop = screenSize.height * 0.05;
-    double heightButton = screenSize.height * 0.045;
 
     Widget _createStarsDifficulty(String difficulte){
       Widget wid = Text('oui');
@@ -432,6 +428,7 @@ class DetailsQuizState extends State<DetailsQuiz> {
                                                             .toString()]["LIBELLEDIFFICULTE"] ==
                                                         "Perso" ? IconButton(
                                                       onPressed: () {
+                                                        Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateQuestionPerso(ancienIntitule : snapshot.data.quiz["Question" + (index + 1).toString()]["INTITULE"])));
                                                       },
                                                       icon : Icon(
                                                           Icons.edit
