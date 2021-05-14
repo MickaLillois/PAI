@@ -1,9 +1,11 @@
 import 'dart:collection';
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
+import 'package:cupertino_icons/cupertino_icons.dart';
 
 class PartieStandard extends StatefulWidget{
   PartieStandard({Key key, this.title}) : super(key: key);
@@ -18,6 +20,8 @@ class PartieStandard extends StatefulWidget{
 class PartieStandardState extends State<PartieStandard>{
   int cpt=1;
   HashMap<String, HashMap<String,String>> questions;
+  final myControllerRep = TextEditingController();
+  //int nbVie;
 
   Future<String> _makePostRequest(String nbQuestions) async {
     Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Questions/getQuestions.php');
@@ -93,6 +97,16 @@ class PartieStandardState extends State<PartieStandard>{
     double heightLogo = screenSize.height*0.12;
     double marginLogo = screenSize.height*0.05;
     double paddingInput = screenSize.height*0.02;
+    double widthInput = screenSize.width*0.7;
+    double widthInput2 = screenSize.width*0.9;
+    double widthInputIcon = screenSize.width*0.2;
+    double iconSize = screenSize.width*0.2;
+    double fontSizeInput = screenSize.height*0.035;
+    double fontSizeT1 = screenSize.height*0.045;
+    double marginNumQ =screenSize.height*0.02;
+    
+    //autres variables
+    int nbVie=int.parse(getInfo('NBREPONSESMAX'));
 
 
     return Scaffold(
@@ -101,10 +115,12 @@ class PartieStandardState extends State<PartieStandard>{
           child: Column(
             children: [
               Container(
-                margin: EdgeInsets.fromLTRB(0,marginLogo,0,0),
+                margin: EdgeInsets.fromLTRB(0,marginLogo,0,marginLogo),
                 child: Image.asset('assets/images/logo_officiel.png',width: widthLogo, height: heightLogo),
               ),
               Container(
+                width: screenSize.width*0.98,
+                height: screenSize.height*0.55,
                 padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -115,19 +131,78 @@ class PartieStandardState extends State<PartieStandard>{
                 child: Column(
                   children: [
                     Container(
-                        child: Text('Question n°$cpt')
+                        margin: EdgeInsets.fromLTRB(0,marginNumQ,0,marginNumQ),
+                        child: Text('Question n°$cpt',style: TextStyle(fontSize: fontSizeT1),)
                     ),
                     Container(
-                        child: Text(getInfo('INTITULE'))
+                        margin: EdgeInsets.fromLTRB(0,marginNumQ,0,marginNumQ),
+                        child: Text(getInfo('INTITULE'),style: TextStyle(fontSize: fontSizeT1),)
+                    ),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Row(
+                        children: [
+                          Text(nbVie.toString(),style: TextStyle(fontSize: fontSizeT1/1.1),),
+                          Icon(CupertinoIcons.heart_fill,
+                              size: iconSize/2,),
+                        ],
+                      ),
                     )
                   ],
                 ),
               ),
               Container(
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Entrez votre réponse',
-                  ),
+                width: widthInput2,
+                child: Row(
+                  children: [
+                    Container(
+                      width: widthInput,
+                      child: TextFormField(
+                        style: TextStyle(
+                          fontSize: fontSizeInput,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'Entrez votre réponse',
+                          contentPadding: EdgeInsets.fromLTRB(0,paddingInput,0,paddingInput),
+                        ),
+                        controller: myControllerRep,
+                      ),
+                    ),
+                    Container(
+                      width: widthInputIcon,
+                      child: IconButton(
+                          icon: const Icon(Icons.check_box),
+                          color: Colors.black,
+                          iconSize: iconSize,
+                          onPressed: () {
+                            List<String> reps=getInfo('REPONSES').toUpperCase().split('/');
+                            if(reps.contains(myControllerRep.text.toUpperCase())){
+                              print('cest bieng');
+                              if(cpt==9){
+                                Navigator.pop(context);
+                              }else{
+                                setState(() {
+                                  cpt ++;
+                                });
+                              }
+                              myControllerRep.clear();
+                            }else{
+                              if(nbVie==1){
+                                setState(() {
+                                  cpt ++;
+                                });
+                              }else{
+                                setState(() {
+                                  nbVie --;
+                                });
+                              }
+                              print('cest pas bieng');
+                            }
+
+                          }
+                          ),
+                    )
+                  ],
                 ),
               ),
               Container(
