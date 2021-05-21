@@ -1,23 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_quizinmobile/detailsQuiz.dart';
 import 'package:flutter_quizinmobile/model/userModel/userModel.dart';
 import 'package:http/http.dart';
 
 String mail ;
 
 class UpdateQuestionPerso extends StatefulWidget{
-  UpdateQuestionPerso({Key key, @required this.ancienIntitule}) : super(key: key);
+  UpdateQuestionPerso({Key key, @required this.ancienIntitule, @required this.ancienReponses, @required this.ancienNbVies, @required this.ancienTpsRep, @required this.nomQuiz}) : super(key: key);
 
-  final String ancienIntitule;
+  final String ancienIntitule, ancienReponses, ancienNbVies, ancienTpsRep, nomQuiz;
 
-  UpdateQuestionPersoState createState() => UpdateQuestionPersoState();
+  UpdateQuestionPersoState createState() => UpdateQuestionPersoState(ancienIntitule: ancienIntitule, ancienReponses: ancienReponses, ancienNbVies: ancienNbVies, ancienTpsRep: ancienTpsRep, nomQuiz: nomQuiz);
 
 }
 
 class UpdateQuestionPersoState extends State<UpdateQuestionPerso> {
-  UpdateQuestionPersoState({@required this.ancienIntitule});
+  UpdateQuestionPersoState({@required this.ancienIntitule, @required this.ancienReponses, @required this.ancienNbVies, @required this.ancienTpsRep, @required this.nomQuiz});
 
-  final String ancienIntitule;
+  final String ancienIntitule, ancienReponses, ancienNbVies, ancienTpsRep, nomQuiz;
 
   Future<String> updateQuestion(String ancienIntitule, String intitule, String reponses, String nbRep, String tpsRep) async {
     mail = UserModel.getMail();
@@ -44,12 +45,23 @@ class UpdateQuestionPersoState extends State<UpdateQuestionPerso> {
     }
   }
 
-  final myControllerNom= TextEditingController();
+  final myControllerIntitule= TextEditingController();
+  final myControllerReponses = TextEditingController();
+
+  String _chosenValue, _chosenValueTps;
+
+  @override
+  void initState() {
+    _chosenValue = ancienNbVies;
+    _chosenValueTps = ancienTpsRep;
+    myControllerReponses.text = ancienReponses;
+    myControllerIntitule.text = ancienIntitule;
+  }
+
   @override
   Widget build(BuildContext context) {
 
     Size screenSize = MediaQuery.of(context).size;
-    double sizeAvatar = screenSize.width * 0.3;
     double widthLogo = screenSize.width * 0.8;
     double heightLogo = screenSize.height * 0.12;
     double standard = screenSize.width * 0.06;
@@ -88,18 +100,20 @@ class UpdateQuestionPersoState extends State<UpdateQuestionPerso> {
                 children: [
                   Container(
                     margin: EdgeInsets.fromLTRB(marginText, marginText*2, 0, marginText),
-                    child: Text(
-                      'Modifier une question personnalisée',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: standard
+                    child: Center(
+                      child: Text(
+                        'Modifier une question personnalisée',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: standard
+                        ),
                       ),
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(marginText, marginText*3, 0, 0),
+                    margin: EdgeInsets.fromLTRB(marginText, marginText, 0, 0),
                     child: Text(
-                      'Nom du quiz : ',
+                      'Intitulé de la question : ',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: standard2
@@ -108,21 +122,137 @@ class UpdateQuestionPersoState extends State<UpdateQuestionPerso> {
                   ),
                   Container(
                     margin: EdgeInsets.fromLTRB(marginText, marginText, 0, 0),
-                    width: widthInput/2,
+                    width: widthInput,
                     child: TextFormField(
-                      controller: myControllerNom,
+                      controller: myControllerIntitule,
                       style: TextStyle(
                         fontSize: fontSizeInput,
                       ),
                       decoration: new InputDecoration(
-                        hintText: "Nom",
+                        hintText: "Intitule",
                       ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(marginText, marginText, 0, 0),
+                    child: Text(
+                      'Réponse(s) de la question : ',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: standard2
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(marginText, marginText, 0, 0),
+                    width: widthInput,
+                    child: TextFormField(
+                      controller: myControllerReponses,
+                      style: TextStyle(
+                        fontSize: fontSizeInput,
+                      ),
+                      decoration: new InputDecoration(
+                        hintText: "Réponses",
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(marginText, marginText, 0, 0),
+                    width: widthButton,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                                'Nb vie(s) max : '
+                            ),
+                            Container(
+                                width: widthButton/4,
+                                child: DropdownButton<String>(
+                                    value: _chosenValue,
+
+                                    style: TextStyle(color: Colors.white),
+                                    iconEnabledColor:Colors.black,
+                                    items: <String>[
+                                      '1',
+                                      '2',
+                                      '3',
+                                      '4',
+                                      '5',
+                                    ].map<DropdownMenuItem<String>>((String value) {                              return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value,style:TextStyle(color:Colors.black),),
+                                    );
+                                    }).toList(),
+                                    hint:Text(
+                                      "Vie(s)",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14,),
+                                    ),
+                                    onChanged: (String value) {
+                                      setState(() {
+                                        _chosenValue = value;
+                                      });
+                                    }
+                                )
+                            ),
+                          ],
+                        ),
+                        Container(
+                          child : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  'Temps réponse : '
+                              ),
+                              Container(
+                                  width: widthButton/4,
+                                  child: DropdownButton<String>(
+                                      value: _chosenValueTps,
+                                      underline: SizedBox(),
+                                      style: TextStyle(color: Colors.white),
+                                      iconEnabledColor:Colors.black,
+                                      items: <String>[
+                                        '10',
+                                        '11',
+                                        '12',
+                                        '13',
+                                        '14',
+                                        '15',
+                                        '16',
+                                        '17',
+                                        '18'
+                                      ].map<DropdownMenuItem<String>>((String value) {                              return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value,style:TextStyle(color:Colors.black),),
+                                      );
+                                      }).toList(),
+                                      hint:Text(
+                                        "Temps",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 14,),
+                                      ),
+                                      onChanged: (String value) {
+                                        setState(() {
+                                          _chosenValueTps = value;
+                                        });
+                                      }
+                                  )
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
               Container(
-                margin: EdgeInsets.fromLTRB(marginText, marginText*2, 0, 0),
+                margin: EdgeInsets.fromLTRB(marginText, marginText, 0, 0),
                 alignment: Alignment.center,
                 child: ElevatedButton(
                   child: Text(
@@ -133,14 +263,14 @@ class UpdateQuestionPersoState extends State<UpdateQuestionPerso> {
                     ),
                   ),
                   onPressed: () {
-                    if(myControllerNom.text.isEmpty) {
-                      showError(context, "/!\\ Veuillez donner un nom à votre quiz /!\\");
+                    if(myControllerIntitule.text.isEmpty || myControllerReponses.text.isEmpty) {
+                      showError(context, "/!\\ Veuillez ne rien laisser vide svp /!\\");
                     }
                     else{
-                      //createQuiz(myControllerNom.text);
+                      updateQuestion(ancienIntitule, myControllerIntitule.text, myControllerReponses.text, _chosenValue, _chosenValueTps);
                       Navigator.of(context).pop();
                       Navigator.of(context).pop();
-                      Navigator.pushNamed(context, '/quizPerso');
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailsQuiz(nomQuiz : nomQuiz)));
                     }
                   },
                 ),

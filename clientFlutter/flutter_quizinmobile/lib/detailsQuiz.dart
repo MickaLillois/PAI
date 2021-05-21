@@ -428,7 +428,7 @@ class DetailsQuizState extends State<DetailsQuiz> {
                                                             .toString()]["LIBELLEDIFFICULTE"] ==
                                                         "Perso" ? IconButton(
                                                       onPressed: () {
-                                                        Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateQuestionPerso(ancienIntitule : snapshot.data.quiz["Question" + (index + 1).toString()]["INTITULE"])));
+                                                        Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateQuestionPerso(ancienIntitule : snapshot.data.quiz["Question" + (index + 1).toString()]["INTITULE"], ancienReponses : snapshot.data.quiz["Question" + (index + 1).toString()]["REPONSES"], ancienNbVies :  snapshot.data.quiz["Question" + (index + 1).toString()]["NBREPONSESMAX"], ancienTpsRep : snapshot.data.quiz["Question" + (index + 1).toString()]["TEMPSREPONSE"], nomQuiz: this.nomQuiz,)));
                                                       },
                                                       icon : Icon(
                                                           Icons.edit
