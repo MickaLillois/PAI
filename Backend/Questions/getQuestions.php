@@ -2,7 +2,7 @@
 
 include("../Connexion/connexion.php");
 
-$nbQuestions = $_GET["nbQuestions"];
+$nbQuestions = $_POST["nbQuestions"];
   $queryResult = $connection->prepare("SELECT * FROM QUESTION Q JOIN DIFFICULTE_QUESTION D ON Q.IDDIFFICULTE = D.IDDIFFICULTE JOIN CATEGORIE C ON Q.IDCATEGORIE = C.IDCATEGORIE WHERE Q.IDCATEGORIE <> 5 ORDER BY RAND() LIMIT :rows");
   $queryResult->bindParam(':rows', $nbQuestions, PDO::PARAM_INT);
   $queryResult->execute();

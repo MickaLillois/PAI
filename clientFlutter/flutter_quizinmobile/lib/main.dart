@@ -6,6 +6,7 @@ import 'package:flutter_quizinmobile/jouer.dart';
 import 'package:flutter_quizinmobile/model/userModel/userModel.dart';
 import 'package:flutter_quizinmobile/newQuestion.dart';
 import 'package:flutter_quizinmobile/newQuiz.dart';
+import 'package:flutter_quizinmobile/partiePrivee.dart';
 import 'package:flutter_quizinmobile/partieStandard.dart';
 import 'package:flutter_quizinmobile/profilPage.dart';
 import 'package:flutter_quizinmobile/connection.dart';
@@ -43,7 +44,8 @@ class MyApp extends StatelessWidget {
           '/detailsQuiz': (context) => DetailsQuiz(),
           '/newQuestion': (context) => NewQuestion(),
           '/partieStandard': (context) => PartieStandard(),
-          '/updateQuestionPerso': (context) => UpdateQuestionPerso()
+          '/updateQuestionPerso': (context) => UpdateQuestionPerso(),
+          '/partiePrivee': (context) => PartiePrivee(),
         },
         initialRoute: '/'
     );
@@ -160,7 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         padding: EdgeInsets.all(paddingButtonJeu),
                       ),
                       onPressed: () {
-                        UserModel.getUser();
+                        Navigator.pushNamed(context, '/partiePrivee');
                       },
                     ),
                   ),
