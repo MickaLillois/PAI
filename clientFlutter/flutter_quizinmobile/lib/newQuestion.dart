@@ -904,7 +904,6 @@ class NewQuestionState extends State<NewQuestion> {
 
   showError(BuildContext context, String err) {
 
-    // set up the button
     Widget okButton = FlatButton(
       child: Text("Ok"),
       onPressed: () {

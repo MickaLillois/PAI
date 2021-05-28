@@ -3,9 +3,42 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_quizinmobile/editMdp.dart';
+import 'package:flutter_quizinmobile/model/userModel/userModel.dart';
+import 'package:flutter_quizinmobile/partieStandard.dart';
 import 'package:http/http.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
+
+class Categorie {
+  final List<String> categ;
+
+  Categorie({this.categ});
+
+  factory Categorie.fromJson(LinkedHashMap<String, dynamic> json) {
+    List<String> retour = new List<String>();
+    for(int i = 0; i< json.length; i++) {
+      retour.add(json["Categorie" + (i+1).toString()]["LIBELLECATEGORIE"]);
+    }
+    return Categorie(
+        categ : retour
+    );
+  }
+}
+
+class Difficulte {
+  final List<String> diff;
+
+  Difficulte({this.diff});
+
+  factory Difficulte.fromJson(LinkedHashMap<String, dynamic> json) {
+    List<String> retour = new List<String>();
+    for(int i = 0; i< json.length; i++) {
+      retour.add(json["Difficulte" + (i+1).toString()]["LIBELLEDIFFICULTE"]);
+    }
+    return Difficulte(
+        diff : retour
+    );
+  }
+}
 
 class CreatePartie extends StatefulWidget{
   CreatePartie({Key key, @required this.alea}) : super(key: key);
@@ -23,7 +56,47 @@ class CreatePartieState extends State<CreatePartie>{
 
   final bool alea;
   final controllerNom = TextEditingController();
-  String _chosenValue, _chosenValueCateg;
+  String _chosenValue = "10", _chosenValueCateg = "Toutes", _chosenValueDiff = "Toutes";
+
+  Future<Categorie> getCategorie() async {
+    mail = UserModel.getMail();
+    Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Questions/getCategories.php');
+    Map<String, String> headers = {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    };
+    var response = await post(
+        url,
+        headers: headers,
+        body: {
+
+        }
+    );
+    if (response.statusCode == 200) {
+      return Categorie.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to create user.' + response.statusCode.toString());
+    }
+  }
+
+  Future<Difficulte> getDifficulte() async {
+    mail = UserModel.getMail();
+    Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Questions/getDifficultes.php');
+    Map<String, String> headers = {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    };
+    var response = await post(
+        url,
+        headers: headers,
+        body: {
+
+        }
+    );
+    if (response.statusCode == 200) {
+      return Difficulte.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to create user.' + response.statusCode.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,25 +107,18 @@ class CreatePartieState extends State<CreatePartie>{
     double widthLogo = screenSize.width*0.8;
     double heightLogo = screenSize.height*0.12;
     double marginLogo = screenSize.height*0.05;
-    double paddingInput = screenSize.height*0.02;
     double widthInput = screenSize.width*0.7;
-    double widthInput2 = screenSize.width*0.9;
-    double widthInputIcon = screenSize.width*0.2;
-    double iconSize = screenSize.width*0.2;
     double fontSizeInput = screenSize.height*0.035;
-    double fontSizeT1 = screenSize.height*0.045;
     double fontSizeT2 = screenSize.height*0.02;
-    double fontSizeT3 = screenSize.height*0.03;
-    double marginNumQ =screenSize.height*0.02;
-    double marginButton = screenSize.height*0.02;
     double widthButton = screenSize.width*0.85;
-    double paddingButtonJeu = screenSize.height*0.03;
     double marginText = screenSize.width * 0.06;
     double marginLeftInput = screenSize.width*0.05;
 
+    getCategorie();
+
     Widget createAlea(){
       return Container(
-          margin: EdgeInsets.fromLTRB(0, marginText, 0, 0),
+        margin: EdgeInsets.fromLTRB(0, marginText, 0, 0),
         child : Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -82,12 +148,6 @@ class CreatePartieState extends State<CreatePartie>{
                       child: Text(value,style:TextStyle(color:Colors.black),),
                     );
                     }).toList(),
-                    hint:Text(
-                      "Nb",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,),
-                    ),
                     onChanged: (String value) {
                       setState(() {
                         _chosenValue = value;
@@ -96,41 +156,139 @@ class CreatePartieState extends State<CreatePartie>{
                 )
             ),
             Container(
-              child : Row(
-                children: [
-                  Text(
-                      'Catégorie : '
+                child : Row(
+                  children: [
+                    Text(
+                        'Catégorie : '
+                    ),
+                    Container(
+                        width: widthButton/2,
+                        margin: EdgeInsets.fromLTRB(marginText, 0, 0, 0),
+                        child: FutureBuilder(
+                          future : getCategorie(),
+                          builder: (context, snapshot) {
+                            if(snapshot.hasData){
+                              List<DropdownMenuItem<String>> list = new List<DropdownMenuItem<String>>();
+                              for(int i = 0; i < snapshot.data.categ.length; i++){
+                                list.add(
+                                    new DropdownMenuItem(
+                                        child: Text(
+                                          snapshot.data.categ.elementAt(i),
+                                          style: TextStyle(
+                                              color:Colors.black
+                                          ),
+                                        ),
+                                        value : snapshot.data.categ.elementAt(i)
+                                    )
+                                );
+                              }
+                              list.add(
+                                  new DropdownMenuItem(
+                                      child: Text(
+                                        "Toutes",
+                                        style: TextStyle(
+                                            color:Colors.black
+                                        ),
+                                      ),
+                                      value : "Toutes"
+                                  )
+                              );
+                              return DropdownButton<String>(
+                                  value: _chosenValueCateg,
+                                  style: TextStyle(color: Colors.white),
+                                  iconEnabledColor:Colors.black,
+                                  items: list,
+                                  onChanged: (String value) {
+                                    setState(() {
+                                      _chosenValueCateg = value;
+                                    });
+                                  }
+                              );
+                              }
+                            return Text("");
+                          },
+                        )
+                    ),
+                  ],
+                )
+            ),
+            Container(
+                child : Row(
+                  children: [
+                    Text(
+                        'Difficulte : '
+                    ),
+                    Container(
+                        width: widthButton/2,
+                        margin: EdgeInsets.fromLTRB(marginText, 0, 0, 0),
+                        child: FutureBuilder(
+                          future : getDifficulte(),
+                          builder: (context, snapshot) {
+                            if(snapshot.hasData){
+                              List<DropdownMenuItem<String>> list2 = new List<DropdownMenuItem<String>>();
+                              for(int i = 0; i < snapshot.data.diff.length; i++){
+                                list2.add(
+                                    new DropdownMenuItem(
+                                        child: Text(
+                                          snapshot.data.diff.elementAt(i),
+                                          style: TextStyle(
+                                              color:Colors.black
+                                          ),
+                                        ),
+                                        value : snapshot.data.diff.elementAt(i)
+                                    )
+                                );
+                              }
+                              list2.add(
+                                  new DropdownMenuItem(
+                                      child: Text(
+                                        "Toutes",
+                                        style: TextStyle(
+                                            color:Colors.black
+                                        ),
+                                      ),
+                                      value : "Toutes"
+                                  )
+                              );
+                              return DropdownButton<String>(
+                                  value: _chosenValueDiff,
+                                  style: TextStyle(color: Colors.white),
+                                  iconEnabledColor:Colors.black,
+                                  items: list2,
+                                  onChanged: (String value) {
+                                    setState(() {
+                                      _chosenValueDiff = value;
+                                    });
+                                  }
+                              );
+                            }
+                            return Text("");
+                          },
+                        )
+                    ),
+                  ],
+                )
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(0, marginText, 0, 0),
+              alignment: Alignment.center,
+              child: ElevatedButton(
+                onPressed: () {
+                  if(controllerNom.text != ""){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => PartieStandard(nomPartie : controllerNom.text, nbQuestions : _chosenValue, difficulte : _chosenValueDiff, categorie : _chosenValueCateg)));
+                  }
+                  else{
+                    showError(context, "Veuillez remplir tous les champs pour créer la partie privée !");
+                  }
+                },
+                child: Text(
+                  'Ajouter',
+                  style: TextStyle
+                    (
+                      fontSize: fontSizeT2
                   ),
-                  Container(
-                      width: widthButton/2,
-                      margin: EdgeInsets.fromLTRB(marginText, 0, 0, 0),
-                      child: DropdownButton<String>(
-                          value: _chosenValueCateg,
-                          style: TextStyle(color: Colors.white),
-                          iconEnabledColor:Colors.black,
-                          items: <String>[
-                            'Geographie',
-                            'Histoire'
-                          ].map<DropdownMenuItem<String>>((String value) {                              return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value,style:TextStyle(color:Colors.black),),
-                          );
-                          }).toList(),
-                          hint:Text(
-                            "Catégorie",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,),
-                          ),
-                          onChanged: (String value) {
-                            setState(() {
-                              _chosenValueCateg = value;
-                            });
-                          }
-                      )
-                  ),
-                ],
-              )
+                ),
+              ),
             )
           ],
         ),
@@ -186,6 +344,37 @@ class CreatePartieState extends State<CreatePartie>{
           ),
         ),
       ),
+    );
+  }
+
+  showError(BuildContext context, String err) {
+
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("Ok"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      elevation: 0,
+      title: Text("Attention"),
+      content: Text(err),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      barrierColor: Colors.white.withOpacity(0),
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 

@@ -129,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         padding: EdgeInsets.all(paddingButtonJeu),
                       ),
                       onPressed: () {
-                        Navigator.pushNamed(context, '/partieStandard');
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => PartieStandard(nomPartie : "", nbQuestions : "10", difficulte : "Toutes", categorie : "Toutes")));
                       },
                     ),
                   ),

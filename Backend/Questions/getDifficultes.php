@@ -2,14 +2,14 @@
 
 include("../Connexion/connexion.php");
 
-  $queryResult = $connection->query("SELECT * FROM CATEGORIE WHERE IDCATEGORIE <> 5");
+  $queryResult = $connection->query("SELECT * FROM DIFFICULTE_QUESTION WHERE IDDIFFICULTE <> 5");
 
   $result = array();
   $i = 1;
   while ($fetchdata = $queryResult->fetch()) {
-    $titre = "Categorie".$i;
+    $titre = "Difficulte".$i;
     $arrayt = array();
-    $arrayt["LIBELLECATEGORIE"] = $fetchdata["LIBELLECATEGORIE"];
+    $arrayt["LIBELLEDIFFICULTE"] = $fetchdata["LIBELLEDIFFICULTE"];
     $result[$titre] = $arrayt;
     $i++;
 }

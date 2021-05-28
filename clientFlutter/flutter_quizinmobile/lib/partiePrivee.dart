@@ -1,12 +1,6 @@
-import 'dart:collection';
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_quizinmobile/createPartie.dart';
-import 'package:http/http.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
 
 class PartiePrivee extends StatefulWidget{
   PartiePrivee({Key key, this.title}) : super(key: key);

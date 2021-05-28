@@ -9,16 +9,20 @@ import 'package:http/http.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
 
 class PartieStandard extends StatefulWidget{
-  PartieStandard({Key key, this.title}) : super(key: key);
+  PartieStandard({Key key, this.nbQuestions, this.difficulte, this.categorie, this.nomPartie}) : super(key: key);
 
-  final String title;
+  final String nbQuestions, difficulte, categorie, nomPartie;
 
   @override
-  State<StatefulWidget> createState() => PartieStandardState();
+  State<StatefulWidget> createState() => PartieStandardState(nbQuestions: this.nbQuestions, difficulte: this.difficulte, categorie: this.categorie, nomPartie: this.nomPartie);
 
 }
 
 class PartieStandardState extends State<PartieStandard>{
+  String nbQuestions, difficulte, categorie, nomPartie;
+
+  PartieStandardState({Key key, this.nbQuestions, this.difficulte, this.categorie, this.nomPartie});
+
   int cpt=1;
   HashMap<String, HashMap<String,String>> questions;
   final myControllerRep = TextEditingController();
@@ -27,7 +31,7 @@ class PartieStandardState extends State<PartieStandard>{
   int score=0;
   int scoreMax=0;
 
-  Future<String> _makePostRequest(String nbQuestions) async {
+  Future<String> _makePostRequest(String nbQuestions, String difficulte, String categorie) async {
     Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Questions/getQuestions.php');
     Map<String, String> headers = {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
@@ -36,7 +40,9 @@ class PartieStandardState extends State<PartieStandard>{
         url,
         headers: headers,
         body: {
-          'nbQuestions': nbQuestions
+          'nbQuestions': nbQuestions,
+          'difficulte': difficulte,
+          'categorie': categorie
         }
     );
     if (response.statusCode == 200) {
@@ -55,7 +61,7 @@ class PartieStandardState extends State<PartieStandard>{
 
   Future<void> initQuestions() async {
     if(!initG) {
-      var questionsTmp = jsonDecode(await _makePostRequest('10'));
+      var questionsTmp = jsonDecode(await _makePostRequest(nbQuestions, difficulte, categorie));
       questionsTmp.forEach((key, value) {
         print(key);
       });
@@ -262,28 +268,6 @@ class PartieStandardState extends State<PartieStandard>{
                           ),
                         )
                       ],
-                    ),
-                  ),
-                  /*Container(
-                child: ElevatedButton(
-                  child: Text('Initialiser questions', style: TextStyle(fontSize: 25.0),),
-                  onPressed: () {
-                    initQuestions();
-                  },
-                ),
-              ),*/
-                  Container(
-                    child: ElevatedButton(
-                      child: Text('Next question', style: TextStyle(fontSize: 25.0),),
-                      onPressed: () {
-                        if(cpt==10){
-                          Navigator.pop(context);
-                        }else{
-                          setState(() {
-                            cpt ++;
-                          });
-                        }
-                      },
                     ),
                   ),
                 ],
