@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_quizinmobile/finPartie.dart';
 import 'package:http/http.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
 
@@ -302,6 +303,9 @@ showAlertDialog(BuildContext context, int nbVie, int scoreManche, String reponse
     onPressed: () {
       if(fin){
         //redirection vers la page de fin avec les infos
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        Navigator.push(context, MaterialPageRoute(builder: (context) => FinPartieStandard(score: score, scoreMax: scoreMax, questions: questions,)));
       }else{
         Navigator.of(context).pop();
       }
