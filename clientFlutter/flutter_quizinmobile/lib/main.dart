@@ -17,6 +17,8 @@ import 'package:flutter_quizinmobile/quizPerso.dart';
 import 'package:flutter_quizinmobile/statsUser.dart';
 import 'package:flutter_quizinmobile/updateQuestionPerso.dart';
 
+import 'finPartie.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -46,6 +48,7 @@ class MyApp extends StatelessWidget {
           '/partieStandard': (context) => PartieStandard(),
           '/updateQuestionPerso': (context) => UpdateQuestionPerso(),
           '/partiePrivee': (context) => PartiePrivee(),
+          '/finPartieStandard': (context) => FinPartieStandard(),
         },
         initialRoute: '/'
     );

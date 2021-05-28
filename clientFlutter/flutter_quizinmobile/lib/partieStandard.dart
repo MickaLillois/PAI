@@ -22,7 +22,9 @@ class PartieStandardState extends State<PartieStandard>{
   HashMap<String, HashMap<String,String>> questions;
   final myControllerRep = TextEditingController();
   bool initG=false;
-  //int nbVie;
+  int nbVie;
+  int score=0;
+  int scoreMax=0;
 
   Future<String> _makePostRequest(String nbQuestions) async {
     Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Questions/getQuestions.php');
@@ -43,9 +45,16 @@ class PartieStandardState extends State<PartieStandard>{
     }
   }
 
+  String getInfo(String key){
+    String txt = questions["Question$cpt"][key];
+    print(txt);
+    //cpt++;
+    return txt;
+  }
+
   Future<void> initQuestions() async {
     if(!initG) {
-      var questionsTmp = jsonDecode(await _makePostRequest('9'));
+      var questionsTmp = jsonDecode(await _makePostRequest('10'));
       questionsTmp.forEach((key, value) {
         print(key);
       });
@@ -64,6 +73,7 @@ class PartieStandardState extends State<PartieStandard>{
               }
           ));
       questions = attributs;
+      nbVie=int.parse(getInfo('NBREPONSESMAX'));
 
       /*questions.forEach((key, value) {
       print (key);
@@ -83,12 +93,7 @@ class PartieStandardState extends State<PartieStandard>{
     super.initState();
   }*/
 
-  String getInfo(String key){
-    String txt = questions["Question$cpt"][key];
-    print(txt);
-    //cpt++;
-    return txt;
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +118,7 @@ class PartieStandardState extends State<PartieStandard>{
     double marginNumQ =screenSize.height*0.02;
 
     //autres variables
-    int nbVie=3;
+    //int nbVie=3;
 
 
     return Scaffold(
@@ -131,6 +136,23 @@ class PartieStandardState extends State<PartieStandard>{
                   Container(
                     margin: EdgeInsets.fromLTRB(0,marginLogo,0,marginLogo),
                     child: Image.asset('assets/images/logo_officiel.png',width: widthLogo, height: heightLogo),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.fromLTRB(0,0,0,paddingInput/2),
+                    width: screenSize.width*0.98,
+                    height: screenSize.height*0.07,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 3,
+                      ),
+                    ),
+                    child: Text("Score : $score / $scoreMax",style: TextStyle(
+                      fontSize: fontSizeInput,
+                      color: Colors.blueAccent,
+                      fontWeight: FontWeight.bold,
+                    ), ),
                   ),
                   Container(
                     width: screenSize.width*0.98,
@@ -192,25 +214,46 @@ class PartieStandardState extends State<PartieStandard>{
                                 List<String> reps=getInfo('REPONSES').toUpperCase().split('/');
                                 if(reps.contains(myControllerRep.text.toUpperCase())){
                                   print('cest bieng');
-                                  if(cpt==9){
-                                    Navigator.pop(context);
+                                  if(cpt==10){
+                                    scoreMax=scoreMax+int.parse(getInfo('NBREPONSESMAX'));
+                                    score=score+nbVie;
+                                    showAlertDialog(context,nbVie,int.parse(getInfo('NBREPONSESMAX')),getInfo('REPONSES'),"Gagné !",true,score,scoreMax,questions);
                                   }else{
                                     setState(() {
+                                      showAlertDialog(context,nbVie,int.parse(getInfo('NBREPONSESMAX')),getInfo('REPONSES'),"Gagné !",false,0,0,null);
+                                      scoreMax=scoreMax+int.parse(getInfo('NBREPONSESMAX'));
                                       cpt ++;
+                                      score=score+nbVie;
                                       nbVie=int.parse(getInfo('NBREPONSESMAX'));
                                     });
                                   }
                                   myControllerRep.clear();
                                 }else{
                                   if(nbVie==1){
-                                    setState(() {
-                                      cpt ++;
-                                    });
+                                    if(cpt==10){
+                                      scoreMax = scoreMax +
+                                          int.parse(getInfo('NBREPONSESMAX'));
+                                      showAlertDialog(context, 0,
+                                          int.parse(getInfo('NBREPONSESMAX')),
+                                          getInfo('REPONSES'), "Perdu !",true,score,scoreMax,questions);
+                                    }else {
+                                      setState(() {
+                                        showAlertDialog(context, 0,
+                                            int.parse(getInfo('NBREPONSESMAX')),
+                                            getInfo('REPONSES'), "Perdu !",false,0,0,null);
+                                        scoreMax = scoreMax +
+                                            int.parse(getInfo('NBREPONSESMAX'));
+                                        cpt ++;
+                                        nbVie =
+                                            int.parse(getInfo('NBREPONSESMAX'));
+                                      });
+                                    }
                                   }else{
                                     setState(() {
                                       nbVie --;
                                     });
                                   }
+                                  myControllerRep.clear();
                                   print('cest pas bieng');
                                 }
 
@@ -232,7 +275,7 @@ class PartieStandardState extends State<PartieStandard>{
                     child: ElevatedButton(
                       child: Text('Next question', style: TextStyle(fontSize: 25.0),),
                       onPressed: () {
-                        if(cpt==9){
+                        if(cpt==10){
                           Navigator.pop(context);
                         }else{
                           setState(() {
@@ -251,4 +294,36 @@ class PartieStandardState extends State<PartieStandard>{
     );
   }
 
+}
+
+showAlertDialog(BuildContext context, int nbVie, int scoreManche, String reponses, String result, bool fin, int score, int scoreMax, HashMap<String, HashMap<String,String>> questions) {
+  Widget okButton = FlatButton(
+    child: Text("OK"),
+    onPressed: () {
+      if(fin){
+        //redirection vers la page de fin avec les infos
+      }else{
+        Navigator.of(context).pop();
+      }
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    elevation: 0,
+    title: Text(result, style: TextStyle(fontSize: 25.0)),
+    content: Text("Les bonnes réponses étaient :\n$reponses \nVous avez gagné $nbVie points sur $scoreManche possibles.", style: TextStyle(fontSize: 20.0)),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }
