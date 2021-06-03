@@ -78,7 +78,7 @@ class FinPartieStandardState extends State<FinPartieStandard> {
                 child: ElevatedButton(
                   child: Text('Quitter', style: TextStyle(fontSize: 25.0),),
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.pushReplacementNamed(context, '/');
                   },
                 ),
               ),

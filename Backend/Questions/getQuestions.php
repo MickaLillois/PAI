@@ -5,6 +5,7 @@ include("../Connexion/connexion.php");
 $nbQuestions = $_POST["nbQuestions"];
 $difficulte = $_POST["difficulte"];
 $categorie = $_POST["categorie"];
+$mail = $_POST["mail"];
 $req;
 if($difficulte == "Toutes")
 {
@@ -30,6 +31,11 @@ else if($categorie == "Toutes"){
     $queryResult->bindParam(':diff', $difficulte, PDO::PARAM_STR);
     $queryResult->bindParam(':rows', $nbQuestions, PDO::PARAM_INT);
     $queryResult->execute();
+}
+else if($categorie == ""){
+  $req = "SELECT * FROM QUESTION Q JOIN DIFFICULTE_QUESTION D ON Q.IDDIFFICULTE = D.IDDIFFICULTE JOIN CATEGORIE C ON Q.IDCATEGORIE = C.IDCATEGORIE JOIN CONTENIR O ON O.IDQUESTION = Q.IDQUESTION JOIN QUIZ_PERSONNALISE P ON O.IDQUIZPERSO = P.IDQUIZPERSO WHERE NOMQUIZ = ? AND MAILUTILISATEUR = ?";
+    $queryResult = $connection->prepare($req);
+    $queryResult->execute(array($difficulte, $mail));
 }
 else{
   $req = "SELECT * FROM QUESTION Q JOIN DIFFICULTE_QUESTION D ON Q.IDDIFFICULTE = D.IDDIFFICULTE JOIN CATEGORIE C ON Q.IDCATEGORIE = C.IDCATEGORIE WHERE C.LIBELLECATEGORIE = :categ AND D.LIBELLEDIFFICULTE = :diff ORDER BY RAND() LIMIT :rows";

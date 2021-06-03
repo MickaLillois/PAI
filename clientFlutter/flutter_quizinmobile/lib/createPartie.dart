@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,27 @@ class Difficulte {
   }
 }
 
+class QuizPerso {
+  final List<String> quiz, nbQuestions;
+
+  QuizPerso({this.quiz, this.nbQuestions});
+
+  factory QuizPerso.fromJson(LinkedHashMap<String, dynamic> json) {
+    List<String> retour = new List<String>();
+    for(int i = 0; i< json.length; i++) {
+      retour.add(json["Quiz" + (i+1).toString()]["NOMQUIZ"]);
+    }
+    List<String> retour2 = new List<String>();
+    for(int i = 0; i< json.length; i++) {
+      retour2.add(json["Quiz" + (i+1).toString()]["NBQUESTIONSQUIZ"]);
+    }
+    return QuizPerso(
+        quiz : retour,
+        nbQuestions: retour2
+    );
+  }
+}
+
 class CreatePartie extends StatefulWidget{
   CreatePartie({Key key, @required this.alea}) : super(key: key);
 
@@ -56,7 +78,15 @@ class CreatePartieState extends State<CreatePartie>{
 
   final bool alea;
   final controllerNom = TextEditingController();
-  String _chosenValue = "10", _chosenValueCateg = "Toutes", _chosenValueDiff = "Toutes";
+  String _chosenValue = "10", _chosenValueCateg = "Toutes", _chosenValueDiff = "Toutes", _chosenValueQuiz, _chosenNbQuestions;
+
+  int getIndexQuiz(List<String> list, String nom){
+    int i = 0;
+    while(list.elementAt(i) != nom && i < list.length -1){
+      i++;
+    }
+    return i;
+  }
 
   Future<Categorie> getCategorie() async {
     mail = UserModel.getMail();
@@ -93,6 +123,26 @@ class CreatePartieState extends State<CreatePartie>{
     );
     if (response.statusCode == 200) {
       return Difficulte.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to create user.' + response.statusCode.toString());
+    }
+  }
+
+  Future<QuizPerso> getQuizPerso() async {
+    mail = UserModel.getMail();
+    Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Utilisateurs/getQuizPersoByUser.php');
+    Map<String, String> headers = {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    };
+    var response = await post(
+        url,
+        headers: headers,
+        body: {
+          'mail': mail
+        }
+    );
+    if (response.statusCode == 200) {
+      return QuizPerso.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to create user.' + response.statusCode.toString());
     }
@@ -204,7 +254,7 @@ class CreatePartieState extends State<CreatePartie>{
                                     });
                                   }
                               );
-                              }
+                            }
                             return Text("");
                           },
                         )
@@ -282,10 +332,10 @@ class CreatePartieState extends State<CreatePartie>{
                   }
                 },
                 child: Text(
-                  'Ajouter',
+                  'Lancer la partie',
                   style: TextStyle
                     (
-                      fontSize: fontSizeT2
+                      fontSize: fontSizeInput
                   ),
                 ),
               ),
@@ -297,7 +347,79 @@ class CreatePartieState extends State<CreatePartie>{
 
     Widget createPerso(){
       return Container(
-          child : Text("non")
+          width: widthButton,
+          margin: EdgeInsets.fromLTRB(0, marginText, 0, 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              FutureBuilder(
+                future : getQuizPerso(),
+                builder: (context, snapshot) {
+                  if(snapshot.hasData){
+                    List<DropdownMenuItem<String>> list = new List<DropdownMenuItem<String>>();
+                    for(int i = 0; i < snapshot.data.quiz.length; i++){
+                      list.add(
+                          new DropdownMenuItem(
+                              child: Text(
+                                snapshot.data.quiz.elementAt(i),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontSizeInput,
+                                    color: Colors.black
+                                ),
+                              ),
+                              value : snapshot.data.quiz.elementAt(i)
+                          )
+                      );
+                    }
+                    return DropdownButton<String>(
+                        value: _chosenValueQuiz,
+                        style: TextStyle(color: Colors.white),
+                        iconEnabledColor:Colors.black,
+                        hint: Text(
+                          "Choisir un quiz",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: fontSizeInput,
+                              color: Colors.black
+                          ),
+                        ),
+                        items: list,
+                        onChanged: (String value) {
+                          setState(() {
+                            _chosenValueQuiz = value;
+                            _chosenNbQuestions = snapshot.data.nbQuestions.elementAt(getIndexQuiz(snapshot.data.quiz,value));
+                            log(_chosenNbQuestions);
+                          });
+                        }
+                    );
+                  }
+                  return Text("");
+                },
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(0, marginText, 0, 0),
+                alignment: Alignment.center,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if(controllerNom.text != "" && _chosenValueQuiz != null){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => PartieStandard(nomPartie : controllerNom.text, nbQuestions : _chosenNbQuestions, difficulte : _chosenValueQuiz, categorie : "")));
+                    }
+                    else{
+                      showError(context, "Veuillez remplir tous les champs pour créer la partie privée !");
+                    }
+                  },
+                  child: Text(
+                    'Lancer la partie',
+                    style: TextStyle
+                      (
+                        fontSize: fontSizeInput
+                    ),
+                  ),
+                ),
+              )
+            ],
+          )
       );
     }
 
@@ -320,7 +442,8 @@ class CreatePartieState extends State<CreatePartie>{
                       child: Text (
                         'Nom de la partie : ',
                         style: TextStyle(
-                          fontSize: fontSizeT2,
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontSizeInput/1.3,
                         ),
                       ),
                     ),

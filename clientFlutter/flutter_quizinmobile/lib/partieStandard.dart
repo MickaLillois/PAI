@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_quizinmobile/finPartie.dart';
+import 'package:flutter_quizinmobile/model/userModel/userModel.dart';
 import 'package:http/http.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
 
@@ -42,7 +43,8 @@ class PartieStandardState extends State<PartieStandard>{
         body: {
           'nbQuestions': nbQuestions,
           'difficulte': difficulte,
-          'categorie': categorie
+          'categorie': categorie,
+          'mail': UserModel.getMail()
         }
     );
     if (response.statusCode == 200) {
@@ -141,9 +143,20 @@ class PartieStandardState extends State<PartieStandard>{
                 children: [
 
                   Container(
-                    margin: EdgeInsets.fromLTRB(0,marginLogo,0,marginLogo),
+                    margin: nomPartie == "" ? EdgeInsets.fromLTRB(0,marginLogo,0,marginLogo) : EdgeInsets.fromLTRB(0,marginLogo,0,0),
                     child: Image.asset('assets/images/logo_officiel.png',width: widthLogo, height: heightLogo),
                   ),
+                  nomPartie != "" ? Container(
+                      margin : EdgeInsets.fromLTRB(0,marginLogo/4,0,marginLogo/4),
+                      child : Text(
+                        nomPartie,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontSize: fontSizeInput,
+                            fontWeight: FontWeight.bold
+                        ),
+                      )
+                  ) : Text(""),
                   Container(
                     alignment: Alignment.center,
                     margin: EdgeInsets.fromLTRB(0,0,0,paddingInput/2),
@@ -221,7 +234,7 @@ class PartieStandardState extends State<PartieStandard>{
                                 List<String> reps=getInfo('REPONSES').toUpperCase().split('/');
                                 if(reps.contains(myControllerRep.text.toUpperCase())){
                                   print('cest bieng');
-                                  if(cpt==10){
+                                  if(cpt.toString()==nbQuestions){
                                     scoreMax=scoreMax+int.parse(getInfo('NBREPONSESMAX'));
                                     score=score+nbVie;
                                     showAlertDialog(context,nbVie,int.parse(getInfo('NBREPONSESMAX')),getInfo('REPONSES'),"Gagné !",true,score,scoreMax,questions);
@@ -237,7 +250,7 @@ class PartieStandardState extends State<PartieStandard>{
                                   myControllerRep.clear();
                                 }else{
                                   if(nbVie==1){
-                                    if(cpt==10){
+                                    if(cpt.toString()==nbQuestions){
                                       scoreMax = scoreMax +
                                           int.parse(getInfo('NBREPONSESMAX'));
                                       showAlertDialog(context, 0,
