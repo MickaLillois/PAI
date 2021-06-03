@@ -232,7 +232,9 @@ class PartieStandardState extends State<PartieStandard>{
                               iconSize: iconSize,
                               onPressed: () {
                                 List<String> reps=getInfo('REPONSES').toUpperCase().split('/');
-                                if(reps.contains(myControllerRep.text.toUpperCase())){
+                                if(myControllerRep.text==""){
+                                  //il se passe rien woulah
+                                }else if(reps.contains(myControllerRep.text.toUpperCase())){
                                   print('cest bieng');
                                   if(cpt.toString()==nbQuestions){
                                     scoreMax=scoreMax+int.parse(getInfo('NBREPONSESMAX'));

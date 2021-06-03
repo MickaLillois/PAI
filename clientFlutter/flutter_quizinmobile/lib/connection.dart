@@ -179,7 +179,6 @@ showAlertDialog(BuildContext context, String msg) {
 
   // show the dialog
   showDialog(
-    barrierColor: Colors.white.withOpacity(0),
     barrierDismissible: false,
     context: context,
     builder: (BuildContext context) {
