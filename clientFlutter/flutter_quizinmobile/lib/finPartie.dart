@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
@@ -8,7 +9,7 @@ class FinPartieStandard extends StatefulWidget{
   int score;
   int scoreMax;
   HashMap<String, HashMap<String,String>> questions;
-  FinPartieStandard({Key key,@required this.score, @required this.scoreMax, @required this.questions}) : super(key: key);
+  FinPartieStandard({Key key,@required this.score, @required this.scoreMax, @required this.questions,}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => FinPartieStandardState(score: score, scoreMax: scoreMax, questions: questions);
@@ -36,13 +37,9 @@ class FinPartieStandardState extends State<FinPartieStandard> {
     double heightLogo = screenSize.height*0.12;
     double marginLogo = screenSize.height*0.05;
     double paddingInput = screenSize.height*0.02;
-    double widthInput = screenSize.width*0.7;
-    double widthInput2 = screenSize.width*0.9;
-    double widthInputIcon = screenSize.width*0.2;
-    double iconSize = screenSize.width*0.2;
     double fontSizeInput = screenSize.height*0.035;
     double fontSizeT1 = screenSize.height*0.025;
-    double marginNumQ =screenSize.height*0.02;
+
 
     return Scaffold(
       body:SingleChildScrollView(
@@ -118,4 +115,32 @@ class FinPartieStandardState extends State<FinPartieStandard> {
     );
   }
 
+}
+
+showAlertDialog(BuildContext context, int nbVie, int scoreManche, String reponses, String result) {
+  Widget okButton = FlatButton(
+    child: Text("OK"),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    elevation: 0,
+    title: Text(result, style: TextStyle(fontSize: 25.0)),
+    content: Text("Les bonnes réponses étaient :\n$reponses \nVous avez gagné $nbVie points sur $scoreManche possible.", style: TextStyle(fontSize: 20.0)),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

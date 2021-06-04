@@ -54,6 +54,31 @@ class PartieStandardState extends State<PartieStandard>{
     }
   }
 
+  Future<String> _makePostRequest2( String scorePartie, String txBR, String scoreMax) async {
+    Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Stats/updateStatsStandard.php');
+    Map<String, String> headers = {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    };
+    Response response = await post(
+        url,
+        headers: headers,
+        body: {
+          'user': UserModel.getMail(),
+          'scPart': scorePartie,
+          'TmpRepMoy': '0',
+          'txBonRep': txBR,
+          'nbQue': scoreMax,
+          'ptsUs' : (int.parse(scorePartie)*2).toString(),
+          'clmt' : '0'
+        }
+    );
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Erreur dans la récupération des questions' + response.statusCode.toString());
+    }
+  }
+
   String getInfo(String key){
     String txt = questions["Question$cpt"][key];
     print(txt);
@@ -230,22 +255,24 @@ class PartieStandardState extends State<PartieStandard>{
                               icon: const Icon(Icons.check_box),
                               color: Colors.black,
                               iconSize: iconSize,
-                              onPressed: () {
+                              onPressed: () async{
                                 List<String> reps=getInfo('REPONSES').toUpperCase().split('/');
                                 if(myControllerRep.text==""){
                                   //il se passe rien woulah
                                 }else if(reps.contains(myControllerRep.text.toUpperCase())){
                                   print('cest bieng');
                                   if(cpt.toString()==nbQuestions){
-                                    scoreMax=scoreMax+int.parse(getInfo('NBREPONSESMAX'));
-                                    score=score+nbVie;
-                                    showAlertDialog(context,nbVie,int.parse(getInfo('NBREPONSESMAX')),getInfo('REPONSES'),"Gagné !",true,score,scoreMax,questions);
+                                    scoreMax=scoreMax+1;
+                                    score=score+1;
+                                    await _makePostRequest2(score.toString(),(score/scoreMax).toString(), scoreMax.toString());
+                                    Navigator.of(context).pop();
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => FinPartieStandard(score: score, scoreMax: scoreMax, questions: questions)));
                                   }else{
                                     setState(() {
-                                      showAlertDialog(context,nbVie,int.parse(getInfo('NBREPONSESMAX')),getInfo('REPONSES'),"Gagné !",false,0,0,null);
-                                      scoreMax=scoreMax+int.parse(getInfo('NBREPONSESMAX'));
+                                      showAlertDialog(context,1,1,getInfo('REPONSES'),"Gagné !");
+                                      scoreMax=scoreMax+1;
                                       cpt ++;
-                                      score=score+nbVie;
+                                      score=score+1;
                                       nbVie=int.parse(getInfo('NBREPONSESMAX'));
                                     });
                                   }
@@ -253,18 +280,16 @@ class PartieStandardState extends State<PartieStandard>{
                                 }else{
                                   if(nbVie==1){
                                     if(cpt.toString()==nbQuestions){
-                                      scoreMax = scoreMax +
-                                          int.parse(getInfo('NBREPONSESMAX'));
-                                      showAlertDialog(context, 0,
-                                          int.parse(getInfo('NBREPONSESMAX')),
-                                          getInfo('REPONSES'), "Perdu !",true,score,scoreMax,questions);
+                                      scoreMax = scoreMax +1;
+                                      Navigator.of(context).pop();
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => FinPartieStandard(score: score, scoreMax: scoreMax, questions: questions)));
                                     }else {
                                       setState(() {
                                         showAlertDialog(context, 0,
-                                            int.parse(getInfo('NBREPONSESMAX')),
-                                            getInfo('REPONSES'), "Perdu !",false,0,0,null);
+                                            1,
+                                            getInfo('REPONSES'), "Perdu !");
                                         scoreMax = scoreMax +
-                                            int.parse(getInfo('NBREPONSESMAX'));
+                                            1;
                                         cpt ++;
                                         nbVie =
                                             int.parse(getInfo('NBREPONSESMAX'));
@@ -296,18 +321,11 @@ class PartieStandardState extends State<PartieStandard>{
 
 }
 
-showAlertDialog(BuildContext context, int nbVie, int scoreManche, String reponses, String result, bool fin, int score, int scoreMax, HashMap<String, HashMap<String,String>> questions) {
+showAlertDialog(BuildContext context, int nbVie, int scoreManche, String reponses, String result) {
   Widget okButton = FlatButton(
     child: Text("OK"),
     onPressed: () {
-      if(fin){
-        //redirection vers la page de fin avec les infos
-        Navigator.of(context).pop();
-        Navigator.of(context).pop();
-        Navigator.push(context, MaterialPageRoute(builder: (context) => FinPartieStandard(score: score, scoreMax: scoreMax, questions: questions,)));
-      }else{
-        Navigator.of(context).pop();
-      }
+      Navigator.of(context).pop();
     },
   );
 
@@ -315,7 +333,7 @@ showAlertDialog(BuildContext context, int nbVie, int scoreManche, String reponse
   AlertDialog alert = AlertDialog(
     elevation: 0,
     title: Text(result, style: TextStyle(fontSize: 25.0)),
-    content: Text("Les bonnes réponses étaient :\n$reponses \nVous avez gagné $nbVie points sur $scoreManche possibles.", style: TextStyle(fontSize: 20.0)),
+    content: Text("Les bonnes réponses étaient :\n$reponses \nVous avez gagné $nbVie points sur $scoreManche possible.", style: TextStyle(fontSize: 20.0)),
     actions: [
       okButton,
     ],
