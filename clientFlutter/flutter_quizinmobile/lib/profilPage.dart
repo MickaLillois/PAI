@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ Future<User> _makePostRequest() async {
   if (response.statusCode == 200) {
     return User.fromJson(jsonDecode(response.body));
   } else {
-    throw Exception('Failed to create user.' + response.statusCode.toString());
+    throw Exception('Failed to extract user.' + response.statusCode.toString());
   }
 }
 
