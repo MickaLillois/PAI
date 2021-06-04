@@ -21,7 +21,6 @@ Future<Stats> _makePostRequest() async {
       body: {'mail': mail}
   );
   if (response.statusCode == 200) {
-    log(response.body);
     return Stats.fromJson(jsonDecode(response.body));
   } else {
     throw Exception('Failed to extract stats.' + response.statusCode.toString());
@@ -92,7 +91,55 @@ class StatsUserState extends State<StatsUser> {
                 ],
               ),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Container(
+                    margin: EdgeInsets.fromLTRB(marginText, marginText, 0, 0),
+                    child: Text(
+                      'Vos statistiques ',
+                      style: TextStyle(
+                        fontSize: standard,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(marginText, marginText, 0, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Vos points  :',
+                          style: TextStyle(
+                            fontSize: standard2,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Container(
+                            margin: EdgeInsets.symmetric(vertical: marginText/2),
+                            child: FutureBuilder(
+                              future: _futureStats,
+                              builder: (context, snapshot){
+                                if(snapshot.hasData)
+                                {
+                                  tauxRep = snapshot.data.ptsUser;
+                                  return Text(
+                                      snapshot.data.ptsUser,
+                                      style: TextStyle(
+                                        fontSize: standard2,
+                                      )
+                                  );
+                                  return Text(snapshot.data.dateNaissance);
+                                }else if (snapshot.hasError) {
+                                  return Text("${snapshot.error}");
+                                }
+                                return CircularProgressIndicator();
+                              },
+                            )
+                        ),
+                      ],
+                    ),
+                  ),
                   Container(
                     margin: EdgeInsets.fromLTRB(marginText, marginText, 0, 0),
                     child: Column(
@@ -120,6 +167,79 @@ class StatsUserState extends State<StatsUser> {
                                       )
                                   );
                                   return Text(snapshot.data.dateNaissance);
+                                }else if (snapshot.hasError) {
+                                  return Text("${snapshot.error}");
+                                }
+                                return CircularProgressIndicator();
+                              },
+                            )
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(marginText, marginText, 0, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Score moyen en partie :',
+                          style: TextStyle(
+                            fontSize: standard2,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Container(
+                            margin: EdgeInsets.symmetric(vertical: marginText/2),
+                            child: FutureBuilder(
+                              future: _futureStats,
+                              builder: (context, snapshot){
+                                if(snapshot.hasData)
+                                {
+                                  tauxRep = snapshot.data.scoreMoyen;
+                                  return Text(
+                                      snapshot.data.scoreMoyen,
+                                      style: TextStyle(
+                                        fontSize: standard2,
+                                      )
+                                  );
+                                  return Text(snapshot.data.dateNaissance);
+                                }else if (snapshot.hasError) {
+                                  return Text("${snapshot.error}");
+                                }
+                                return CircularProgressIndicator();
+                              },
+                            )
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(marginText, marginText, 0, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Nombre de parties jouées :',
+                          style: TextStyle(
+                            fontSize: standard2,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Container(
+                            margin: EdgeInsets.symmetric(vertical: marginText/2),
+                            child: FutureBuilder(
+                              future: _futureStats,
+                              builder: (context, snapshot){
+                                if(snapshot.hasData)
+                                {
+                                  tauxRep = snapshot.data.nbPartiesJouees;
+                                  return Text(
+                                      snapshot.data.nbPartiesJouees,
+                                      style: TextStyle(
+                                        fontSize: standard2,
+                                      )
+                                  );
                                 }else if (snapshot.hasError) {
                                   return Text("${snapshot.error}");
                                 }
