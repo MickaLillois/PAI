@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_quizinmobile/detailsQuiz.dart';
 import 'package:flutter_quizinmobile/editProfil.dart';
-import 'package:flutter_quizinmobile/jouer.dart';
 import 'package:flutter_quizinmobile/model/userModel/userModel.dart';
 import 'package:flutter_quizinmobile/newQuestion.dart';
 import 'package:flutter_quizinmobile/newQuiz.dart';
@@ -18,6 +17,7 @@ import 'package:flutter_quizinmobile/quizPerso.dart';
 import 'package:flutter_quizinmobile/statsUser.dart';
 import 'package:flutter_quizinmobile/updateQuestionPerso.dart';
 
+import 'Classement.dart';
 import 'finPartie.dart';
 
 
@@ -41,7 +41,6 @@ class MyApp extends StatelessWidget {
           '/editMdp': (context) => EditMdp(),
           '/editProfil': (context) => EditProfil(),
           '/statsUser': (context) => StatsUser(),
-          '/jouer': (context) => Jouer(),
           '/quizPerso': (context) => QuizPerso(),
           '/newQuiz': (context) => NewQuiz(),
           '/detailsQuiz': (context) => DetailsQuiz(),
@@ -51,6 +50,7 @@ class MyApp extends StatelessWidget {
           '/partiePrivee': (context) => PartiePrivee(),
           '/finPartieStandard': (context) => FinPartieStandard(),
           '/proposerQuestion' : (context) => ProposerQuestion(),
+          '/classement': (context) => Classement(),
         },
         initialRoute: '/'
     );
@@ -140,24 +140,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     width: widthButton,
                     child: ElevatedButton(
                       child: Column(children: <Widget>[
-                        Container(child: Text('Mode Battle Royal', style: TextStyle(fontSize: fontSizeT1),),),
-                        Container(child: Text('Rejoindre une partie rapide', style: TextStyle(fontSize: fontSizeT2),),),
-                      ]),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.blue, // background
-                        onPrimary: Colors.white, // foreground
-                        padding: EdgeInsets.all(paddingButtonJeu),
-                      ),
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/jouer');
-                      },
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(marginButton),
-                    width: widthButton,
-                    child: ElevatedButton(
-                      child: Column(children: <Widget>[
                         Container(child: Text('Partie privée', style: TextStyle(fontSize: fontSizeT1),),),
                         Container(child: Text('Rejoindre le menu de partie privée', style: TextStyle(fontSize: fontSizeT2),),),
                       ]),
@@ -168,6 +150,24 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       onPressed: () {
                         Navigator.pushNamed(context, '/partiePrivee');
+                      },
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(marginButton),
+                    width: widthButton,
+                    child: ElevatedButton(
+                      child: Column(children: <Widget>[
+                        Container(child: Text('Statistiques', style: TextStyle(fontSize: fontSizeT1),),),
+                        Container(child: Text('Classement des meilleurs joueurs', style: TextStyle(fontSize: fontSizeT2),),),
+                      ]),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue, // background
+                        onPrimary: Colors.white, // foreground
+                        padding: EdgeInsets.all(paddingButtonJeu),
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/classement');
                       },
                     ),
                   ),

@@ -99,7 +99,7 @@ class ProposerQuestionState extends State<ProposerQuestion> {
                       controller: myControllerIntitule,
                     ),
                   ),
-                  Container(
+                  /*Container(
                       child: ListView.builder(
                         primary: false,
                         itemCount: 3,
@@ -117,7 +117,7 @@ class ProposerQuestionState extends State<ProposerQuestion> {
                           );
                         },
                       )
-                  ),
+                  ),*/
                   Container(
                     child: IconButton(
                       icon: const Icon(Icons.add_circle),
