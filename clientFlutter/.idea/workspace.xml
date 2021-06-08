@@ -21,7 +21,6 @@
   <component name="ChangeListManager">
     <list default="true" id="7e4c2bcb-c401-42d7-bec0-05c804a499c0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter_quizinmobile/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_quizinmobile/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flutter_quizinmobile/lib/proposerQuestion.dart" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_quizinmobile/lib/proposerQuestion.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -110,22 +109,22 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="421" y="95" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1617870541265" />
-    <state width="912" height="267" key="GridCell.Tab.0.bottom" timestamp="1622843114887">
+    <state width="919" height="2" key="GridCell.Tab.0.bottom" timestamp="1623158020463">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="912" height="267" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1622843114887" />
-    <state width="912" height="267" key="GridCell.Tab.0.center" timestamp="1622843114887">
+    <state width="919" height="2" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1623158020463" />
+    <state width="919" height="2" key="GridCell.Tab.0.center" timestamp="1623158020462">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="912" height="267" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1622843114887" />
-    <state width="912" height="267" key="GridCell.Tab.0.left" timestamp="1622843114887">
+    <state width="919" height="2" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1623158020462" />
+    <state width="919" height="2" key="GridCell.Tab.0.left" timestamp="1623158020461">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="912" height="267" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1622843114887" />
-    <state width="912" height="267" key="GridCell.Tab.0.right" timestamp="1622843114887">
+    <state width="919" height="2" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1623158020461" />
+    <state width="919" height="2" key="GridCell.Tab.0.right" timestamp="1623158020462">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
-    <state width="912" height="267" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1622843114887" />
+    <state width="919" height="2" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1623158020462" />
     <state x="142" y="0" key="SettingsEditor" timestamp="1617873658969">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
@@ -138,5 +137,9 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="143" y="153" key="run.anything.popup/0.0.1280.680@0.0.1280.680" timestamp="1622809805092" />
+    <state x="146" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1623182501914">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="146" y="1" width="672" height="678" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1623182501914" />
   </component>
 </project>
