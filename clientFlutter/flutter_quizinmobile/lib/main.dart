@@ -13,6 +13,7 @@ import 'package:flutter_quizinmobile/connection.dart';
 import 'package:flutter_quizinmobile/inscription.dart';
 import 'package:flutter_quizinmobile/editMdp.dart';
 import 'package:flutter/src/material/icons.dart';
+import 'package:flutter_quizinmobile/proposerQuestion.dart';
 import 'package:flutter_quizinmobile/quizPerso.dart';
 import 'package:flutter_quizinmobile/statsUser.dart';
 import 'package:flutter_quizinmobile/updateQuestionPerso.dart';
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
           '/updateQuestionPerso': (context) => UpdateQuestionPerso(),
           '/partiePrivee': (context) => PartiePrivee(),
           '/finPartieStandard': (context) => FinPartieStandard(),
+          '/proposerQuestion' : (context) => ProposerQuestion(),
         },
         initialRoute: '/'
     );
@@ -180,7 +182,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         padding: EdgeInsets.all(paddingButtonQuest),
                       ),
                       onPressed: () {
-                        print(login.toString());
+                        Navigator.pushNamed(context, '/proposerQuestion');
                       },
                     ),
                   ),
