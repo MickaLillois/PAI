@@ -2,12 +2,12 @@
 
 include("../Connexion/connexion.php");
 
-$mail = $_GET["mail"];
-$categ = $_GET["categ"];
-$intitule = $_GET["intitule"];
-$difficulte = $_GET["difficulte"];
-$reponses = $_GET["reponses"];
-$nbReponsesMax = $_GET["nbRepMax"];
+$mail = $_POST["mail"];
+$categ = $_POST["categ"];
+$intitule = $_POST["intitule"];
+$difficulte = $_POST["difficulte"];
+$reponses = $_POST["reponses"];
+$nbReponsesMax = $_POST["nbRepMax"];
   $q = $connection->prepare("SELECT IDCATEGORIE FROM CATEGORIE WHERE LIBELLECATEGORIE = ?");
   $q->execute (array($categ));
   $idCateg = $q->fetch();

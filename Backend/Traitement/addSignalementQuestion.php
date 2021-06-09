@@ -2,10 +2,10 @@
 
 include("../Connexion/connexion.php");
 
-$mail = $_GET["mail"];
-$categSign = $_GET["categSign"];
-$intitule = $_GET["intitule"];
-$commentaires = $_GET["commentaires"];
+$mail = $_POST["mail"];
+$categSign = $_POST["categSign"];
+$intitule = $_POST["intitule"];
+$commentaires = $_POST["commentaires"];
   $q = $connection->prepare("SELECT IDCATEGORIE_SIGNALEMENT FROM CATEGORIE_SIGNALEMENT WHERE LIBELLECATEGORIE_SIGNALEMENT = ?");
   $q->execute (array($categSign));
   $idCateg = $q->fetch();

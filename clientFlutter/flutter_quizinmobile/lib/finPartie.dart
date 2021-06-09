@@ -4,6 +4,7 @@ import 'dart:collection';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_quizinmobile/signalerQuestion.dart';
 
 class FinPartieStandard extends StatefulWidget{
   int score;
@@ -88,13 +89,30 @@ class FinPartieStandardState extends State<FinPartieStandard> {
                       itemBuilder: (context, int index){
                         return Container(
                             margin : EdgeInsets.fromLTRB(0,marginLogo/8,0,marginLogo/8),
-                            height: screenSize.height*0.3,
+                            height: screenSize.height*0.35,
                             padding: EdgeInsets.all(16),
                             child: Column(
                               children: [
                                 Text('Question n°${index + 1}',style: TextStyle(fontSize: fontSizeT1, fontWeight: FontWeight.bold),),
                                 Text('${questions["Question${index + 1}"]['INTITULE']}\n',style: TextStyle(fontSize: fontSizeT1),),
                                 Text('Réponses : ${questions["Question${index + 1}"]['REPONSES']}',style: TextStyle(fontSize: fontSizeT1),),
+                                questions["Question${index + 1}"]['DIFFICULTE'] == "Perso" ? Text(
+                                    ""
+                                ) :
+                                Container(
+                                  margin : EdgeInsets.fromLTRB(0,marginLogo/3,0,0),
+                                  child: ElevatedButton(
+                                    child: Text(
+                                      'Signaler la question',
+                                      style: TextStyle(
+                                          fontSize: fontSizeInput
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => SignalerQuestion(intitule : questions["Question${index + 1}"]['INTITULE'])));
+                                    },
+                                  ),
+                                ),
                               ],
                             ),
                             decoration: BoxDecoration(

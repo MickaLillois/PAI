@@ -14,6 +14,7 @@ import 'package:flutter_quizinmobile/editMdp.dart';
 import 'package:flutter/src/material/icons.dart';
 import 'package:flutter_quizinmobile/proposerQuestion.dart';
 import 'package:flutter_quizinmobile/quizPerso.dart';
+import 'package:flutter_quizinmobile/signalerQuestion.dart';
 import 'package:flutter_quizinmobile/statsUser.dart';
 import 'package:flutter_quizinmobile/updateQuestionPerso.dart';
 
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
           '/finPartieStandard': (context) => FinPartieStandard(),
           '/proposerQuestion' : (context) => ProposerQuestion(),
           '/classement': (context) => Classement(),
+          '/signalerQuestion': (context) => SignalerQuestion()
         },
         initialRoute: '/'
     );
