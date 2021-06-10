@@ -7,7 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_quizinmobile/finPartie.dart';
 import 'package:flutter_quizinmobile/model/userModel/userModel.dart';
 import 'package:http/http.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
+
+///classes permettant de jouer une partie standard en gérant l'affichage des questions ainsi que la gestion des réponses
 
 class PartieStandard extends StatefulWidget{
   PartieStandard({Key key, this.nbQuestions, this.difficulte, this.categorie, this.nomPartie}) : super(key: key);
@@ -32,6 +33,7 @@ class PartieStandardState extends State<PartieStandard>{
   int score=0;
   int scoreMax=0;
 
+  ///méthode permettant de récupérer un certains nombre de questions aléatoires en précisant la ou les catégorie(s) ainsi que la ou les difficulté(s) voulues
   Future<String> _makePostRequest(String nbQuestions, String difficulte, String categorie) async {
     Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Questions/getQuestions.php');
     Map<String, String> headers = {
@@ -54,6 +56,7 @@ class PartieStandardState extends State<PartieStandard>{
     }
   }
 
+  ///méthode permettant l'envoie des statistiques à la fin de la partie
   Future<String> _makePostRequest2( String scorePartie, String txBR, String scoreMax) async {
     Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Stats/updateStatsStandard.php');
     Map<String, String> headers = {
@@ -79,6 +82,7 @@ class PartieStandardState extends State<PartieStandard>{
     }
   }
 
+  ///méthode permettant de récupérer un attribut de la question courante (intitule, reponses,...)
   String getInfo(String key){
     String txt = questions["Question$cpt"][key];
     print(txt);
@@ -86,6 +90,7 @@ class PartieStandardState extends State<PartieStandard>{
     return txt;
   }
 
+  ///méthode permettant de stocker les questions récupérées via la requête HTTP _makePostRequest dans une variable Map locale
   Future<void> initQuestions() async {
     if(!initG) {
       var questionsTmp = jsonDecode(await _makePostRequest(nbQuestions, difficulte, categorie));
@@ -119,15 +124,6 @@ class PartieStandardState extends State<PartieStandard>{
     }
   }
 
-  /*@override
-  void initState() {
-    initQuestions();
-    //nbVie=int.parse(getInfo('NBREPONSESMAX'));
-    Future.delayed(const Duration(seconds: 2), (){});
-    super.initState();
-  }*/
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -151,9 +147,6 @@ class PartieStandardState extends State<PartieStandard>{
     double fontSizeT1 = screenSize.height*0.045;
     double marginNumQ =screenSize.height*0.02;
 
-    //autres variables
-    //int nbVie=3;
-
 
     return Scaffold(
       body: FutureBuilder(
@@ -167,10 +160,13 @@ class PartieStandardState extends State<PartieStandard>{
               child: Column(
                 children: [
 
+                  //logo
                   Container(
                     margin: nomPartie == "" ? EdgeInsets.fromLTRB(0,marginLogo,0,marginLogo) : EdgeInsets.fromLTRB(0,marginLogo,0,0),
                     child: Image.asset('assets/images/logo_officiel.png',width: widthLogo, height: heightLogo),
                   ),
+
+                  //Nom de la partie s'il s'agit d'un quiz perso
                   nomPartie != "" ? Container(
                       margin : EdgeInsets.fromLTRB(0,marginLogo/4,0,marginLogo/4),
                       child : Text(
@@ -182,6 +178,8 @@ class PartieStandardState extends State<PartieStandard>{
                         ),
                       )
                   ) : Text(""),
+
+                  //Bloc contenant le score
                   Container(
                     alignment: Alignment.center,
                     margin: EdgeInsets.fromLTRB(0,0,0,paddingInput/2),
@@ -199,6 +197,8 @@ class PartieStandardState extends State<PartieStandard>{
                       fontWeight: FontWeight.bold,
                     ), ),
                   ),
+
+                  //Bloc contenant le numéro de la question, son intitule, et le nombre de vie restantes
                   Container(
                     width: screenSize.width*0.98,
                     height: screenSize.height*0.55,
@@ -211,14 +211,20 @@ class PartieStandardState extends State<PartieStandard>{
                     ),
                     child: Column(
                       children: [
+
+                        //texte "Question n°?"
                         Container(
                             margin: EdgeInsets.fromLTRB(0,marginNumQ,0,marginNumQ),
                             child: Text('Question n°$cpt',style: TextStyle(fontSize: fontSizeT1),)
                         ),
+
+                        //intitule de la question
                         Container(
                             margin: EdgeInsets.fromLTRB(0,marginNumQ,0,marginNumQ),
                             child: Text(getInfo('INTITULE'),style: TextStyle(fontSize: fontSizeT1),)
                         ),
+
+                        //nombre de vies restantes
                         Container(
                           alignment: Alignment.bottomLeft,
                           child: Row(
@@ -232,6 +238,8 @@ class PartieStandardState extends State<PartieStandard>{
                       ],
                     ),
                   ),
+
+                  //texte input permettant de proposer une réponse
                   Container(
                     width: widthInput2,
                     child: Row(
@@ -249,6 +257,10 @@ class PartieStandardState extends State<PartieStandard>{
                             controller: myControllerRep,
                           ),
                         ),
+
+                        //bouton permettant de valider la réponse
+                        //l'utilisateur perd une vie si la réponse est fausse
+                        //l'utilisateur passe à la question suivante si il répond bien ou n'a plus de vie
                         Container(
                           width: widthInputIcon,
                           child: IconButton(
@@ -258,9 +270,8 @@ class PartieStandardState extends State<PartieStandard>{
                               onPressed: () async{
                                 List<String> reps=getInfo('REPONSES').toUpperCase().split('/');
                                 if(myControllerRep.text==""){
-                                  //il se passe rien woulah
+                                  //nothing
                                 }else if(reps.contains(myControllerRep.text.toUpperCase())){
-                                  print('cest bieng');
                                   if(cpt.toString()==nbQuestions){
                                     scoreMax=scoreMax+1;
                                     score=score+1;
@@ -301,7 +312,6 @@ class PartieStandardState extends State<PartieStandard>{
                                     });
                                   }
                                   myControllerRep.clear();
-                                  print('cest pas bieng');
                                 }
 
                               }
@@ -321,6 +331,7 @@ class PartieStandardState extends State<PartieStandard>{
 
 }
 
+//méthode permettant de générer les popup
 showAlertDialog(BuildContext context, int nbVie, int scoreManche, String reponses, String result) {
   Widget okButton = FlatButton(
     child: Text("OK"),

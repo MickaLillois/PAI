@@ -21,6 +21,8 @@ import 'package:flutter_quizinmobile/updateQuestionPerso.dart';
 import 'Classement.dart';
 import 'finPartie.dart';
 
+///Classe principale qui initialise toutes les pages de l'application et qui fait office d'accueil de l'application
+
 
 void main() {
   runApp(MyApp());
@@ -76,6 +78,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
   @override
   Widget build(BuildContext context) {
+
+    //variables de responsivité
     UserModel.getUser();
     Size screenSize = MediaQuery.of(context).size;
     SystemChrome.setPreferredOrientations([
@@ -94,15 +98,21 @@ class _MyHomePageState extends State<MyHomePage> {
     double heightLogo = screenSize.height*0.12;
     double marginLogo = screenSize.height*0.05;
     double marginIcon = screenSize.height*0.02;
+
+
     return Scaffold(
         body: SingleChildScrollView(
           child: Center(
             child: Column(
                 children: <Widget>[
+
+                  //logo
                   Container(
                     margin: EdgeInsets.fromLTRB(0,marginLogo,0,0),
                     child: Image.asset('assets/images/logo_officiel.png',width: widthLogo, height: heightLogo),
                   ),
+
+                  //iconbutton d'utilisateur permettant d'accéder à son profil lorsqu'on est connecté ou de se connecter dans le cas contraire
                   Container(
                     margin: EdgeInsets.fromLTRB(0,marginIcon,0,0),
                     child: IconButton(
@@ -119,6 +129,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                     ),
                   ),
+
+                  //bouton permettant d'accéder à la page partieStandard lançant une partie standard
                   Container(
                     margin: EdgeInsets.all(marginButton),
                     width: widthButton,
@@ -133,10 +145,16 @@ class _MyHomePageState extends State<MyHomePage> {
                         padding: EdgeInsets.all(paddingButtonJeu),
                       ),
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => PartieStandard(nomPartie : "", nbQuestions : "10", difficulte : "Toutes", categorie : "Toutes")));
+                        if(UserModel.sessionUser == null){
+                          showAlertDialog(context);
+                        }else{
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => PartieStandard(nomPartie : "", nbQuestions : "10", difficulte : "Toutes", categorie : "Toutes")));
+                        }
                       },
                     ),
                   ),
+
+                  //bouton permettant d'accéder au menu de partie privée
                   Container(
                     margin: EdgeInsets.all(marginButton),
                     width: widthButton,
@@ -151,10 +169,16 @@ class _MyHomePageState extends State<MyHomePage> {
                         padding: EdgeInsets.all(paddingButtonJeu),
                       ),
                       onPressed: () {
-                        Navigator.pushNamed(context, '/partiePrivee');
+                        if(UserModel.sessionUser == null){
+                          showAlertDialog(context);
+                        }else{
+                          Navigator.pushNamed(context, '/partiePrivee');
+                        }
                       },
                     ),
                   ),
+
+                  //bouton permettant d'accéder aux statistiques
                   Container(
                     margin: EdgeInsets.all(marginButton),
                     width: widthButton,
@@ -169,10 +193,16 @@ class _MyHomePageState extends State<MyHomePage> {
                         padding: EdgeInsets.all(paddingButtonJeu),
                       ),
                       onPressed: () {
-                        Navigator.pushNamed(context, '/classement');
+                        if(UserModel.sessionUser == null){
+                          showAlertDialog(context);
+                        }else{
+                          Navigator.pushNamed(context, '/classement');
+                        }
                       },
                     ),
                   ),
+
+                  //bouton permettant d'accéder au menu de suggestion de question
                   Container(
                     margin: EdgeInsets.all(marginButton),
                     width: widthButton,
@@ -184,7 +214,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         padding: EdgeInsets.all(paddingButtonQuest),
                       ),
                       onPressed: () {
-                        Navigator.pushNamed(context, '/proposerQuestion');
+                        if(UserModel.sessionUser == null){
+                          showAlertDialog(context);
+                        }else{
+                          Navigator.pushNamed(context, '/proposerQuestion');
+                        }
                       },
                     ),
                   ),
@@ -193,4 +227,34 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ));
   }
+}
+
+//méthode permettant de générer les popup
+showAlertDialog(BuildContext context) {
+  Widget okButton = FlatButton(
+    child: Text("OK"),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    elevation: 0,
+    title: Text('Attention !', style: TextStyle(fontSize: 25.0)),
+    content: Text("Vous devez être connecté pour accéder à cette rubrique",
+        style: TextStyle(fontSize: 20.0)),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

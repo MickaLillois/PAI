@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_quizinmobile/model/userModel/userModel.dart';
 import 'package:http/http.dart';
 
+///Classes affichant un formulaire permettant à un utilisateur de se connecter
 
 class Connection extends StatefulWidget {
   Connection({Key key, this.title}) : super(key: key);
@@ -19,6 +20,7 @@ class ConnectionState extends State<Connection> {
   final myControllerMail = TextEditingController();
   final myControllerMdp = TextEditingController();
 
+  ///méthode permettant de vérifier la présence de l'utilisateur dans la base
   Future<String> _makePostRequest(String mail, String mdp) async {
     Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Utilisateurs/verifConnexion.php');
     Map<String, String> headers = {
@@ -39,6 +41,7 @@ class ConnectionState extends State<Connection> {
     }
   }
 
+  //variables de responsivité
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -58,11 +61,14 @@ class ConnectionState extends State<Connection> {
     double marginSeCo = screenSize.height*0.02;
     double paddingInput = screenSize.height*0.02;
     double paddingButton = screenSize.height*0.02;
+
+
     return Scaffold(
         body: SingleChildScrollView(
           child: Center(
               child: Column(
                   children: <Widget>[
+                    //logo
                     Container(
                       margin: EdgeInsets.fromLTRB(0,marginLogo,0,marginLogo),
                       child: Image.asset(
@@ -71,6 +77,7 @@ class ConnectionState extends State<Connection> {
                         height: heightLogo,
                       ),
                     ),
+                    //texte "se connecter"
                     Container(
                       margin: EdgeInsets.fromLTRB(0,marginSeCo,0,0),
                       child: Text(
@@ -80,11 +87,15 @@ class ConnectionState extends State<Connection> {
                     Form(
                       child: Column(
                         children: [
+
+                          //texte "identifiant"
                           Container(
                             alignment: Alignment.topLeft,
                             margin: EdgeInsets.fromLTRB(marginLeftInput,marginLogo,0,marginLogo/2),
                             child: Text('Identifiant :',style: TextStyle(fontSize: fontSizeText)),
                           ),
+
+                          //text input pour l'identifiant
                           Container(
                             width: widthInput,
                             child: TextFormField(
@@ -98,11 +109,15 @@ class ConnectionState extends State<Connection> {
                               controller: myControllerMail,
                             ),
                           ),
+
+                          //texte "mot de passe
                           Container(
                               alignment: Alignment.topLeft,
                               margin: EdgeInsets.fromLTRB(marginLeftInput,marginLogo*2,0,marginLogo/2),
                               child: Text('Mot de passe :',style: TextStyle(fontSize: fontSizeText))
                           ),
+
+                          //text input du mot de passe
                           Container(
                             width: widthInput,
                             child: TextFormField(
@@ -119,6 +134,8 @@ class ConnectionState extends State<Connection> {
                               controller: myControllerMdp,
                             ),
                           ),
+
+                          //bouton "valider"
                           Container(
                               margin: EdgeInsets.fromLTRB(0,marginLogo*1.45,0,marginLogo),
                               child: ElevatedButton(
@@ -143,6 +160,8 @@ class ConnectionState extends State<Connection> {
                                 ),
                               )
                           ),
+
+                          //hyperlien pour passer à l'inscription
                           Container(
                             child: new InkWell(
                                 child: new Text('Pas encore de compte ? Cliquez ici pour vous inscrire.', style: TextStyle(fontSize: fontSizeLink)),
@@ -159,6 +178,7 @@ class ConnectionState extends State<Connection> {
   }
 }
 
+//méthode permettant de générer les popup
 showAlertDialog(BuildContext context, String msg) {
   Widget okButton = FlatButton(
     child: Text("OK"),

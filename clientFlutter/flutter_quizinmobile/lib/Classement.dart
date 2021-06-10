@@ -10,6 +10,8 @@ import 'package:http/http.dart';
 
 import 'editMdp.dart';
 
+///Classes permettant la récupération et l'affichage des différents classement (score global, score moyen,...)
+
 class Classement extends StatefulWidget{
   Classement({Key key, this.title}) : super(key: key);
 
@@ -19,6 +21,7 @@ class Classement extends StatefulWidget{
   State<StatefulWidget> createState() => ClassementState();
 
 }
+
 
 Future<Stats> _makePostRequestScore() async {
   mail = UserModel.getMail();

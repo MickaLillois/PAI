@@ -5,6 +5,8 @@ import 'package:http/http.dart';
 
 import 'model/userModel/userModel.dart';
 
+///classes permettant à un utilisateur de s'inscrire
+
 class Inscription extends StatefulWidget {
   Inscription({Key key, this.title}) : super(key: key);
 
@@ -24,6 +26,7 @@ class InscriptionState extends State<Inscription> {
   final myControllerNom = TextEditingController();
   final myControllerPseudo = TextEditingController();
 
+  ///méthode permettant la modification de la date dans l'input "date de naissance"
   Future<void> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
@@ -36,6 +39,7 @@ class InscriptionState extends State<Inscription> {
       });
   }
 
+  ///méthode permettant de créer le compte de l'utilisateur en insérant ses informations dans la base
   Future<String> _makePostRequest(String mail, String mdp, String prenom, String nom, String pseudo, String dateNaissance) async {
     Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Utilisateurs/addNewUtilisateur.php');
     Map<String, String> headers = {
@@ -63,6 +67,8 @@ class InscriptionState extends State<Inscription> {
 
   @override
   Widget build(BuildContext context) {
+
+    //variables de responsivité
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -82,11 +88,14 @@ class InscriptionState extends State<Inscription> {
     double paddingInput = screenSize.height*0.018;
     double paddingButton = screenSize.height*0.02;
     double fontSizeInkwell = screenSize.height*0.013;
+
     return Scaffold(
         body:  SingleChildScrollView(
           child: Center(
               child: Column(
                   children: <Widget>[
+
+                    //logo
                     Container(
                       margin: EdgeInsets.fromLTRB(0,marginLogo,0,marginLogo/2),
                       child: Image.asset(
@@ -95,17 +104,23 @@ class InscriptionState extends State<Inscription> {
                         height: heightLogo,
                       ),
                     ),
+
+                    //texte "s'inscrire"
                     Text(
                       'S\'inscrire',
                       style: TextStyle(fontSize: fontSizeT1, color: Colors.indigo),),
                     Form(
                       child: Column(
                         children: [
+
+                          //texte "email"
                           Container(
                             alignment: Alignment.topLeft,
                             margin: EdgeInsets.fromLTRB(marginLeftInput,0,0,0),
                             child: Text('Email :',style: TextStyle(fontSize: fontSizeText)),
                           ),
+
+                          //text input de l'email
                           Container(
                             width: widthInput,
                             child: TextFormField(
@@ -119,11 +134,15 @@ class InscriptionState extends State<Inscription> {
                               controller: myControllerMail,
                             ),
                           ),
+
+                          //texte "mot de passe"
                           Container(
                               alignment: Alignment.topLeft,
                               margin: EdgeInsets.fromLTRB(marginLeftInput,marginTopTxt,0,0),
                               child: Text('Mot de passe :',style: TextStyle(fontSize: fontSizeText))
                           ),
+
+                          //text input du mot de passe
                           Container(
                             width: widthInput,
                             child: TextFormField(
@@ -140,11 +159,15 @@ class InscriptionState extends State<Inscription> {
                               controller: myControllerMdp,
                             ),
                           ),
+
+                          //texte 'Confirmation du passe :'
                           Container(
                               alignment: Alignment.topLeft,
                               margin: EdgeInsets.fromLTRB(marginLeftInput,marginTopTxt,0,0),
                               child: Text('Confirmation du passe :',style: TextStyle(fontSize: fontSizeText))
                           ),
+
+                          //text input de la confirmation de mot de passe
                           Container(
                             width: widthInput,
                             child: TextFormField(
@@ -165,10 +188,14 @@ class InscriptionState extends State<Inscription> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+
+                                //texte "prénom"
                                 Container(
                                     margin: EdgeInsets.fromLTRB(marginLeftInput,marginTopTxt,0,0),
                                     child: Text('Prénom :',style: TextStyle(fontSize: fontSizeText))
                                 ),
+
+                                //text input du prénom
                                 Container(
                                   margin: EdgeInsets.fromLTRB(marginLeftInput,0,0,0),
                                   width: widthInput2,
@@ -188,10 +215,14 @@ class InscriptionState extends State<Inscription> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+
+                                //texte "nom"
                                 Container(
                                     margin: EdgeInsets.fromLTRB(marginLeftInput*2,marginTopTxt,0,0),
                                     child: Text('Nom :',style: TextStyle(fontSize: fontSizeText))
                                 ),
+
+                                //text input du nom
                                 Container(
                                   margin: EdgeInsets.fromLTRB(marginLeftInput*2,0,0,0),
                                   width: widthInput2,
@@ -210,11 +241,15 @@ class InscriptionState extends State<Inscription> {
                             ),
                           ]
                           ),
+
+                          //texte "pseudo"
                           Container(
                               alignment: Alignment.topLeft,
                               margin: EdgeInsets.fromLTRB(marginLeftInput,marginTopTxt,0,0),
                               child: Text('Pseudo :',style: TextStyle(fontSize: fontSizeText))
                           ),
+
+                          //text input du pseudo
                           Container(
                             width: widthInput,
                             child: TextFormField(
@@ -228,11 +263,15 @@ class InscriptionState extends State<Inscription> {
                               controller: myControllerPseudo,
                             ),
                           ),
+
+                          //texte "date de naissance"
                           Container(
                               alignment: Alignment.topLeft,
                               margin: EdgeInsets.fromLTRB(marginLeftInput,marginTopTxt,0,0),
                               child: Text('Date de naissance :',style: TextStyle(fontSize: fontSizeText))
                           ),
+
+                          //DatePicker de la date de naissance
                           Container(
                               width: widthInput,
                               child: Row(children: <Widget>[
@@ -244,6 +283,8 @@ class InscriptionState extends State<Inscription> {
                               ],
                               )
                           ),
+
+                          //bouton de validation d'inscription vérifiant la conformité des informations
                           Container(
                               margin: EdgeInsets.fromLTRB(0,marginLogo/4,0,marginLogo/4),
                               child: ElevatedButton(
@@ -279,6 +320,8 @@ class InscriptionState extends State<Inscription> {
                                 ),
                               )
                           ),
+
+                          //hyperlien menant au menu de connexion
                           Container(
                             child: new InkWell(
                                 child: new Text('Déjà un compte? Connectez vous.', style: TextStyle(fontSize: fontSizeInkwell),),
@@ -296,6 +339,7 @@ class InscriptionState extends State<Inscription> {
   }
 }
 
+//méthode permettant de générer les popup
 showAlertDialog(BuildContext context, String msg) {
   Widget okButton = FlatButton(
     child: Text("OK"),

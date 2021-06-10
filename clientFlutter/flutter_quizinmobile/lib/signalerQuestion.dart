@@ -220,7 +220,8 @@ class SignalerQuestionState extends State<SignalerQuestion> {
                         }
                         else{
                           _makePostRequest(intitule, myControllerCommentaires.text, _chosenValueCateg);
-                          Navigator.pushReplacementNamed(context, '/');
+                          //Navigator.pushReplacementNamed(context, '/');
+                          Navigator.of(context).pop();
                         }
                       },
                     )

@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_quizinmobile/signalerQuestion.dart';
 
+///classes permettant l'affichage du score et du récapitulatif des questions après avoir joué une partie
+
 class FinPartieStandard extends StatefulWidget{
   int score;
   int scoreMax;
@@ -47,6 +49,8 @@ class FinPartieStandardState extends State<FinPartieStandard> {
         child: Center(
             child: Column(
               children: <Widget>[
+
+                //logo
                 Container(
                   margin: EdgeInsets.fromLTRB(0,marginLogo,0,marginLogo),
                   child: Image.asset(
@@ -55,6 +59,8 @@ class FinPartieStandardState extends State<FinPartieStandard> {
                     height: heightLogo,
                   ),
                 ),
+
+                //Box contenant le score
                 Container(
                   alignment: Alignment.center,
                   margin: EdgeInsets.fromLTRB(0,0,0,paddingInput/2),
@@ -72,6 +78,8 @@ class FinPartieStandardState extends State<FinPartieStandard> {
                     fontWeight: FontWeight.bold,
                   ), ),
                 ),
+
+                //Bouton "quitter"
                 Container(
                   child: ElevatedButton(
                     child: Text('Quitter', style: TextStyle(fontSize: 25.0),),
@@ -80,6 +88,8 @@ class FinPartieStandardState extends State<FinPartieStandard> {
                     },
                   ),
                 ),
+
+                //Liste récapitulative des questions
                 Container(
                     width: screenSize.width*0.98,
                     child: ListView.builder(
@@ -99,6 +109,8 @@ class FinPartieStandardState extends State<FinPartieStandard> {
                                 questions["Question${index + 1}"]['DIFFICULTE'] == "Perso" ? Text(
                                     ""
                                 ) :
+
+                                //bouton "signaler question" pour les questions non perso
                                 Container(
                                   margin : EdgeInsets.fromLTRB(0,marginLogo/3,0,0),
                                   child: ElevatedButton(
@@ -135,6 +147,7 @@ class FinPartieStandardState extends State<FinPartieStandard> {
 
 }
 
+//méthode permettant de générer les popup
 showAlertDialog(BuildContext context, int nbVie, int scoreManche, String reponses, String result) {
   Widget okButton = FlatButton(
     child: Text("OK"),

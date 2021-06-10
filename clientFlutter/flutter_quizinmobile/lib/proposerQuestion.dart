@@ -9,6 +9,9 @@ import 'package:http/http.dart';
 import 'editMdp.dart';
 import 'model/userModel/userModel.dart';
 
+///classes permettant à un utilisateur de suggérer une question
+
+///classe permettant de lister les catégorie disponibles
 class Categorie {
   final List<String> categ;
 
@@ -25,6 +28,8 @@ class Categorie {
   }
 }
 
+
+///classe permettant de lister les difficultés disponibles
 class Difficulte {
   final List<String> diff;
 
@@ -51,6 +56,7 @@ class ProposerQuestion extends StatefulWidget{
 
 class ProposerQuestionState extends State<ProposerQuestion> {
 
+  ///méthode permettant de récupérer les catégories disponibles
   Future<Categorie> getCategorie() async {
     mail = UserModel.getMail();
     Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Questions/getCategories.php');
@@ -72,6 +78,7 @@ class ProposerQuestionState extends State<ProposerQuestion> {
     }
   }
 
+  ///méthode permettant de récupérer les difficultés disponibles
   Future<Difficulte> getDifficulte() async {
     mail = UserModel.getMail();
     Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Questions/getDifficultes.php');
@@ -92,6 +99,7 @@ class ProposerQuestionState extends State<ProposerQuestion> {
     }
   }
 
+  ///méthode permettant d'envoyer la suggestion de question dans la base
   Future<String> _makePostRequest(String intitule, String reponses, String categ, String diff, String nbvie) async {
     Uri url = Uri.https('quizinmobile.alwaysdata.net', 'Traitement/addSuggestionQuestion.php');
     Map<String, String> headers = {
@@ -149,6 +157,8 @@ class ProposerQuestionState extends State<ProposerQuestion> {
         child: Center(
           child: Column(
             children: [
+
+              //logo
               Container(
                 margin: EdgeInsets.fromLTRB(0,marginLogo,0,marginLogo),
                 child: Image.asset(
@@ -157,6 +167,8 @@ class ProposerQuestionState extends State<ProposerQuestion> {
                   height: heightLogo,
                 ),
               ),
+
+              //texte "proposer une question"
               Container(
                 margin: EdgeInsets.fromLTRB(0,0,0,marginLogo/2),
                 child: Text(
@@ -164,6 +176,8 @@ class ProposerQuestionState extends State<ProposerQuestion> {
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: fontSizeT1*2, color: Colors.indigo),),
               ),
+
+              //texte "intitule
               Container(
                 alignment: Alignment.centerLeft,
                 margin: EdgeInsets.fromLTRB(marginLogo/2,0,0,marginLogo/2),
@@ -172,6 +186,8 @@ class ProposerQuestionState extends State<ProposerQuestion> {
                   style: TextStyle(fontSize: fontSizeT1),
                 ),
               ),
+
+              //text input de l'intitule
               Container(
                 margin: EdgeInsets.fromLTRB(0,0,0,marginLogo/2),
                 width: widthInput,
@@ -186,6 +202,8 @@ class ProposerQuestionState extends State<ProposerQuestion> {
                   controller: myControllerIntitule,
                 ),
               ),
+
+              //texte "réponses"
               Container(
                 alignment: Alignment.centerLeft,
                 margin: EdgeInsets.fromLTRB(marginLogo/2,0,0,0),
@@ -194,6 +212,8 @@ class ProposerQuestionState extends State<ProposerQuestion> {
                   style: TextStyle(fontSize: fontSizeT1),
                 ),
               ),
+
+              //texte '(Dans le format suivant : une réponse/une autre réponse/...)'
               Container(
                 alignment: Alignment.centerLeft,
                 margin: EdgeInsets.fromLTRB(marginLogo/2,0,0,marginLogo/2),
@@ -202,6 +222,8 @@ class ProposerQuestionState extends State<ProposerQuestion> {
                   style: TextStyle(fontSize: fontSizeT1*0.6),
                 ),
               ),
+
+              //text input des réponses
               Container(
                 margin: EdgeInsets.fromLTRB(0,0,0,marginLogo/2),
                 width: widthInput,
@@ -216,9 +238,12 @@ class ProposerQuestionState extends State<ProposerQuestion> {
                   controller: myControllerReponses,
                 ),
               ),
+
               Container(
                 child: Row(
                   children: [
+
+                    //texte "catégorie
                     Container(
                       margin: EdgeInsets.fromLTRB(marginLogo/2,0,0,0),
                       child: Text(
@@ -226,6 +251,8 @@ class ProposerQuestionState extends State<ProposerQuestion> {
                         style: TextStyle(fontSize: fontSizeT1),
                       ),
                     ),
+
+                    //DropDownButton avec les différents choix de catégorie
                     Container(
                         width: widthButton/1.5,
                         margin: EdgeInsets.fromLTRB(marginLogo/2, 0, 0, 0),
@@ -279,9 +306,12 @@ class ProposerQuestionState extends State<ProposerQuestion> {
                   ],
                 ),
               ),
+
               Container(
                   child : Row(
                     children: [
+
+                      //texte "Difficulté"
                       Container(
                         margin: EdgeInsets.fromLTRB(marginLogo/2,0,0,0),
                         child: Text(
@@ -289,6 +319,8 @@ class ProposerQuestionState extends State<ProposerQuestion> {
                           style: TextStyle(fontSize: fontSizeT1),
                         ),
                       ),
+
+                      //DropDownButton avec les différents choix de difficulté
                       Container(
                           width: widthButton/1.5,
                           margin: EdgeInsets.fromLTRB(marginLogo/2, 0, 0, 0),
@@ -340,9 +372,12 @@ class ProposerQuestionState extends State<ProposerQuestion> {
                     ],
                   )
               ),
+
               Container(
                 child: Row(
                   children: [
+
+                    //texte "Nb vie(s)"
                     Container(
                       margin: EdgeInsets.fromLTRB(marginLogo/2,0,0,0),
                       child: Text(
@@ -350,6 +385,8 @@ class ProposerQuestionState extends State<ProposerQuestion> {
                         style: TextStyle(fontSize: fontSizeT1),
                       ),
                     ),
+
+                    //DropDownButton avec les différents choix de nombre de vies
                     Container(
                         margin: EdgeInsets.fromLTRB(marginLogo/2,0,0,0),
                         width: widthButton/4,
@@ -384,6 +421,8 @@ class ProposerQuestionState extends State<ProposerQuestion> {
                   ],
                 ),
               ),
+
+              //bouton de validation vérifiant que tous les champs sont rempli et envoie la suggestion de question
               Container(
                 child: ElevatedButton(
                   onPressed: () async {
@@ -415,7 +454,7 @@ class ProposerQuestionState extends State<ProposerQuestion> {
   }
 }
 
-
+//méthode permettant de générer les popup
 showAlertDialog(BuildContext context, String msg) {
   Widget okButton = FlatButton(
     child: Text("OK"),
