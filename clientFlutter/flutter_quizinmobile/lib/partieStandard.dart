@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_quizinmobile/finPartie.dart';
+import 'package:flutter_quizinmobile/model/envoiData/resultat.dart';
 import 'package:flutter_quizinmobile/model/userModel/userModel.dart';
 import 'package:http/http.dart';
 
@@ -275,6 +276,8 @@ class PartieStandardState extends State<PartieStandard>{
                                   if(cpt.toString()==nbQuestions){
                                     scoreMax=scoreMax+1;
                                     score=score+1;
+                                    Resultat res = new Resultat(UserModel.getMail(), score.toString(), scoreMax.toString(), "0", (score*2).toString(), (score/scoreMax).toString(), "0");
+                                    print(res.toJson());
                                     await _makePostRequest2(score.toString(),(score/scoreMax).toString(), scoreMax.toString());
                                     Navigator.of(context).pop();
                                     Navigator.push(context, MaterialPageRoute(builder: (context) => FinPartieStandard(score: score, scoreMax: scoreMax, questions: questions)));
