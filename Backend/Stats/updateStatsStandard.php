@@ -2,13 +2,13 @@
 
 include("../Connexion/connexion.php");
 
-  $user = $_GET["user"];
-  $scorePartie = $_GET["scPart"];
-  $tempsReponseMoyen = $_GET["TmpRepMoy"];
-  $tauxBonneReponse = $_GET["txBonRep"];
-  $nbQuestion = $_GET["nbQue"];
-  $pointsUtilisateur = $_GET["ptsUs"];
-  $classement = $_GET["clmt"];
+  $user = $_POST["user"];
+  $scorePartie = $_POST["scPart"];
+  $tempsReponseMoyen = $_POST["TmpRepMoy"];
+  $tauxBonneReponse = $_POST["txBonRep"];
+  $nbQuestion = $_POST["nbQue"];
+  $pointsUtilisateur = $_POST["ptsUs"];
+  $classement = $_POST["clmt"];
 
   $var0 = 0;
   $var1 = 1;
