@@ -1,2 +1,5 @@
 servlet/HelloServlet.class
+classes/Partie.class
+servlet/TestServlet.class
+servlet/ConnexionPartieServlet.class
 launch/Main.class
